@@ -80,7 +80,93 @@ rmtDev comment .....
 
 ---
 
-## Section 2. validation
+## Section 2. Import Data
+
+### 2. fetch data from JSON file
+
+- Add fetch in the getPhotographers function to get your datas, and make a console.log of these datas, return the datas
+
+```js
+/recupère les données des photographes
+async function getPhotographers() {
+  // fetch all photographers information
+  try {
+    const response = await fetch("../../data/photographers.json");
+    const data = await response.json();
+    const { photographers, media } = data;
+    console.log(
+      "🚀 ~ file: index.js:42 ~ getPhotographers ~ data",
+      photographers,
+      media
+      // data.photographers
+    );
+    // et bien retourner le tableau photographers seulement une fois récupéré
+    return {
+      photographers: [...photographers],
+    };
+  } catch (error) {
+    console.log("🚀 ~ file: index.js:21 ~ getPhotographers ~ error", error);
+  }
+}
+
+
+
+//fontion permettant d'afficher les données
+async function displayData(photographers) {
+  const photographersSection = document.querySelector(".photographer_section");
+  photographers.forEach((photographer) => {
+    const photographerModel = photographerFactory(photographer);
+    console.log(
+      "🚀 ~ file: index.js:47 ~ photographers.forEach ~ photographerModel",
+      photographerModel
+    );
+    const userCardDOM = photographerModel.getUserCardDOM();
+    photographersSection.appendChild(userCardDOM);
+  });
+}
+
+//récupérer les données et afficher les photographes
+async function init() {
+  // Récupère les datas des photographes
+  const { photographers } = await getPhotographers();
+  console.log("🚀 ~ file: index.js:64 ~ init ~ photographers", photographers);
+  displayData(photographers);
+}
+
+init();
+
+```
+
+- Modify `scripts/factories/Photographer.js` to get the necessary data (id, tagline, city, etc)
+
+```js
+function photographerFactory(data) {
+  const { name, portrait, id, tagline, city, price, country } = data;
+
+  const picture = `assets/photographers/${portrait}`;
+
+  function getUserCardDOM() {
+    const article = document.createElement("article");
+    const img = document.createElement("img");
+    img.setAttribute("src", picture);
+    const h2 = document.createElement("h2");
+    h2.textContent = name;
+    const location = document.createElement("p");
+    location.textContent = `${city}, ${country}`;
+    const description = document.createElement("p");
+    description.textContent = tagline;
+    const fees = document.createElement("p");
+    fees.textContent = `${price}€/jour`;
+    article.appendChild(img);
+    article.appendChild(h2);
+    article.appendChild(location);
+    article.appendChild(description);
+    article.appendChild(fees);
+    return article;
+  }
+  return { name, picture, getUserCardDOM };
+}
+```
 
 ---
 
