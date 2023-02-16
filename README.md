@@ -170,4 +170,6 @@ function photographerFactory(data) {
 
 ---
 
-### 2. form validation
+## Section 3. Integrate the homepage
+
+### 3. Integrate the homepage

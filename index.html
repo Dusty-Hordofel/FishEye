@@ -12,11 +12,18 @@
   </head>
   <body>
     <header>
-      <img src="assets/images/logo.png" class="logo" />
-      <h1>Nos photographes</h1>
+      <a href="#" target="blank">
+        <img
+          src="assets/images/logo.png"
+          class="logo"
+          aria-describedby="long-image-aplication"
+          alt="logo"
+        />
+      </a>
+      <h1 aria-label="liste de nos photographes">Nos photographes</h1>
     </header>
-    <main id="main">
-      <div class="photographer_section"></div>
+    <main id="main" aria-label="section principale">
+      <div class="photographer_section" aria-label="section-photo"></div>
     </main>
     <script src="scripts/factories/photographer.js"></script>
     <script src="scripts/pages/index.js"></script>
