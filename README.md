@@ -173,3 +173,7 @@ function photographerFactory(data) {
 ## Section 3. Integrate the homepage
 
 ### 3. Integrate the homepage
+
+## Section 4. Manage the navigation between the home page and the photographer page
+
+- set up the loading of the data corresponding to the detailed page

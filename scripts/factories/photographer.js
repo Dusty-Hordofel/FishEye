@@ -10,7 +10,7 @@ function photographerFactory(data) {
     //use article as a child of an anchor element
     let link = document.createElement("a");
     // Set the href attribute of the anchor element to the link URL
-    link.href = `../../photographer.html/${id}`;
+    link.href = `photographer.html?id=${id}`;
 
     //image
     const img = document.createElement("img");

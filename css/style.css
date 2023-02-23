@@ -62,3 +62,6 @@ h1 {
 .photographer_section .description {
   margin-bottom: 0;
 }
+.photographer_section a {
+  text-decoration: none;
+}
