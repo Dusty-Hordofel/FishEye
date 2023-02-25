@@ -170,4 +170,314 @@ function photographerFactory(data) {
 
 ---
 
-### 2. form validation
+## Section 3. Integrate the homepage
+
+### 3. Integrate the homepage
+
+## Section 4. Manage the navigation between the home page and the photographer page
+
+### 4. create photographer card
+
+```js
+// fontion permettant de recupérer les media des photographes
+const getPhotographersMedia = async () => {
+  const { media } = await getPhotographers();
+  return media;
+};
+
+// retrieve id from url
+let params = new URLSearchParams(document.location.search);
+let id = params.get("id");
+
+//display photographer details using id
+const displayPhotographerdetails = async (id) => {
+  const photographerDetails = await getPhotographersDetails();
+  const findPhotographer = photographerDetails.find((p) => p.id == id);
+  console.log(
+    "🚀 ~ file: photographer.js:14 ~ displayPhotographerdetails ~ photographerDetails:",
+    findPhotographer
+  );
+
+  return findPhotographer;
+};
+
+// create an individual photographer card
+async function createIndividualPhotographerCard() {
+  //retrieve photographer information
+  const photographer = await displayPhotographerdetails(id);
+
+  //select photograph section
+  const main = document.querySelector(".photograph-header");
+  const header = document.querySelector("header");
+  const logo = document.querySelector(".logo");
+
+  //use article as a child of an anchor element
+  let link = document.createElement("a");
+  // Set the href attribute of the anchor element to the link URL
+  link.href = "index.html";
+  //append  logo home
+  link.appendChild(logo);
+
+  //image path
+  const picture = `assets/photographers/${photographer.portrait}`;
+
+  //image
+  const img = document.createElement("img");
+  img.setAttribute("src", picture);
+  img.setAttribute("alt", "photographer profile");
+
+  //create div element in main section
+  const divElement = document.createElement("div");
+
+  //add photograph-description  to main section
+  divElement.classList.add("photograph-description");
+
+  //photographer name
+  const h1 = document.createElement("h1");
+  h1.textContent = photographer.name;
+
+  //location
+  const location = document.createElement("p");
+  location.classList.add("location");
+  location.textContent = `${photographer.city}, ${photographer.country}`;
+  location.setAttribute("aria-label", "location and country");
+
+  //description
+  const description = document.createElement("p");
+  description.textContent = photographer.tagline;
+  description.classList.add("description");
+
+  //Append the h2, location and description as children to divElement
+  divElement.appendChild(h1);
+  divElement.appendChild(location);
+  divElement.appendChild(description);
+
+  //add image and divElement to main section
+  main.appendChild(img);
+  main.appendChild(divElement);
+
+  //add link to a logo
+  header.appendChild(link);
+
+  //select photograph-main children
+  var buttonChild = main.children[0];
+  var h1TitleChild = main.children[2];
+  //insert h2 title before the button
+  main.insertBefore(h1TitleChild, buttonChild);
+}
+
+createIndividualPhotographerCard();
+
+//display all media information
+const displayPhotographerMedia = async (id) => {
+  //   console.log(await getPhotographersMedia());
+  const photographerMedia = await getPhotographersMedia();
+  console.log(
+    "🚀 ~ file: photographer.js:62 ~ displayPhotographerMedia ~ photographerMedia:",
+    photographerMedia
+  );
+
+  //   use filter to dispaly all media the photographerId we clicked on
+  const photographe = photographerMedia.filter((p) => p.photographerId == id);
+  //   const photographe = photographerMedia.find((p) => p.photographerId == id);
+  console.log(
+    "🚀 ~ file: photographer.js:70 ~ displayPhotographerMedia ~ photographe:",
+    photographe
+  );
+};
+
+//display photographer media
+displayPhotographerMedia(id);
+```
+
+### 5.Display the static content of the photographer page
+
+- add contionnal rendering for image or video
+
+```js
+//display all media information
+const displayPhotographerMedia = async (id) => {
+  //retrieve photographer information
+  const photographer = await displayPhotographerdetails(id);
+
+  //  retrieve photographe media
+  const photographerMedia = await getPhotographersMedia();
+
+  //   use filter to dispaly all media the photographerId we clicked on
+  const photographe = photographerMedia.filter((p) => p.photographerId == id);
+
+  const medias = `
+    <ul class= "photograph-work-content">
+    ${photographe
+      .map(
+        (work) =>
+          `<li class="photograph-work-content-img">
+         <${work.image ? "img" : "video"} src="assets/images/${
+            photographer.name
+          }/${work.image ? work.image : work.video}" alt=${
+            work.image ? "photograph work presentation" : "#"
+          } ${
+            work.video ? "autoplay muted controls" : "#"
+          } class="photograph-work-content-img"></${
+            work.image ? "img" : "video"
+          }>  
+          <div class="photograph-work-content-description">
+          <h2>${work.title}</h2>
+          <div class="photograph-work-content-description-likes">
+          <p>${work.likes}</p>
+          <span><i class="fa-solid fa-heart"></i></span>
+          </div>
+          </div>
+          </li>`
+      )
+      .join("")}
+          </ul>
+          `;
+  allWork.insertAdjacentHTML("beforeend", medias);
+};
+
+//display photographer media
+displayPhotographerMedia(id);
+```
+
+-style medias section
+
+```css
+/************************************/
+/* Photographer medias */
+/************************************/
+
+.photograph-work {
+  /* background: #901c1c; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+.photograph-work-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  gap: 90px;
+}
+.photograph-work-content-img {
+  width: 330px;
+  height: 300px;
+  list-style-type: none;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+}
+
+.photograph-work-content-description {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  color: #901c1c;
+}
+
+.photograph-work-content-description h2 {
+  font-size: 24px;
+}
+
+.photograph-work-content-description-likes {
+  display: flex;
+  align-items: center;
+}
+.photograph-work-content-description-likes span {
+  display: block;
+  margin-left: 0.6rem;
+}
+```
+
+### 6.photographer rate and price
+
+- factorise information by creating `photographerInformation()`
+
+```js
+//individual photographer information
+const photographerInformation = async () => {
+  //retrieve photographer information
+  const photographer = await displayPhotographerdetails(id);
+
+  //  retrieve photographe media
+  const photographerMedia = await getPhotographersMedia();
+
+  //   use filter to dispaly all media the photographerId we clicked on
+  const photographe = photographerMedia.filter((p) => p.photographerId == id);
+
+  return { photographe, photographer };
+};
+```
+
+- create `photographerRateAndPrice`, the small insert that displays the daily rate of the photographer
+
+```js
+//photographer rate and price
+const photographerRateAndPrice = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+
+  //calcul photographer totalLikes
+  const totalLikes = photographerMediaDetails.reduce(
+    (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+    0
+  );
+
+  //create rateAndPrice variable to store photographer totalLikes and price
+  const rateAndPrice = `
+    <ul class="photographer-rate-and-price-container">
+    <li class="photographer-rate-and-price-likes">${totalLikes}</li>
+    <li class="photographer-rate-and-price-prices">${photographer.price}€ / jour</li>
+    </ul>
+    `;
+
+  allWork.insertAdjacentHTML("beforeend", rateAndPrice);
+  // const newChild = document.createElement("div");
+  // newChild.innerHTML = rateAndPrice;
+
+  // const referenceChild = document.querySelector(".photograph-work-content");
+  // allWork.insertBefore(newChild, referenceChild.nextSibling);
+  // console.log(
+  //   "🚀 ~ file: photographer.js:159 ~ photographerRateAndPrice ~ rateAndPrice:",
+  //   rateAndPrice
+  // );
+};
+
+photographerRateAndPrice();
+```
+
+- style
+
+```css
+/************************************/
+/* Photographe rate and price */
+/************************************/
+
+.photographer-rate-and-price-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #db8876;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width: 376px;
+  height: 89px;
+  font-size: 24px;
+  right: 40px;
+  top: 90vh;
+}
+
+.photographer-rate-and-price-likes span {
+  margin-left: 10px;
+}
+```
+
+### external links
+
+- [reduce](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)

@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
+    <!-- link stylesheet file -->
     <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <title>Fisheye - photographe </title>
+    <link href="css/photographer.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8" />
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <!-- google font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <!-- fontawesome -->
+    <script
+      src="https://kit.fontawesome.com/85893a34ce.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- title -->
+    <title>Fisheye - photographe</title>
   </head>
   <body>
     <header>
@@ -13,24 +26,40 @@
     </header>
     <main id="main">
       <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+        <button class="contact_button" onclick="displayModal()">
+          Contactez-moi
+        </button>
+      </div>
+
+      <div class="photograph-work">
+        <div class="photograph-work-filter">
+          <label for="filtre">Trier par </label>
+          <select id="filtre">
+            <option value="option1">Popularité</option>
+            <option value="option2">Date</option>
+            <option value="option3">Titre</option>
+          </select>
+        </div>
       </div>
     </main>
     <div id="contact_modal">
-			<div class="modal">
-				<header>
+      <div class="modal">
+        <header>
           <h2>Contactez-moi</h2>
           <img src="assets/icons/close.svg" onclick="closeModal()" />
         </header>
-				<form>
-					<div>
-						<label>Prénom</label>
-						<input />
-					</div>
+        <form>
+          <div>
+            <label>Prénom</label>
+            <input />
+          </div>
           <button class="contact_button">Envoyer</button>
-				</form>
-			</div>
-		</div>
+        </form>
+      </div>
+    </div>
+
+    <script src="scripts/pages/index.js"></script>
+    <script src="scripts/factories/photographer.js"></script>
     <script src="/scripts/pages/photographer.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
   </body>
