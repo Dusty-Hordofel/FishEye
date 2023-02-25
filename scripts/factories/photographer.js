@@ -15,6 +15,7 @@ function photographerFactory(data) {
     //image
     const img = document.createElement("img");
     img.setAttribute("src", picture);
+    img.setAttribute("alt", "photographer profile image");
     //name
     const h2 = document.createElement("h2");
     h2.textContent = name;
@@ -28,17 +29,18 @@ function photographerFactory(data) {
     location.classList.add("location");
     location.textContent = `${city}, ${country}`;
     location.setAttribute("aria-label", "location and country");
+
     //description
     const description = document.createElement("p");
     description.textContent = tagline;
     description.classList.add("description");
+
     //price
     const fees = document.createElement("p");
     fees.classList.add("price");
     fees.textContent = `${price}€/jour`;
+
     //append child to article
-    // article.appendChild(img);
-    // article.appendChild(h2);
     article.appendChild(link);
     article.appendChild(location);
     article.appendChild(description);

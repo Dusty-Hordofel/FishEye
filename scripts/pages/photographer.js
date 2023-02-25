@@ -1,3 +1,11 @@
+//photograph header section selector's
+const main = document.querySelector(".photograph-header");
+const header = document.querySelector("header");
+const logo = document.querySelector(".logo");
+
+//photograph medias selector
+const allWork = document.querySelector(".photograph-work");
+
 // fontion permettant de recupérer les media des photographes
 const getPhotographersMedia = async () => {
   const { media } = await getPhotographers();
@@ -25,11 +33,6 @@ async function createIndividualPhotographerCard() {
   //retrieve photographer information
   const photographer = await displayPhotographerdetails(id);
 
-  //select photograph section
-  const main = document.querySelector(".photograph-header");
-  const header = document.querySelector("header");
-  const logo = document.querySelector(".logo");
-
   //use article as a child of an anchor element
   let link = document.createElement("a");
   // Set the href attribute of the anchor element to the link URL
@@ -43,7 +46,7 @@ async function createIndividualPhotographerCard() {
   //image
   const img = document.createElement("img");
   img.setAttribute("src", picture);
-  img.setAttribute("alt", "photographer profile image");
+  img.setAttribute("alt", "photographer profile");
 
   //create div element in main section
   const divElement = document.createElement("div");
@@ -52,8 +55,8 @@ async function createIndividualPhotographerCard() {
   divElement.classList.add("photograph-description");
 
   //photographer name
-  const h2 = document.createElement("h2");
-  h2.textContent = photographer.name;
+  const h1 = document.createElement("h1");
+  h1.textContent = photographer.name;
 
   //location
   const location = document.createElement("p");
@@ -67,7 +70,7 @@ async function createIndividualPhotographerCard() {
   description.classList.add("description");
 
   //Append the h2, location and description as children to divElement
-  divElement.appendChild(h2);
+  divElement.appendChild(h1);
   divElement.appendChild(location);
   divElement.appendChild(description);
 
@@ -80,29 +83,52 @@ async function createIndividualPhotographerCard() {
 
   //select photograph-main children
   var buttonChild = main.children[0];
-  var h2TitleChild = main.children[2];
+  var h1TitleChild = main.children[2];
   //insert h2 title before the button
-  main.insertBefore(h2TitleChild, buttonChild);
+  main.insertBefore(h1TitleChild, buttonChild);
 }
 
 createIndividualPhotographerCard();
 
 //display all media information
 const displayPhotographerMedia = async (id) => {
-  //   console.log(await getPhotographersMedia());
+  //retrieve photographer information
+  const photographer = await displayPhotographerdetails(id);
+
+  //  retrieve photographe media
   const photographerMedia = await getPhotographersMedia();
-  console.log(
-    "🚀 ~ file: photographer.js:62 ~ displayPhotographerMedia ~ photographerMedia:",
-    photographerMedia
-  );
 
   //   use filter to dispaly all media the photographerId we clicked on
   const photographe = photographerMedia.filter((p) => p.photographerId == id);
-  //   const photographe = photographerMedia.find((p) => p.photographerId == id);
-  console.log(
-    "🚀 ~ file: photographer.js:70 ~ displayPhotographerMedia ~ photographe:",
-    photographe
-  );
+
+  const medias = `
+    <ul class= "photograph-work-content">
+    ${photographe
+      .map(
+        (work) =>
+          `<li class="photograph-work-content-img">
+         <${work.image ? "img" : "video"} src="assets/images/${
+            photographer.name
+          }/${work.image ? work.image : work.video}" alt=${
+            work.image ? "photograph work presentation" : "#"
+          } ${
+            work.video ? "autoplay muted controls" : "#"
+          } class="photograph-work-content-img"></${
+            work.image ? "img" : "video"
+          }>  
+          <div class="photograph-work-content-description">
+          <h2>${work.title}</h2>
+          <div class="photograph-work-content-description-likes">
+          <p>${work.likes}</p>
+          <span><i class="fa-solid fa-heart"></i></span>
+          </div>
+          </div>
+          </li>`
+      )
+      .join("")}
+          </ul>
+          `;
+  allWork.insertAdjacentHTML("beforeend", medias);
 };
 
 //display photographer media

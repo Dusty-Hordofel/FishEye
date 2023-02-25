@@ -1,9 +1,20 @@
+/************************************/
+/* GOOGLE FONTS */
+/************************************/
 @import url("photographer.css");
 
+/************************************/
+/* CUSTOM PROPERTY*/
+/************************************/
+:root {
+}
+
+/************************************/
+/* Global Styles */
+/************************************/
 body {
   font-family: "DM Sans", sans-serif;
   margin: 0;
-  /* background: orangered; */
 }
 
 header {
@@ -39,6 +50,10 @@ h1 {
   flex-direction: column;
 }
 
+/************************************/
+/* Photographe header */
+/************************************/
+
 .photographer_section article h2 {
   color: #d3573c;
   font-size: 36px;
@@ -65,3 +80,7 @@ h1 {
 .photographer_section a {
   text-decoration: none;
 }
+
+/************************************/
+/* Photographe medias */
+/************************************/

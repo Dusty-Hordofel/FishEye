@@ -1,3 +1,7 @@
+/************************************/
+/* Photographe header */
+/************************************/
+
 #contact_modal {
   display: none;
 }
@@ -7,6 +11,8 @@
   justify-content: space-around;
   align-items: center;
   background-color: #fafafa;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   height: 300px;
   margin: 0 100px;
 }
@@ -54,6 +60,10 @@
   cursor: pointer;
 }
 
+/************************************/
+/* Photographe modal */
+/************************************/
+
 .modal {
   border-radius: 5px;
   background-color: #db8876;
@@ -80,6 +90,9 @@
   font-weight: normal;
   text-align: center;
 }
+/************************************/
+/* Photographe form */
+/************************************/
 
 form {
   display: flex;
@@ -106,4 +119,61 @@ form input {
   height: 68px;
   border: none;
   border-radius: 5px;
+}
+
+/************************************/
+/* Photographe medias */
+/************************************/
+
+.photograph-work {
+  /* background: #901c1c; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+.photograph-work-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  gap: 90px;
+}
+.photograph-work-content-img {
+  width: 330px;
+  height: 300px;
+  list-style-type: none;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+}
+
+.photograph-work-content-description {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  color: #901c1c;
+}
+
+.photograph-work-content-description h2 {
+  font-size: 24px;
+}
+
+.photograph-work-content-description-likes {
+  display: flex;
+  align-items: center;
+}
+.photograph-work-content-description-likes span {
+  display: block;
+  margin-left: 0.6rem;
+}
+/************************************/
+/* Photographe filter */
+/************************************/
+
+.photograph-work-filter {
+  margin-bottom: 58px;
+  margin-top: 20px;
 }
