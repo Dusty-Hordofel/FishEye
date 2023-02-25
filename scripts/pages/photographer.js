@@ -90,8 +90,8 @@ async function createIndividualPhotographerCard() {
 
 createIndividualPhotographerCard();
 
-//display all media information
-const displayPhotographerMedia = async (id) => {
+//individual photographer information
+const photographerInformation = async () => {
   //retrieve photographer information
   const photographer = await displayPhotographerdetails(id);
 
@@ -99,11 +99,22 @@ const displayPhotographerMedia = async (id) => {
   const photographerMedia = await getPhotographersMedia();
 
   //   use filter to dispaly all media the photographerId we clicked on
-  const photographe = photographerMedia.filter((p) => p.photographerId == id);
+  const photographerMediaDetails = photographerMedia.filter(
+    (p) => p.photographerId == id
+  );
+
+  return { photographerMediaDetails, photographer };
+};
+
+//display all media information
+const displayPhotographerMedia = async (id) => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
 
   const medias = `
     <ul class= "photograph-work-content">
-    ${photographe
+    ${photographerMediaDetails
       .map(
         (work) =>
           `<li class="photograph-work-content-img">
@@ -128,8 +139,34 @@ const displayPhotographerMedia = async (id) => {
       .join("")}
           </ul>
           `;
+
   allWork.insertAdjacentHTML("beforeend", medias);
 };
 
 //display photographer media
 displayPhotographerMedia(id);
+
+//photographer rate and price
+const photographerRateAndPrice = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+
+  //calcul photographer totalLikes
+  const totalLikes = photographerMediaDetails.reduce(
+    (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+    0
+  );
+
+  //create rateAndPrice variable to store photographer totalLikes and price
+  const rateAndPrice = `
+    <ul class="photographer-rate-and-price-container">
+    <li class="photographer-rate-and-price-likes">${totalLikes}<span><i class="fa-solid fa-heart"></i></span></li>
+    <li class="photographer-rate-and-price-prices">${photographer.price}€ / jour</li>
+    </ul>
+    `;
+
+  allWork.insertAdjacentHTML("beforeend", rateAndPrice);
+};
+
+photographerRateAndPrice();

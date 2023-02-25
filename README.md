@@ -344,7 +344,7 @@ displayPhotographerMedia(id);
 
 ```css
 /************************************/
-/* Photographe medias */
+/* Photographer medias */
 /************************************/
 
 .photograph-work {
@@ -392,3 +392,92 @@ displayPhotographerMedia(id);
   margin-left: 0.6rem;
 }
 ```
+
+### 6.photographer rate and price
+
+- factorise information by creating `photographerInformation()`
+
+```js
+//individual photographer information
+const photographerInformation = async () => {
+  //retrieve photographer information
+  const photographer = await displayPhotographerdetails(id);
+
+  //  retrieve photographe media
+  const photographerMedia = await getPhotographersMedia();
+
+  //   use filter to dispaly all media the photographerId we clicked on
+  const photographe = photographerMedia.filter((p) => p.photographerId == id);
+
+  return { photographe, photographer };
+};
+```
+
+- create `photographerRateAndPrice`, the small insert that displays the daily rate of the photographer
+
+```js
+//photographer rate and price
+const photographerRateAndPrice = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+
+  //calcul photographer totalLikes
+  const totalLikes = photographerMediaDetails.reduce(
+    (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+    0
+  );
+
+  //create rateAndPrice variable to store photographer totalLikes and price
+  const rateAndPrice = `
+    <ul class="photographer-rate-and-price-container">
+    <li class="photographer-rate-and-price-likes">${totalLikes}</li>
+    <li class="photographer-rate-and-price-prices">${photographer.price}€ / jour</li>
+    </ul>
+    `;
+
+  allWork.insertAdjacentHTML("beforeend", rateAndPrice);
+  // const newChild = document.createElement("div");
+  // newChild.innerHTML = rateAndPrice;
+
+  // const referenceChild = document.querySelector(".photograph-work-content");
+  // allWork.insertBefore(newChild, referenceChild.nextSibling);
+  // console.log(
+  //   "🚀 ~ file: photographer.js:159 ~ photographerRateAndPrice ~ rateAndPrice:",
+  //   rateAndPrice
+  // );
+};
+
+photographerRateAndPrice();
+```
+
+- style
+
+```css
+/************************************/
+/* Photographe rate and price */
+/************************************/
+
+.photographer-rate-and-price-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #db8876;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width: 376px;
+  height: 89px;
+  font-size: 24px;
+  right: 40px;
+  top: 90vh;
+}
+
+.photographer-rate-and-price-likes span {
+  margin-left: 10px;
+}
+```
+
+### external links
+
+- [reduce](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)

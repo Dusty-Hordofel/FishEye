@@ -1,6 +1,35 @@
 /************************************/
 /* Photographe header */
 /************************************/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* font-size: 62.5%; */
+  scroll-behavior: smooth;
+}
+
+body {
+  /* font-family: "Raleway", sans-serif; */
+  /* min-height: 100vh; */
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+/************************************/
+/* Photographe header */
+/************************************/
 
 #contact_modal {
   display: none;
@@ -30,21 +59,25 @@
   justify-content: start;
 }
 
-.photograph-description h2 {
+.photograph-description h1 {
   color: #d3573c;
   font-size: 64px;
   font-weight: 400;
   margin: 0;
+  /* margin: 0 0 16px 0; */
 }
 
 .photograph-description .location {
   color: #901c1c;
-  margin-top: 0;
+  margin: 0 0 19px 0;
+  font-size: 24px;
+  font-weight: 400;
 }
 
 .photograph-description .description {
   margin-top: 0;
   color: #757575;
+  font-size: 23px;
 }
 
 .contact_button {
@@ -147,6 +180,7 @@ form input {
   border-radius: 5px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   object-fit: cover;
+  margin-bottom: 1rem;
 }
 
 .photograph-work-content-description {
@@ -168,6 +202,28 @@ form input {
 .photograph-work-content-description-likes span {
   display: block;
   margin-left: 0.6rem;
+}
+/************************************/
+/* Photographe rate and price */
+/************************************/
+
+.photographer-rate-and-price-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #db8876;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width: 376px;
+  height: 89px;
+  font-size: 24px;
+  right: 40px;
+  top: 90vh;
+}
+
+.photographer-rate-and-price-likes span {
+  margin-left: 10px;
 }
 /************************************/
 /* Photographe filter */
