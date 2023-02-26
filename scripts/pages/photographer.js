@@ -170,3 +170,21 @@ const photographerRateAndPrice = async () => {
 };
 
 photographerRateAndPrice();
+
+//photographername on contact modal
+
+const photographerName = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  const name = `${photographer.name}`;
+
+  const modalContact = document.querySelector(".modal");
+  const photographerName = document.createElement("h2");
+  photographerName.textContent = name;
+  const modalHeader = document.querySelector(".modal-header");
+  const nextSiblingElement = modalHeader.nextSibling;
+  modalContact.insertBefore(photographerName, nextSiblingElement);
+};
+
+photographerName();
