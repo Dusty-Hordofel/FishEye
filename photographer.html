@@ -5,25 +5,33 @@
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link href="css/photographer.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8" />
+
     <!-- favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png" />
+
     <!-- google font -->
     <link
       href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
       rel="stylesheet"
     />
+
     <!-- fontawesome -->
     <script
       src="https://kit.fontawesome.com/85893a34ce.js"
       crossorigin="anonymous"
     ></script>
+
     <!-- title -->
     <title>Fisheye - photographe</title>
   </head>
   <body>
+    <!-- HEADER -->
     <header>
       <img src="assets/images/logo.png" class="logo" />
     </header>
+    <!-- END OF HEADER -->
+
+    <!-- MAIN  -->
     <main id="main">
       <div class="photograph-header">
         <button class="contact_button" onclick="displayModal()">
@@ -42,21 +50,72 @@
         </div>
       </div>
     </main>
+    <!-- END MAIN  -->
+
+    <!-- CONTACT MODAL -->
     <div id="contact_modal">
       <div class="modal">
-        <header>
+        <!-- conact button -->
+        <header class="modal-header">
           <h2>Contactez-moi</h2>
           <img src="assets/icons/close.svg" onclick="closeModal()" />
         </header>
-        <form>
-          <div>
-            <label>Prénom</label>
-            <input />
+        <!-- forms -->
+        <form
+          name="reserve"
+          action="photographer.html"
+          method="get"
+          id="form"
+          class="form"
+        >
+          <div class="formData">
+            <label for="first">Prénom</label>
+            <input
+              class="text-control"
+              type="text"
+              id="first"
+              name="first"
+              minlength="2"
+            />
+            <div class="input-handler">
+              <br />
+              <small></small>
+            </div>
           </div>
-          <button class="contact_button">Envoyer</button>
+          <div class="formData">
+            <label for="last">Nom</label>
+            <input class="text-control" type="text" id="last" name="last" />
+            <div class="input-handler">
+              <br />
+              <small></small>
+            </div>
+          </div>
+          <div class="formData">
+            <label for="email">E-mail</label>
+            <input class="text-control" type="email" id="email" name="email" />
+            <div class="input-handler">
+              <br />
+              <small></small>
+            </div>
+          </div>
+          <div class="formData">
+            <label for="message">Votre message</label>
+            <textarea
+              id="message"
+              name="message"
+              class="text-control"
+            ></textarea>
+            <div class="input-handler">
+              <br />
+              <small></small>
+            </div>
+          </div>
+          <button type="submit" class="contact_button">Envoyer</button>
         </form>
+        <!-- end forms -->
       </div>
     </div>
+    <!-- END OF CONTACT MODAL -->
 
     <script src="scripts/pages/index.js"></script>
     <script src="scripts/factories/photographer.js"></script>
