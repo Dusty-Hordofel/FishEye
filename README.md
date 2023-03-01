@@ -568,6 +568,10 @@ const photographerName = async () => {
 photographerName();
 ```
 
+### 8. Manage Lightbox media
+
+- create lightbox [lightbox](./scripts/pages/photographer.js)
+
 ### external links
 
 - [reduce](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)

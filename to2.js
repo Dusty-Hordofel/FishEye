@@ -297,17 +297,21 @@ const fullScreenPhoto = async () => {
         );
         console.log(
           "🚀 ~ file: photographer.js:298 ~ renderMediaSlider ~ imageModal:",
-          imageModal
+          imageModal.tagName
         );
 
         //Arrow Left
         arrowLeft.addEventListener("click", function () {
-          mediaIndex--;
+          console.log("PESA MAKAMBO");
+          // console.log(mediaIndex--);
 
+          // console.log(mediaIndex--);
+          // mediaIndex -= 1;
+          mediaIndex--;
           if (mediaIndex < 0) {
             mediaIndex = photographerMediaDetails.length - 1;
           }
-
+          console.log(mediaIndex);
           selectedMedia = photographerMediaDetails[mediaIndex];
           console.log(
             "🚀 ~ file: photographer.js:317 ~ selectedMedia:",
@@ -318,30 +322,35 @@ const fullScreenPhoto = async () => {
             fullScreenMedia
           );
 
-          imageModal.forEach((mediaSlider) => {
-            mediaSlider.src = `assets/images/${photographer.name}/${
-              selectedMedia.image ? selectedMedia.image : selectedMedia.video
-            }`;
-          });
-        });
+          const fullScreenModal = document.querySelector(".full-screen-modal");
+          const fullScreenModalChild = document.querySelector(
+            ".photograph-work-content-img-modal"
+          );
 
-        //Arrow right
-        arrowRight.addEventListener("click", function () {
-          mediaIndex++;
-
-          if (mediaIndex >= photographerMediaDetails.length) {
-            mediaIndex = 0;
+          const newMedia = `
+          <div class="full-screen-modal">
+          <i class="fa-solid fa-chevron-left slider-icon"></i>
+          ${
+            selectedMedia.image
+              ? `
+              <img
+                src="assets/images/${photographer.name}/${selectedMedia.image}"
+                class="photograph-work-content-img-modal"
+                alt="photograph work presentation"
+              />`
+              : `<video
+              src="assets/images/${photographer.name}/${selectedMedia.video}"
+              class="photograph-work-content-img-modal"
+              autoplay muted controls
+            /></video>`
           }
+          <i class="fa-solid fa-chevron-right slider-icon"></i>
+          <button class="close-button">
+          <i class="fa-solid fa-xmark media-close-icon slider-icon"></i>
+          </button>
+          </div>`;
 
-          selectedMedia = photographerMediaDetails[mediaIndex];
-          console.log(
-            "🚀 ~ file: photographer.js:317 ~ selectedMedia:",
-            selectedMedia
-          );
-          console.log(
-            "🚀 ~ file: photographer.js:321 ~ selectedMedia:",
-            fullScreenMedia
-          );
+          console.log("🚀 ~ file: photographer.js:366 ~ newMedia:", newMedia);
 
           imageModal.forEach((mediaSlider) => {
             mediaSlider.src = `assets/images/${photographer.name}/${

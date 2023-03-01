@@ -234,6 +234,11 @@ small {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   object-fit: cover;
   margin-bottom: 1rem;
+  transition: 0.3s linear;
+}
+
+.photograph-work-content-img:hover {
+  transform: scale(1.1);
 }
 
 .photograph-work-content-description {
@@ -277,6 +282,70 @@ small {
 
 .photographer-rate-and-price-likes span {
   margin-left: 10px;
+}
+
+/************************************/
+/* Photographe rate and price */
+/************************************/
+.full-screen-media {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  /* max-height: 100vh; */
+  overflow: auto;
+  /* background: #036a65; */
+  background-color: rgba(196, 196, 196, 0.4);
+  transition: 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.photograph-work-content-img-modal {
+  width: 700px;
+  height: 700px;
+  object-fit: cover;
+  list-style-type: none;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+  transition: 0.3s linear;
+  /* margin: 40px; */
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+}
+
+.full-screen-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background: yellow; */
+}
+
+.slider-icon {
+  font-size: 42px;
+  color: #901c1c;
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+.fa-chevron-right {
+  margin-left: 20px;
+}
+.fa-chevron-left {
+  margin-right: 20px;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-self: start;
+  position: relative;
+  right: 22px;
 }
 /************************************/
 /* Photographe filter */
