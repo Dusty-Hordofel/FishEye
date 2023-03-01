@@ -14,11 +14,6 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  /* font-family: "Raleway", sans-serif; */
-  /* min-height: 100vh; */
-}
-
 a {
   text-decoration: none;
 }
@@ -225,6 +220,10 @@ small {
   align-items: center;
   margin: auto;
   gap: 90px;
+}
+
+.photograph-work-container {
+  width: 330px;
 }
 .photograph-work-content-img {
   width: 330px;

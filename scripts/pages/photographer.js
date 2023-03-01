@@ -122,21 +122,21 @@ const displayPhotographerMedia = async () => {
     ${photographerMediaDetails
       .map(
         (work, index) =>
-          `<li class="photograph-work-content-img" key="${index}">
+          `<li class="photograph-work-container" >
          <${work.image ? "img" : "video"} src="assets/images/${
             photographer.name
           }/${work.image ? work.image : work.video}" alt=${
             work.image ? "photograph work presentation" : "#"
           } ${
             work.video ? "muted" : "#"
-          } class="photograph-work-content-img"></${
+          } class="photograph-work-content-img" key="${index}"></${
             work.image ? "img" : "video"
-          }>  
+          } >  
           <div class="photograph-work-content-description">
           <h2>${work.title}</h2>
           <div class="photograph-work-content-description-likes">
-          <p>${work.likes}</p>
-          <span><i class="fa-solid fa-heart"></i></span>
+          <p class="photographer-likes" >${work.likes}</p>
+          <span><i class="fa-solid fa-heart" key="${index}"></i></span>
           </div>
           </div>
           </li>`
@@ -146,7 +146,7 @@ const displayPhotographerMedia = async () => {
           `;
 
   allWork.insertAdjacentHTML("beforeend", medias);
-  return { medias, photographerMediaDetails, photographer };
+  return { photographerMediaDetails, photographer };
 };
 
 // displayPhotographerMedia();
@@ -199,6 +199,8 @@ const fullScreenPhoto = async () => {
   //retrieve  medias medias and photographerMediaDetails from displayPhotographerMedia()
   const { medias, photographer, photographerMediaDetails } =
     await displayPhotographerMedia();
+  // const likes = document.querySelectorAll(".fa-heart");
+  // console.log("🚀 ~ file: photographer.js:363 ~ likes:", likes);
 
   console.log(
     "🚀 ~ file: photographer.js:201 ~ fullScreenPhoto ~ photographerMediaDetails:",
@@ -356,3 +358,27 @@ const fullScreenPhoto = async () => {
 };
 
 fullScreenPhoto();
+
+//INCREASE LIKES
+
+async function increaseLikes() {
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  const likes = document.querySelectorAll(".fa-heart");
+
+  const photographerLikes = document.querySelectorAll(".photographer-likes");
+
+  likes.forEach((like) => {
+    like.addEventListener("click", async () => {
+      //retrive the like index
+      const likeIndex = like.getAttribute("key");
+
+      //increase likes using the write selector,index and photographerMediaDetails
+      photographerLikes[likeIndex].innerHTML = photographerMediaDetails[
+        likeIndex
+      ].likes += 1;
+    });
+  });
+}
+
+increaseLikes();

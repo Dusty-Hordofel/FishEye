@@ -574,4 +574,34 @@ photographerName();
 
 ### external links
 
+### 9.View and manage likes
+
+- create [increaseLikes()](scripts/pages/photographer.js) to handle likes
+
+```js
+//INCREASE LIKES
+
+async function increaseLikes() {
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  const likes = document.querySelectorAll(".fa-heart");
+
+  const photographerLikes = document.querySelectorAll(".photographer-likes");
+
+  likes.forEach((like) => {
+    like.addEventListener("click", async () => {
+      //retrive the like index
+      const likeIndex = like.getAttribute("key");
+
+      //increase likes using the write selector,index and photographerMediaDetails
+      photographerLikes[likeIndex].innerHTML = photographerMediaDetails[
+        likeIndex
+      ].likes += 1;
+    });
+  });
+}
+
+increaseLikes();
+```
+
 - [reduce](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)
