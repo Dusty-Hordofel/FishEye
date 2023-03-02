@@ -151,7 +151,7 @@ const displayPhotographerMedia = async () => {
 
 // displayPhotographerMedia();
 
-//photographer rate and price
+//PHOTOGRAPHER RATE AND PRICE
 const photographerRateAndPrice = async () => {
   //retrieve photographer and all media information
   const { photographerMediaDetails, photographer } =
@@ -362,21 +362,32 @@ fullScreenPhoto();
 //INCREASE LIKES
 
 async function increaseLikes() {
-  const { photographerMediaDetails, photographer } =
-    await photographerInformation();
+  const { photographerMediaDetails } = await photographerInformation();
   const likes = document.querySelectorAll(".fa-heart");
 
   const photographerLikes = document.querySelectorAll(".photographer-likes");
+  const newTotalLikes = document.querySelector(
+    ".photographer-rate-and-price-likes"
+  );
 
   likes.forEach((like) => {
     like.addEventListener("click", async () => {
-      //retrive the like index
+      //retrieve the like index
       const likeIndex = like.getAttribute("key");
 
-      //increase likes using the write selector,index and photographerMediaDetails
-      photographerLikes[likeIndex].innerHTML = photographerMediaDetails[
-        likeIndex
-      ].likes += 1;
+      //increase  likes count
+      const increase = (photographerMediaDetails[likeIndex].likes += 1);
+      //display likes to client side
+      photographerLikes[likeIndex].innerHTML = increase;
+
+      //calcul new  totalLikes
+      const totalLikes = photographerMediaDetails.reduce(
+        (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+        0
+      );
+
+      //display new  totalLikes
+      newTotalLikes.innerHTML = totalLikes;
     });
   });
 }
