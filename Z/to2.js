@@ -365,3 +365,29 @@ const fullScreenPhoto = async () => {
 };
 
 fullScreenPhoto();
+
+//filter menu
+const dropdownMenu = document.querySelector(".dropdown");
+const select = document.querySelector(".select");
+const caret = document.querySelector(".caret");
+const menu = document.querySelector(".menu");
+const options = document.querySelectorA11(".menu li");
+const selected = document.querySelector(".selected");
+
+select.addEventListener("click", () => {
+  console.log("first");
+});
+
+<div class="dropdown">
+  <div class="select">
+    <div class="selected">Figma</div>
+    <div class="caret"></div>
+  </div>
+  <ul class="menu">
+    <li>Framer</li>
+    <li>Sketch</li>
+    <li>Invision studio</li>
+    <li class="active">Figma</li>
+    <li>Adobe XD</li>
+  </ul>
+</div>;

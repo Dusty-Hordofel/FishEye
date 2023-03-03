@@ -579,13 +579,15 @@ photographerName();
 - create [increaseLikes()](scripts/pages/photographer.js) to handle likes
 
 ```js
-/INCREASE LIKES
+//HANDLE LIKES
 
-async function increaseLikes() {
+async function handleLikes() {
   const { photographerMediaDetails } = await photographerInformation();
-  const likes = document.querySelectorAll(".fa-heart");
-
+  //select all like buttons
+  const likes = document.querySelectorAll(".like-btn");
+  //select all like numbers
   const photographerLikes = document.querySelectorAll(".photographer-likes");
+  //select like and price card witch is on the bottom of the page
   const newTotalLikes = document.querySelector(
     ".photographer-rate-and-price-likes"
   );
@@ -595,10 +597,26 @@ async function increaseLikes() {
       //retrieve the like index
       const likeIndex = like.getAttribute("key");
 
-      //increase  likes count
-      const increase = (photographerMediaDetails[likeIndex].likes += 1);
-      //display likes to client side
-      photographerLikes[likeIndex].innerHTML = increase;
+      //conditionnal rendering: increase or decrease the like
+      if ([...like.classList].includes("count-plus")) {
+        like.classList.remove("count-plus");
+        like.classList.add("count-moin");
+
+        //increase the number of likes
+        let increase = (photographerMediaDetails[likeIndex].likes += 1);
+
+        //display increased likes on screen
+        photographerLikes[likeIndex].textContent = increase;
+      } else {
+        like.classList.add("count-plus");
+        like.classList.remove("count-moin");
+
+        //decrease the number of likes
+        let decrease = (photographerMediaDetails[likeIndex].likes -= 1);
+
+        //display decreased likes on screen
+        photographerLikes[likeIndex].textContent = decrease;
+      }
 
       //calcul new  totalLikes
       const totalLikes = photographerMediaDetails.reduce(
@@ -612,8 +630,13 @@ async function increaseLikes() {
   });
 }
 
-increaseLikes();
-
+handleLikes();
 ```
+
+## Section 5. Filtering
+
+### 10. Create the sorting system
+
+- create a dropdown menu
 
 - [reduce](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)

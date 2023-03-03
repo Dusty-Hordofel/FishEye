@@ -136,7 +136,7 @@ const displayPhotographerMedia = async () => {
           <h2>${work.title}</h2>
           <div class="photograph-work-content-description-likes">
           <p class="photographer-likes" >${work.likes}</p>
-          <span><i class="fa-solid fa-heart" key="${index}"></i></span>
+          <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
           </div>
           </div>
           </li>`
@@ -359,13 +359,15 @@ const fullScreenPhoto = async () => {
 
 fullScreenPhoto();
 
-//INCREASE LIKES
+//HANDLE LIKES
 
-async function increaseLikes() {
+async function handleLikes() {
   const { photographerMediaDetails } = await photographerInformation();
-  const likes = document.querySelectorAll(".fa-heart");
-
+  //select all like buttons
+  const likes = document.querySelectorAll(".like-btn");
+  //select all like numbers
   const photographerLikes = document.querySelectorAll(".photographer-likes");
+  //select like and price card witch is on the bottom of the page
   const newTotalLikes = document.querySelector(
     ".photographer-rate-and-price-likes"
   );
@@ -375,10 +377,26 @@ async function increaseLikes() {
       //retrieve the like index
       const likeIndex = like.getAttribute("key");
 
-      //increase  likes count
-      const increase = (photographerMediaDetails[likeIndex].likes += 1);
-      //display likes to client side
-      photographerLikes[likeIndex].innerHTML = increase;
+      //conditionnal rendering: increase or decrease the like
+      if ([...like.classList].includes("count-plus")) {
+        like.classList.remove("count-plus");
+        like.classList.add("count-moin");
+
+        //increase the number of likes
+        let increase = (photographerMediaDetails[likeIndex].likes += 1);
+
+        //display increased likes on screen
+        photographerLikes[likeIndex].textContent = increase;
+      } else {
+        like.classList.add("count-plus");
+        like.classList.remove("count-moin");
+
+        //decrease the number of likes
+        let decrease = (photographerMediaDetails[likeIndex].likes -= 1);
+
+        //display decreased likes on screen
+        photographerLikes[likeIndex].textContent = decrease;
+      }
 
       //calcul new  totalLikes
       const totalLikes = photographerMediaDetails.reduce(
@@ -392,4 +410,46 @@ async function increaseLikes() {
   });
 }
 
-increaseLikes();
+handleLikes();
+
+//FILTER MENU
+const dropdownMenu = document.querySelector(".dropdown");
+const select = document.querySelector(".select");
+const caret = document.querySelector(".caret");
+const menu = document.querySelector(".menu");
+const options = document.querySelectorAll(".menu li");
+const selected = document.querySelector(".selected");
+
+select.addEventListener("click", () => {
+  console.log("first");
+  //add the clicked selected style to the selected element
+  select.classList.toggle("select-clicked");
+  //add rotate style to the caret element
+  caret.classList.toggle("caret-rotate");
+  //add open style to the menu element
+  menu.classList.toggle("menu-open");
+});
+
+//loop through  all option elements
+options.forEach((option) => {
+  //add click envent to the option element
+  option.addEventListener("click", () => {
+    //change selected inner text to clicked option inner text
+    selected.innerText = option.innerText;
+    //Add the clicked select styles to the select element
+    select.classList.remove("select-clicked");
+    //remove the rotate style to the caret element
+    caret.classList.remove("caret-rotate");
+    //add the open style to the menu element
+    menu.classList.remove("menu-open");
+    //remove active class for all options elements
+    options.forEach((option) => {
+      option.classList.remove("active");
+    });
+    //add active class to clicked option element
+    option.classList.add("active");
+  });
+});
+
+//FILTER MENU ALGORITHM
+const sortPostsByCategory = () => {};
