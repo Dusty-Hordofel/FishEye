@@ -6,31 +6,65 @@ const logo = document.querySelector(".logo");
 //photograph medias selector
 const allWork = document.querySelector(".photograph-work");
 
-// fontion permettant de recupérer les media des photographes
-const getPhotographersMedia = async () => {
-  const { media } = await getPhotographers();
-  return media;
-};
+//filter selector
+const dropdownMenu = document.querySelector(".dropdown");
+const select = document.querySelector(".select");
+const caret = document.querySelector(".caret");
+const menu = document.querySelector(".menu");
+const options = document.querySelectorAll(".menu li");
+const selected = document.querySelector(".selected");
 
 // retrieve id from url
 let params = new URLSearchParams(document.location.search);
 let id = params.get("id");
 
-//display photographer details using id
-const displayPhotographerdetails = async (id) => {
+// RETRIEVE ALL PHOTOGRAPHERS MEDIAS
+const getPhotographersMedia = async () => {
+  const { media } = await getPhotographers();
+  return media;
+};
+
+//RETRIEVE PHOTOGRAPHER DETAILS: {Name,city,country,price,tagline,...}
+const displayPhotographerdetails = async (identifier) => {
+  //get photographer details
   const photographerDetails = await getPhotographersDetails();
-  const findPhotographer = photographerDetails.find((p) => p.id == id);
+  //get photographer detail using id
+  const findPhotographer = photographerDetails.find((p) => p.id == identifier);
   console.log(
     "🚀 ~ file: photographer.js:14 ~ displayPhotographerdetails ~ photographerDetails:",
     findPhotographer
   );
-
+  //return findPhotographer
   return findPhotographer;
 };
 
-// create an individual photographer card
-async function createIndividualPhotographerCard() {
+//RETRIEVE ALL MEDIAS DETAILS TAKEN BY PHOTOGRAPHER : Each media contains {id,photographerId,image,likes,date,price}
+const getphotographerMediasDetails = async () => {
+  //  retrieve photographe media
+  const photographerMedia = await getPhotographersMedia();
+
+  //   use filter to dispaly all media the photographerId we clicked on
+  const photographerMediaDetails = photographerMedia.filter(
+    (p) => p.photographerId == id
+  );
+
+  return photographerMediaDetails;
+};
+
+//INDIVIDUAL PHOTOGRAPHER ALL INFORMATION: Personal Information and Photos done
+const photographerInformation = async () => {
   //retrieve photographer information
+  const photographer = await displayPhotographerdetails(id);
+
+  //  retrieve photographe media
+  const photographerMediaDetails = await getphotographerMediasDetails();
+
+  return { photographerMediaDetails, photographer };
+};
+
+// CREATE PHOTOGRAPHER INDIVIDUAL HEADER CARD
+async function createIndividualPhotographerCard() {
+  //retrieve photographer information with id
   const photographer = await displayPhotographerdetails(id);
 
   //use article as a child of an anchor element
@@ -90,23 +124,7 @@ async function createIndividualPhotographerCard() {
 
 createIndividualPhotographerCard();
 
-//INDIVIDUAL PHOTOGRAPHER INFORMATION
-const photographerInformation = async () => {
-  //retrieve photographer information
-  const photographer = await displayPhotographerdetails(id);
-
-  //  retrieve photographe media
-  const photographerMedia = await getPhotographersMedia();
-
-  //   use filter to dispaly all media the photographerId we clicked on
-  const photographerMediaDetails = photographerMedia.filter(
-    (p) => p.photographerId == id
-  );
-
-  return { photographerMediaDetails, photographer };
-};
-
-//display all media information
+//DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS
 const displayPhotographerMedia = async () => {
   //retrieve photographer and all media information
   const { photographerMediaDetails, photographer } =
@@ -123,15 +141,16 @@ const displayPhotographerMedia = async () => {
       .map(
         (work, index) =>
           `<li class="photograph-work-container" >
-         <${work.image ? "img" : "video"} src="assets/images/${
+          <${work.image ? "img" : "video"} src="assets/images/${
             photographer.name
-          }/${work.image ? work.image : work.video}" alt=${
-            work.image ? "photograph work presentation" : "#"
-          } ${
-            work.video ? "muted" : "#"
-          } class="photograph-work-content-img" key="${index}"></${
-            work.image ? "img" : "video"
-          } >  
+          }/${work.image ? work.image : work.video}" 
+          
+          ${work.image ? `alt=${work.title}` : ""}
+           ${
+             work.video ? "muted" : ""
+           } class="photograph-work-content-img" key="${index}"  ${
+            work.image ? "/" : ""
+          }> ${work.image ? "" : "</video>"} 
           <div class="photograph-work-content-description">
           <h2>${work.title}</h2>
           <div class="photograph-work-content-description-likes">
@@ -149,7 +168,228 @@ const displayPhotographerMedia = async () => {
   return { photographerMediaDetails, photographer };
 };
 
-// displayPhotographerMedia();
+//FULL SCREEN IMAGE ON CLICK
+const fullScreenPhoto = async () => {
+  //retrieve  medias medias and photographerMediaDetails from displayPhotographerMedia()
+  const { medias, photographer, photographerMediaDetails } =
+    await displayPhotographerMedia();
+  console.log(
+    "🚀 ~ file: photographer.js:174 ~ fullScreenPhoto ~ medias:",
+    medias
+  );
+
+  //select all medias using classname
+  const mediasContent = document.querySelectorAll(
+    ".photograph-work-content-img"
+  );
+
+  // add event listener to each media
+  mediasContent.forEach((media) => {
+    media.addEventListener("click", () => {
+      // get the media index from the media-id attribute
+      let mediaIndex = media.getAttribute("key");
+      console.log(
+        "🚀 ~ file: photographer.js:314 ~ media.addEventListener ~ mediaId:",
+        mediaIndex
+      );
+
+      //display content of  selected media
+      let selectedMedia = photographerMediaDetails[mediaIndex];
+
+      //create a slider
+      const renderMediaSlider = () => {
+        console.log(
+          "🚀 ~ file: photographer.js:322 ~ renderMediaSlider ~ selectedMedia:",
+          selectedMedia
+        );
+
+        //create a div element for the selected media
+        let fullScreenMedia = document.createElement("div");
+        //add "full-screen-media" for selected media
+        fullScreenMedia.classList.add("full-screen-media");
+
+        //add html script in fullScreenMedia div element
+        fullScreenMedia.innerHTML = `
+      <div class="full-screen-modal">
+      <i class="fa-solid fa-chevron-left slider-icon"></i>
+      ${
+        selectedMedia.image
+          ? `
+          <img
+            src="assets/images/${photographer.name}/${selectedMedia.image}"
+            class="photograph-work-content-img-modal"
+            alt="photograph work presentation"
+            id="photograph-work-img"
+          />`
+          : `<video
+          src="assets/images/${photographer.name}/${selectedMedia.video}"
+          class="photograph-work-content-img-modal"
+          id="photograph-work-video"
+          autoplay muted controls
+        /></video>`
+      }
+      <i class="fa-solid fa-chevron-right slider-icon"></i>
+      <button class="close-button">
+      <i class="fa-solid fa-xmark media-close-icon slider-icon"></i>
+      </button>
+      </div>`;
+
+        // add event listener to the close button to remove the full screen element
+        fullScreenMedia
+          .querySelector(".close-button")
+          .addEventListener("click", function () {
+            fullScreenMedia.remove();
+          });
+
+        // add the full screen element to the document
+        document.body.appendChild(fullScreenMedia);
+
+        //scroll through all the media
+        const arrowLeft = document.querySelector(".fa-chevron-left");
+        const arrowRight = document.querySelector(".fa-chevron-right");
+        const imageModal = fullScreenMedia.querySelector(
+          ".photograph-work-content-img-modal"
+        );
+
+        //Arrow Left
+        arrowLeft.addEventListener("click", function () {
+          mediaIndex--;
+          console.log(
+            "🚀 ~ file: photographer.js:380 ~ renderMediaSlider ~ imageModal - mediaIndex:",
+            mediaIndex
+          );
+
+          if (mediaIndex < 0) {
+            mediaIndex = photographerMediaDetails.length - 1;
+          }
+
+          selectedMedia = photographerMediaDetails[mediaIndex];
+          console.log(
+            "🚀 ~ file: photographer.js:390 ~ selectedMedia:",
+            selectedMedia
+          );
+          console.log(
+            "🚀 ~ file: photographer.js:394 ~ fullScreenMedia:",
+            fullScreenMedia
+          );
+
+          console.log(
+            "🚀 ~ file: photographer.js:402 ~ renderMediaSlider ~ imageModal:",
+            imageModal
+          );
+
+          imageModal.src = `assets/images/${photographer.name}/${
+            selectedMedia.image ? selectedMedia.image : selectedMedia.video
+          }`;
+
+          console.log(
+            "🚀 ~ file: photographer.js:403 ~ renderMediaSlider ~ imageModal:",
+            imageModal.src.includes(".jpg")
+          );
+          imageModal.src.includes(".jpg")
+            ? console.log("first")
+            : console.log("second");
+
+          console.log(
+            "🚀 ~ file: photographer.js:403 ~ renderMediaSlider ~ imageModal:",
+            imageModal.src.includes(".jpg")
+          );
+        });
+
+        //Arrow right
+        arrowRight.addEventListener("click", function () {
+          mediaIndex++;
+
+          if (mediaIndex >= photographerMediaDetails.length) {
+            mediaIndex = 0;
+          }
+
+          selectedMedia = photographerMediaDetails[mediaIndex];
+          console.log(
+            "🚀 ~ file: photographer.js:317 ~ selectedMedia:",
+            selectedMedia
+          );
+          console.log(
+            "🚀 ~ file: photographer.js:321 ~ selectedMedia:",
+            fullScreenMedia
+          );
+
+          imageModal.forEach((mediaSlider) => {
+            console.log(
+              "🚀 ~ file: photographer.js:418 ~ mediaSlider:",
+              mediaSlider.src
+            );
+
+            mediaSlider.src = `assets/images/${photographer.name}/${
+              selectedMedia.image ? selectedMedia.image : selectedMedia.video
+            }`;
+          });
+        });
+      };
+      renderMediaSlider();
+    });
+  });
+};
+
+fullScreenPhoto();
+
+//FILTER MENU ALGORITHM
+
+const sortMediaBy = async (sortBy) => {
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  switch (sortBy) {
+    case "title":
+      return photographerMediaDetails.sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
+    case "likes":
+      return photographerMediaDetails.sort((a, b) => b.likes - a.likes);
+    case "date":
+      return photographerMediaDetails.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+    default:
+      return photographerMediaDetails;
+  }
+};
+
+//SORT MEDIA BY
+const sortMedia = async (sortBy = "title") => {
+  const { photographer } = await photographerInformation();
+
+  const momo = await sortMediaBy(sortBy);
+  const medaille = `
+    <ul class= "photograph-work-content">
+    ${momo
+      .map(
+        (work, index) =>
+          `<li class="photograph-work-container" >
+          <${work.image ? "img" : "video"} src="assets/images/${
+            photographer.name
+          }/${work.image ? work.image : work.video}" 
+          
+          ${work.image ? `alt=${work.title}` : ""}
+           ${
+             work.video ? "muted" : ""
+           } class="photograph-work-content-img" key="${index}"  ${
+            work.image ? "/" : ""
+          }> ${work.image ? "" : "</video>"} 
+          <div class="photograph-work-content-description">
+          <h2>${work.title}</h2>
+          <div class="photograph-work-content-description-likes">
+          <p class="photographer-likes" >${work.likes}</p>
+          <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+          </div>
+          </div>
+          </li>`
+      )
+      .join("")}
+          </ul>
+          `;
+
+  allWork.innerHTML = medaille;
+};
 
 //PHOTOGRAPHER RATE AND PRICE
 const photographerRateAndPrice = async () => {
@@ -176,8 +416,7 @@ const photographerRateAndPrice = async () => {
 
 photographerRateAndPrice();
 
-//photographername on contact modal
-
+//PHOTOGRAPHER NAME ON CONTACT MODAL
 const photographerName = async () => {
   //retrieve photographer and all media information
   const { photographerMediaDetails, photographer } =
@@ -193,171 +432,6 @@ const photographerName = async () => {
 };
 
 photographerName();
-
-//FULL SCREEN IMAGE ON CLICK
-const fullScreenPhoto = async () => {
-  //retrieve  medias medias and photographerMediaDetails from displayPhotographerMedia()
-  const { medias, photographer, photographerMediaDetails } =
-    await displayPhotographerMedia();
-  // const likes = document.querySelectorAll(".fa-heart");
-  // console.log("🚀 ~ file: photographer.js:363 ~ likes:", likes);
-
-  console.log(
-    "🚀 ~ file: photographer.js:201 ~ fullScreenPhoto ~ photographerMediaDetails:",
-    photographerMediaDetails
-  );
-  //select all medias using classname
-  const mediasContent = document.querySelectorAll(
-    ".photograph-work-content-img"
-  );
-  console.log(
-    "🚀 ~ file: photographer.js:224 ~ fullScreenPhoto ~ mediasContent:",
-    mediasContent
-  );
-
-  // add event listener to each media
-  mediasContent.forEach((media) => {
-    media.addEventListener("click", () => {
-      // get the media id from the media-id attribute
-      let mediaIndex = media.getAttribute("key");
-      console.log(
-        "🚀 ~ file: photographer.js:217 ~ media.addEventListener ~ mediaId:",
-        mediaIndex
-      );
-
-      //selected media information
-      // let selectedMedia = photographerMediaDetails[mediaIndex];
-
-      // console.log(
-      //   "🚀 ~ file: photographer.js:228 ~ media.addEventListener ~ selectedMedia:",
-      //   selectedMedia
-      // );
-
-      // let fullScreenMedia = document.createElement("div");
-      // fullScreenMedia.classList.add("full-screen-media");
-
-      //show media in full screen
-
-      // <${selectedMedia.image ? "img" : "video"} src="assets/images/${
-      //   photographer.name
-      // }/${
-      //   selectedMedia.image ? selectedMedia.image : selectedMedia.video
-      // }" alt=${selectedMedia.image ? "photograph work presentation" : "#"} ${
-      //   selectedMedia.video ? "autoplay muted controls" : "#"
-      // } class="photograph-work-content-img-modal"></${
-      //   selectedMedia.image ? "img" : "video"
-      // }>
-
-      let selectedMedia = photographerMediaDetails[mediaIndex];
-      const renderMediaSlider = () => {
-        console.log(
-          "🚀 ~ file: photographer.js:240 ~ renderMediaSlider ~ selectedMedia:",
-          selectedMedia
-        );
-
-        let fullScreenMedia = document.createElement("div");
-        fullScreenMedia.classList.add("full-screen-media");
-
-        fullScreenMedia.innerHTML = `
-      <div class="full-screen-modal">
-      <i class="fa-solid fa-chevron-left slider-icon"></i>
-      ${
-        selectedMedia.image
-          ? `
-          <img
-            src="assets/images/${photographer.name}/${selectedMedia.image}"
-            class="photograph-work-content-img-modal"
-            alt="photograph work presentation"
-          />`
-          : `<video
-          src="assets/images/${photographer.name}/${selectedMedia.video}"
-          class="photograph-work-content-img-modal"
-          autoplay muted controls
-        /></video>`
-      }
-      <i class="fa-solid fa-chevron-right slider-icon"></i>
-      <button class="close-button">
-      <i class="fa-solid fa-xmark media-close-icon slider-icon"></i>
-      </button>
-      </div>`;
-
-        // add event listener to the close button to remove the full screen element
-        fullScreenMedia
-          .querySelector(".close-button")
-          .addEventListener("click", function () {
-            fullScreenMedia.remove();
-          });
-
-        // add the full screen element to the document
-        document.body.appendChild(fullScreenMedia);
-
-        //scroll through all the media
-        const arrowLeft = document.querySelector(".fa-chevron-left");
-        const arrowRight = document.querySelector(".fa-chevron-right");
-        const imageModal = fullScreenMedia.querySelectorAll(
-          ".photograph-work-content-img-modal"
-        );
-        console.log(
-          "🚀 ~ file: photographer.js:298 ~ renderMediaSlider ~ imageModal:",
-          imageModal
-        );
-
-        //Arrow Left
-        arrowLeft.addEventListener("click", function () {
-          mediaIndex--;
-
-          if (mediaIndex < 0) {
-            mediaIndex = photographerMediaDetails.length - 1;
-          }
-
-          selectedMedia = photographerMediaDetails[mediaIndex];
-          console.log(
-            "🚀 ~ file: photographer.js:317 ~ selectedMedia:",
-            selectedMedia
-          );
-          console.log(
-            "🚀 ~ file: photographer.js:321 ~ selectedMedia:",
-            fullScreenMedia
-          );
-
-          imageModal.forEach((mediaSlider) => {
-            mediaSlider.src = `assets/images/${photographer.name}/${
-              selectedMedia.image ? selectedMedia.image : selectedMedia.video
-            }`;
-          });
-        });
-
-        //Arrow right
-        arrowRight.addEventListener("click", function () {
-          mediaIndex++;
-
-          if (mediaIndex >= photographerMediaDetails.length) {
-            mediaIndex = 0;
-          }
-
-          selectedMedia = photographerMediaDetails[mediaIndex];
-          console.log(
-            "🚀 ~ file: photographer.js:317 ~ selectedMedia:",
-            selectedMedia
-          );
-          console.log(
-            "🚀 ~ file: photographer.js:321 ~ selectedMedia:",
-            fullScreenMedia
-          );
-
-          imageModal.forEach((mediaSlider) => {
-            mediaSlider.src = `assets/images/${photographer.name}/${
-              selectedMedia.image ? selectedMedia.image : selectedMedia.video
-            }`;
-          });
-        });
-      };
-      renderMediaSlider();
-    });
-  });
-};
-
-fullScreenPhoto();
 
 //HANDLE LIKES
 
@@ -413,13 +487,6 @@ async function handleLikes() {
 handleLikes();
 
 //FILTER MENU
-const dropdownMenu = document.querySelector(".dropdown");
-const select = document.querySelector(".select");
-const caret = document.querySelector(".caret");
-const menu = document.querySelector(".menu");
-const options = document.querySelectorAll(".menu li");
-const selected = document.querySelector(".selected");
-
 select.addEventListener("click", () => {
   console.log("first");
   //add the clicked selected style to the selected element
@@ -450,6 +517,3 @@ options.forEach((option) => {
     option.classList.add("active");
   });
 });
-
-//FILTER MENU ALGORITHM
-const sortPostsByCategory = () => {};

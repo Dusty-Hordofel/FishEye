@@ -40,23 +40,27 @@
       </div>
 
       <!-- Filtering Dropdown menu -->
-      <div class="photograph-work">
+      <div class="photograph-categories">
+        <div class="category-title">
+          <div class="filter-category">Trier par</div>
+        </div>
         <div class="photograph-work-filter">
-          <h2 class="filter-category">Trier par</h2>
           <div class="dropdown">
             <div class="select">
               <div class="selected">Popularité</div>
               <div class="caret"></div>
             </div>
             <div class="menu">
-              <li class="active">Popularité</li>
-              <li>Date</li>
-              <li>Titre</li>
+              <li class="active" onclick="sortMedia('likes')">Popularité</li>
+              <li onclick="sortMedia('date')">Date</li>
+              <li onclick="sortMedia()">Titre</li>
             </div>
           </div>
         </div>
       </div>
-      <!-- <div id="all-medias">3</div> -->
+
+      <!-- photograph medias -->
+      <div class="photograph-work"></div>
     </main>
     <!-- END MAIN  -->
 

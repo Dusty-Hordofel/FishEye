@@ -212,6 +212,7 @@ small {
   flex-direction: column;
   justify-content: center;
   margin-bottom: 100px;
+  transition: 0.3s ease-in-out;
 }
 .photograph-work-content {
   display: grid;
@@ -359,21 +360,40 @@ small {
 /* Photographe filter */
 /************************************/
 
-.photograph-work-filter,
-.custom-select {
-  margin-bottom: 58px;
-  margin-top: 20px;
+.photograph-categories {
+  display: flex;
+  /* justify-content: flex-start; */
+  margin: 20px 0px 58px 100px;
+  /* background: #c54545; */
+  width: 304px;
+}
+.photograph-work-filter {
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  /* background: #036a65; */
+  /* width: 100; */
+}
+
+.category-title {
+  /* background: yellow; */
+  text-align: center;
+  width: 70px;
+  height: 120px;
   display: flex;
   align-items: center;
-  margin-left: 100px;
+
+  /* display: flex;
+  align-items: center; */
 }
 
 .filter-category {
   font-size: 18px;
   font-weight: 400;
+  /* background: #036a65; */
 }
 select {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); */
   border-radius: 4px;
   font-size: 1.2rem;
   padding: 1em 1.5em;
@@ -409,7 +429,7 @@ select option {
 /* clicked styles added later in javascript */
 
 .select-clicked {
-  border: 2px #26489a solid;
+  /* border: 2px #26489a solid; */
 }
 
 .select:hover {
@@ -444,6 +464,10 @@ select option {
   z-index: 1;
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
+}
+
+.menu li:nth-child(1) {
+  border-top: 2px solid white;
 }
 
 .menu li {

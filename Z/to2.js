@@ -366,28 +366,364 @@ const fullScreenPhoto = async () => {
 
 fullScreenPhoto();
 
-//filter menu
+//FILTER MENU
 const dropdownMenu = document.querySelector(".dropdown");
 const select = document.querySelector(".select");
 const caret = document.querySelector(".caret");
 const menu = document.querySelector(".menu");
-const options = document.querySelectorA11(".menu li");
+const options = document.querySelectorAll(".menu li");
 const selected = document.querySelector(".selected");
 
 select.addEventListener("click", () => {
   console.log("first");
+  //add the clicked selected style to the selected element
+  select.classList.toggle("select-clicked");
+  //add rotate style to the caret element
+  caret.classList.toggle("caret-rotate");
+  //add open style to the menu element
+  menu.classList.toggle("menu-open");
 });
 
-<div class="dropdown">
-  <div class="select">
-    <div class="selected">Figma</div>
-    <div class="caret"></div>
-  </div>
-  <ul class="menu">
-    <li>Framer</li>
-    <li>Sketch</li>
-    <li>Invision studio</li>
-    <li class="active">Figma</li>
-    <li>Adobe XD</li>
-  </ul>
-</div>;
+//loop through  all option elements
+options.forEach((option) => {
+  //add click envent to the option element
+  option.addEventListener("click", () => {
+    //change selected inner text to clicked option inner text
+    selected.innerText = option.innerText;
+    //Add the clicked select styles to the select element
+    select.classList.remove("select-clicked");
+    //remove the rotate style to the caret element
+    caret.classList.remove("caret-rotate");
+    //add the open style to the menu element
+    menu.classList.remove("menu-open");
+    //remove active class for all options elements
+    options.forEach((option) => {
+      option.classList.remove("active");
+    });
+    //add active class to clicked option element
+    option.classList.add("active");
+  });
+});
+
+//FILTER MENU ALGORITHM
+const sortPostsByCategory = () => {};
+
+
+
+
+// async function increaseLikes() {
+//   const { photographerMediaDetails } = await photographerInformation();
+
+//   likes.forEach((like) => {
+//     like.addEventListener("click", async () => {
+//       //retrieve the like index
+//       const likeIndex = like.getAttribute("key");
+
+//       //increase  likes count
+
+//       if (!like.disabled) {
+//         let increase = (photographerMediaDetails[likeIndex].likes += 1);
+//         // increase += 1;
+//         //display likes to client side
+//         photographerLikes[likeIndex].textContent = increase;
+//         console.log(
+//           "🚀 ~ file: photographer.js:366 ~ increaseLikes ~ photographerMediaDetails:",
+//           photographerMediaDetails
+//         );
+
+//         //calcul new  totalLikes
+//         const totalLikes = photographerMediaDetails.reduce(
+//           (accumulator, currentItemValue) =>
+//             accumulator + currentItemValue.likes,
+//           0
+//         );
+//         //display new  totalLikes
+
+//         newTotalLikes.innerHTML = totalLikes;
+//         like.disabled = true;
+//       }
+//     });
+//   });
+// }
+
+// increaseLikes();
+
+
+};
+// //DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS TEST
+// const displayPhotographerMediaTest = async () => {
+//   //retrieve photographer and all media information
+//   const { photographerMediaDetails, photographer } =
+//     await photographerInformation();
+//   console.log(
+//     "🚀 ~ file: photographer.js:165 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+//     photographerMediaDetails
+//   );
+
+//   //autoplay muted controls
+//   const medias = `
+//     <ul class= "photograph-work-content">
+//     ${photographerMediaDetails
+//       .map(
+//         (work, index) =>
+//           `${work.image}?
+//           <li class="photograph-work-container" >
+//           <img
+//             src="assets/images/${photographer.name}/${work.image}"
+//             class="photograph-work-content-img-modal"
+//             alt="photograph work presentation"
+//             key="${index}
+//           /> 
+//            <div class="photograph-work-content-description">
+//            <h2>${work.title}</h2>
+//            <div class="photograph-work-content-description-likes">
+//            <p class="photographer-likes" >${work.likes}</p>
+//            <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+//            </div>
+//            </div>
+//            </li>:<li class="photograph-work-container" >
+//            <video
+//           src="assets/images/${photographer.name}/${work.video}"
+//           class="photograph-work-content-img-modal"
+//           key="${index}
+//           autoplay muted controls
+//         /></video>
+//             <div class="photograph-work-content-description">
+//             <h2>${work.title}</h2>
+//             <div class="photograph-work-content-description-likes">
+//             <p class="photographer-likes" >${work.likes}</p>
+//             <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+//             </div>
+//             </div>
+//             </li>`
+//       )
+//       .join("")}
+//           </ul>
+//           `;
+
+//   console.log(
+//     "🚀 ~ file: photographer.js:212 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+//     medias
+//   );
+//   allWork.insertAdjacentHTML("beforeend", medias);
+//   // return { photographerMediaDetails, photographer };
+// };
+
+
+
+// //DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS
+// const displayPhotographerMediaTest = async () => {
+//   //retrieve photographer and all media information
+//   const { photographerMediaDetails, photographer } =
+//     await photographerInformation();
+//   console.log(
+//     "🚀 ~ file: photographer.js:113 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+//     photographerMediaDetails
+//   );
+
+//   const medias = `<ul class= "photograph-work-content">
+//   ${photographerMediaDetails
+//     .map((work, index) => {
+//       if (work.image) {
+//         return `<li class="photograph-work-container" >
+//       <img
+//         src="assets/images/${photographer.name}/${work.image}"
+//         class="photograph-work-content-img-modal"
+//         alt="photograph work presentation"
+//         key="${index}
+//       /> 
+//        <div class="photograph-work-content-description">
+//        <h2>${work.title}</h2>
+//        <div class="photograph-work-content-description-likes">
+//        <p class="photographer-likes" >${work.likes}</p>
+//        <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+//        </div>
+//        </div>
+//        </li>`;
+//       } else {
+//         return `<li class="photograph-work-container" >
+//       <video
+//      src="assets/images/${photographer.name}/${work.video}"
+//      class="photograph-work-content-img-modal"
+//      key="${index}
+//      autoplay muted controls
+//    /></video>
+//        <div class="photograph-work-content-description">
+//        <h2>${work.title}</h2>
+//        <div class="photograph-work-content-description-likes">
+//        <p class="photographer-likes" >${work.likes}</p>
+//        <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+//        </div>
+//        </div>
+//        </li>`;
+//       }
+//     })
+//     .join("")}
+//   </ul>`;
+//   //autoplay muted controls
+  
+//   allWork.insertAdjacentHTML("beforeend", medias);
+//   return { photographerMediaDetails, photographer };
+// };
+
+
+//DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS TEST
+const displayPhotographerMediaTest = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  console.log(
+    "🚀 ~ file: photographer.js:113 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+    photographerMediaDetails
+  );
+
+  const medias = `<ul class= "photograph-work-content">
+  ${photographerMediaDetails
+    .map((work, index) => {
+      if (work.image) {
+        return `<li class="photograph-work-container" >
+      <img
+        src="assets/images/${photographer.name}/${work.image}"
+        class="photograph-work-content-img"
+        alt="photograph work presentation"
+        key="${index}
+      /> 
+       <div class="photograph-work-content-description">
+       <h2>${work.title}</h2>
+       <div class="photograph-work-content-description-likes">
+       <p class="photographer-likes" >${work.likes}</p>
+       <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+       </div>
+       </div>
+       </li>`;
+      } else {
+        return `<li class="photograph-work-container" >
+      <video
+     src="assets/images/${photographer.name}/${work.video}"
+     class="photograph-work-content-img"
+     key="${index}
+      muted 
+   /></video>
+       <div class="photograph-work-content-description">
+       <h2>${work.title}</h2>
+       <div class="photograph-work-content-description-likes">
+       <p class="photographer-likes" >${work.likes}</p>
+       <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+       </div>
+       </div>
+       </li>`;
+      }
+    })
+    .join("")}
+  </ul>`;
+  //autoplay muted controls
+
+  console.log(
+    "🚀 ~ file: photographer.js:211 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+    medias
+  );
+
+  // allWork.insertAdjacentHTML("beforeend", medias);
+  // return { photographerMediaDetails, photographer };
+};
+
+displayPhotographerMediaTest();
+
+// const testify = async () => {
+//   const { medias } = await displayPhotographerMediaTest();
+//   console.log("🚀 ~ file: photographer.js:219 ~ testify ~ medias:", medias);
+// };
+
+// console.log(testify());
+
+// displayPhotographerMediaTest();
+
+
+
+//FILTER ALGORITHM
+const filtering = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  console.log(
+    "🚀 ~ file: photographer.js:161 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+    photographerMediaDetails
+  );
+  let sortByTitle = photographerMediaDetails.sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+  console.log(
+    "🚀 ~ file: photographer.js:167 ~ filtering ~ sortByTitle:",
+    sortByTitle
+  );
+
+  let sortByLikes = photographerMediaDetails.sort((a, b) => b.likes - a.likes);
+  console.log(
+    "🚀 ~ file: photographer.js:173 ~ filtering ~ sortByLikes:",
+    sortByLikes
+  );
+
+  let sortByDates = photographerMediaDetails.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+  console.log(
+    "🚀 ~ file: photographer.js:181 ~ filtering ~ sortByDates:",
+    sortByDates
+  );
+};
+
+filtering();
+
+
+
+? (imageModal = `
+<img
+  src="assets/images/${photographer.name}/${selectedMedia.image}"
+  class="photograph-work-content-img-modal"
+  alt="photograph work presentation"
+/>`)
+  : (imageModal = `<video
+src="assets/images/${photographer.name}/${selectedMedia.video}"
+class="photograph-work-content-img-modal"
+autoplay muted controls
+/></video>`).photograph-work-conten.photograph-work-content-img-modal
+
+
+
+
+
+const media2 = `<ul class= "photograph-work-content">
+${photographerMediaDetails
+  .map((work, index) => {
+    if (work.index) {
+      return `<li class="photograph-work-container" >
+<img src="assets/images/${photographer.name}/${work.image}" alt=${work.name}  class="photograph-work-content-img" key="${index}"/>
+<div class="photograph-work-content-description">
+<h2>${work.title}</h2>
+<div class="photograph-work-content-description-likes">
+<p class="photographer-likes" >${work.likes}</p>
+<button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+</div>
+</div>
+</li>`;
+    } else {
+      return `
+      <li class="photograph-work-container" >
+<video src="assets/images/${photographer.name}/${work.video}" alt=${
+        work.image ? "photograph work presentation" : "#"
+      } ${
+        work.video ? "muted" : "#"
+      } class="photograph-work-content-img" key="${index}"></video
+      } >  
+<div class="photograph-work-content-description">
+<h2>${work.title}</h2>
+<div class="photograph-work-content-description-likes">
+<p class="photographer-likes" >${work.likes}</p>
+<button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+</div>
+</div>
+</li>`;
+    }
+  })
+  .join("")}
+</ul>`;
