@@ -640,3 +640,37 @@ handleLikes();
 - create a dropdown menu
 
 - [reduce](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)
+
+## Section 6. Update Project Folder
+
+### 11. install JSON Server
+
+```bash
+npm i -g json-server
+```
+
+2. update package.json folder
+
+```js
+{
+  "name": "fisheye",
+  "version": "1.0.0",
+  "description": "Hordofel Dusty BAMANA",
+  "main": "index.js",
+  "scripts": {
+    "start": "json-server --watch ./data/photographers.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dusty-Hordofel/FishEye.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dusty-Hordofel/FishEye/issues"
+  },
+  "homepage": "https://github.com/Dusty-Hordofel/FishEye#readme"
+}
+
+```

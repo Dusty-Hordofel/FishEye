@@ -1,4 +1,7 @@
+window.myGlobalVar;
+
 function photographerFactory(data) {
+  window.myGlobalVar = data;
   const { name, portrait, id, tagline, city, price, country } = data;
 
   const picture = `assets/photographers/${portrait}`;
@@ -45,7 +48,19 @@ function photographerFactory(data) {
     article.appendChild(location);
     article.appendChild(description);
     article.appendChild(fees);
+
     return article;
   }
+
   return { name, picture, getUserCardDOM };
 }
+
+let test;
+const photographersStore = (products) => {
+  console.log(products);
+  test = products;
+
+  return products;
+};
+
+console.log(window.myGlobalVar);

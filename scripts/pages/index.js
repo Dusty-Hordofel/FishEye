@@ -1,25 +1,34 @@
 //recupère les données des photographes
+
 async function getPhotographers() {
   // fetch all photographers information
   try {
     const response = await fetch("../../data/photographers.json");
     const data = await response.json();
+    console.log("🚀 ~ file: index.js:7 ~ getPhotographers ~ data:", data);
     return data;
   } catch (error) {
     console.log("🚀 ~ file: index.js:21 ~ getPhotographers ~ error", error);
   }
 }
 
-//fonction permettant de récupérer les details des photographes
+console.log("🚀 ~ file: index.js:21 ~ getPhotographers ~ ", getPhotographers());
+
+//Function to get the details of the photographers
 async function getPhotographersDetails() {
+  //retrieve photographers data from getPhotographers(): photographers and medias
   const { photographers } = await getPhotographers();
+  // photographerStore = photographers;
+
+  console.log(
+    "🚀 ~ file: index.js:19 ~ getPhotographersDetails ~ photographers:",
+    Array.isArray(photographers)
+  );
+
   return photographers;
-  // console.log(
-  //   "🚀 ~ file: index.js:26 ~ getPhotographersDetails ~ photographers:",
-  //   photographers
-  // );
 }
 
+// console.log(photographerStore);
 // fontion permettant de recupérer les media des photographes
 // const getPhotographersMedia = async () => {
 //   const { media } = await getPhotographers();
@@ -27,24 +36,38 @@ async function getPhotographersDetails() {
 // };
 
 // getPhotographersMedia();
-
-//fontion permettant d'afficher les données
+// console.log(photographerStore);
+//Function to display the the photographer's data
 async function displayData(photographers) {
+  //select photographers div
   const photographersSection = document.querySelector(".photographer_section");
+
+  //
   photographers.forEach((photographer) => {
+    //use photographerFactory() to display  photographer
     const photographerModel = photographerFactory(photographer);
-    // console.log(
-    //   "🚀 ~ file: index.js:47 ~ photographers.forEach ~ photographerModel",
-    //   photographerModel
-    // );
+
+    //retrieve photographerFactory elements with data
     const userCardDOM = photographerModel.getUserCardDOM();
+    //display photographerFactory elements model with data
     photographersSection?.appendChild(userCardDOM);
   });
 }
 
-//afficher les données des photographes
+//Display photographers data using displayData()
 const init = async () => {
-  displayData(await getPhotographersDetails());
+  const photographersData = await getPhotographersDetails();
+  displayData(photographersData);
 };
 
 init();
+
+const initiative = async () => {
+  const photographers = await getPhotographersDetails();
+  photographersStore(photographers);
+  console.log(test);
+};
+
+initiative();
+
+// console.log(test);
