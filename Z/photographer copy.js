@@ -62,5 +62,3 @@ const photographersStore = (products) => {
 
   return products;
 };
-
-console.log(window.myGlobalVar);

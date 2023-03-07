@@ -645,11 +645,13 @@ handleLikes();
 
 ### 11. install JSON Server
 
+- install json server
+
 ```bash
 npm i -g json-server
 ```
 
-2. update package.json folder
+- update package.json folder
 
 ```js
 {
@@ -674,3 +676,111 @@ npm i -g json-server
 }
 
 ```
+
+### 12. utils file and update photographer photographerFactories function
+
+- add [utils](./scripts/utils/utils.js)
+
+```js
+const allPhotographerInfo = "http://localhost:3000/photographers";
+
+const allMedias = "http://localhost:3000/media";
+
+const getElement = (selection) => {
+  const element = document.querySelector(selection);
+  if (element) return element;
+  throw new Error(
+    `Please check "${selection}" selector, no such element exist`
+  );
+};
+
+//format price
+const formatPrice = (price) => {
+  let formattedPrice = new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+  }).format((price / 100).toFixed(2));
+  return formattedPrice;
+};
+
+//get item in the local storage
+const getStorageItem = (item) => {
+  let storageItem = localStorage.getItem(item);
+
+  storageItem
+    ? (storageItem = JSON.parse(localStorage.getItem(item)))
+    : (storageItem = []); //parse is used to transform string values to an object
+
+  return storageItem;
+};
+
+// set item in the local storage
+const setStorageItem = (name, item) => {
+  //name of my key and the item
+  localStorage.setItem(name, JSON.stringify(item)); //La méthode JSON.stringify() convertit une valeur JavaScript en chaîne JSON. we can only store data as a string in localStorage
+};
+
+export {
+  allPhotographerInfo,
+  allMedias,
+  getElement,
+  formatPrice,
+  getStorageItem,
+  setStorageItem,
+};
+```
+
+- add [photographer](./scripts/factories/photographer3.js)
+
+```js
+import { getStorageItem, setStorageItem } from "../utils/utils.js";
+
+const photographerFactories = (informations, element) => {
+  console.log(
+    "🚀 ~ file: photographer3.js:3 ~ photographerFactories ~ products:",
+    informations,
+    element
+  );
+  element.innerHTML = informations
+    .map((information) => {
+      const { city, country, id, name, portrait, price, tagline } = information;
+      return `
+    <article class="photoraher-profile">
+    <a href="photographer.html?id=${id}">
+    <img src="assets/photographers/${portrait}" alt="photographer profile image"/>
+    <h2>${name}</h2>
+    </a>
+    <p class="location" aria-label="location and country">${city}, ${country}</p>
+    <p class="description">${tagline}</p>
+    <p class="price">${formatPrice(price)}/jour</p>
+    </article>
+    `;
+    })
+    .join("");
+};
+
+// let photographerInfoStore;
+let photographerInfoStore = getStorageItem("photographerInfoStore");
+
+//create photographer store
+const photographersStore = (products) => {
+  console.log(products);
+  //affecte products to photographerInfoStore
+  photographerInfoStore = products;
+  console.log(
+    "🚀 ~ file: photographer3.js:35 ~ photographersStore ~ photographerInfoStore:",
+    photographerInfoStore
+  );
+
+  //add photographerInfoStore to the local storage
+  setStorageItem("photographerInfoStore", photographerInfoStore);
+
+  return products;
+};
+
+// console.log(photographerInfoStore);
+
+export { photographerInfoStore, photographersStore, photographerFactories };
+```
+
+### 13.

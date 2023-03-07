@@ -54,6 +54,12 @@ h1 {
 /* Photographe header */
 /************************************/
 
+.photoraher-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: thistle; */
+}
 .photographer_section article h2 {
   color: #d3573c;
   font-size: 36px;
@@ -76,9 +82,16 @@ h1 {
 }
 .photographer_section .description {
   margin-bottom: 0;
+  /* background: yellow; */
 }
 .photographer_section a {
   text-decoration: none;
+  display: block;
+  /* background: #901c1c; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /************************************/
