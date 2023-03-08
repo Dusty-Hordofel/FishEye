@@ -30,13 +30,15 @@ const photographerCard = (informations, element) => {
   const { city, country, id, name, portrait, price, tagline } = informations;
 
   element.innerHTML = `
-    <img src="assets/photographers/${portrait}" alt="photographer profile image"/>
-    <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
     <div class="photograph-description">
     <h1>${name}</h1>
     <p class="location" aria-label="location and country">${city}, ${country}</p>
     <p class="description">${tagline}</p>
-  </div>`;
+  </div>
+  <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+  <img src="assets/photographers/${portrait}" alt="photographer profile image"/>
+
+  `;
 };
 
 //Gobal photographers Medias Informations variable
