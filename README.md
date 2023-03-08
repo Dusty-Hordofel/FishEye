@@ -810,3 +810,68 @@ async function getPhotographersMedias() {
 
 getPhotographersMedias();
 ```
+
+### 13. getPhotographerDetails & photographersMedias
+
+- get [individual photographer medias](./scripts/pages/photographer.js)
+
+```js
+// get photographer medias
+const getphotographerMediasDetails = (informations, id) => {
+  //   use filter to dispaly all media the photographerId we clicked on
+  const photographerMediaDetails = informations.filter(
+    (p) => p.photographerId == id
+  );
+
+  console.log(
+    "🚀 ~ file: photographer.js:42 ~ getphotographerMediasDetails ~ informations:",
+    photographerMediaDetails
+  );
+  photographerMediasStore = photographerMediaDetails;
+  console.log(
+    "🚀 ~ file: photographer.js:43 ~ getphotographerMediasDetails ~ photographerMediasStore:",
+    photographerMediasStore
+  );
+
+  return photographerMediaDetails;
+};
+```
+
+- get [individual photographer information](./scripts/pages/photographer.js)
+
+```js
+//Gobal photographers Informations variable
+let photographerInformations;
+
+//photographerInformation
+const getphotographerInformations = (photographersInformation, id) => {
+  //get photographer detail using id
+  const findPhotographer = photographersInformation.find(
+    (photographerInformation) => photographerInformation.id == id
+  );
+  photographerInformations = findPhotographer;
+
+  return findPhotographer;
+};
+```
+
+- create [photographersMediasStore](./scripts/pages/photographer.js)
+
+```js
+//Global photographers Medias variable
+let photographersMediasStore = getStorageItem("photographersMediasStore");
+
+//create photographer medias store
+const mediasStore = (medias) => {
+  console.log(medias);
+  //affecte products to photographersInfoStore
+  photographersMediasStore = medias;
+
+  //add photographersInfoStore to the local storage
+  setStorageItem("photographersMediasStore", photographersMediasStore);
+
+  return medias;
+};
+```
+
+### 14. photographersMedias

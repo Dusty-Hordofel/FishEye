@@ -1,11 +1,6 @@
 import { getStorageItem, setStorageItem, formatPrice } from "../utils/utils.js";
 
 const photographerFactories = (informations, element) => {
-  console.log(
-    "🚀 ~ file: photographer3.js:3 ~ photographerFactories ~ products:",
-    informations,
-    element
-  );
   element.innerHTML = informations
     .map((information) => {
       const { city, country, id, name, portrait, price, tagline } = information;
@@ -24,25 +19,80 @@ const photographerFactories = (informations, element) => {
     .join("");
 };
 
-// let photographerInfoStore;
-let photographerInfoStore = getStorageItem("photographerInfoStore");
+//Gobal photographers Medias Informations variable
+let photographerMediasStore;
+
+// get photographer medias
+const getphotographerMediasDetails = (informations, id) => {
+  //   use filter to dispaly all media the photographerId we clicked on
+  const photographerMediaDetails = informations.filter(
+    (p) => p.photographerId == id
+  );
+
+  console.log(
+    "🚀 ~ file: photographer.js:42 ~ getphotographerMediasDetails ~ informations:",
+    photographerMediaDetails
+  );
+  photographerMediasStore = photographerMediaDetails;
+  console.log(
+    "🚀 ~ file: photographer.js:43 ~ getphotographerMediasDetails ~ photographerMediasStore:",
+    photographerMediasStore
+  );
+
+  return photographerMediaDetails;
+};
+
+//Gobal photographers Informations variable
+let photographerInformations;
+
+//photographerInformation
+const getphotographerInformations = (photographersInformation, id) => {
+  //get photographer detail using id
+  const findPhotographer = photographersInformation.find(
+    (photographerInformation) => photographerInformation.id == id
+  );
+  photographerInformations = findPhotographer;
+
+  return findPhotographer;
+};
+
+// Global photographersInfoStore variable
+let photographersInfoStore = getStorageItem("photographersInfoStore");
+//Global photographers Medias variable
+let photographersMediasStore = getStorageItem("photographersMediasStore");
 
 //create photographer store
 const photographersStore = (products) => {
   console.log(products);
-  //affecte products to photographerInfoStore
-  photographerInfoStore = products;
-  console.log(
-    "🚀 ~ file: photographer3.js:35 ~ photographersStore ~ photographerInfoStore:",
-    photographerInfoStore
-  );
+  //affecte products to photographersInfoStore
+  photographersInfoStore = products;
 
-  //add photographerInfoStore to the local storage
-  setStorageItem("photographerInfoStore", photographerInfoStore);
+  //add photographersInfoStore to the local storage
+  setStorageItem("photographersInfoStore", photographersInfoStore);
 
   return products;
 };
 
-// console.log(photographerInfoStore);
+//create photographer medias store
+const mediasStore = (medias) => {
+  console.log(medias);
+  //affecte products to photographersInfoStore
+  photographersMediasStore = medias;
 
-export { photographerInfoStore, photographersStore, photographerFactories };
+  //add photographersInfoStore to the local storage
+  setStorageItem("photographersMediasStore", photographersMediasStore);
+
+  return medias;
+};
+
+export {
+  photographersInfoStore,
+  photographersStore,
+  photographerFactories,
+  getphotographerMediasDetails,
+  photographerMediasStore,
+  getphotographerInformations,
+  photographerInformations,
+  mediasStore,
+  photographersMediasStore,
+};

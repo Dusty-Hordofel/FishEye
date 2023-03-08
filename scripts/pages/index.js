@@ -1,5 +1,5 @@
 import {
-  photographerInfoStore,
+  photographersInfoStore,
   photographersStore,
   photographerFactories,
 } from "../factories/photographer.js";
@@ -36,12 +36,11 @@ const displayPhotographerData = async () => {
 
 displayPhotographerData();
 
-const initiative = async () => {
+//add information to the local storage
+const localstorageInfo = async () => {
   const photographers = await getPhotographersDetails();
   photographersStore(photographers);
-  console.log(photographerInfoStore);
+  console.log(photographersInfoStore);
 };
 
-initiative();
-
-// console.log(test);
+localstorageInfo();
