@@ -8,7 +8,9 @@ import {
   photographerInformations,
   mediasStore,
   photographersMediasStore,
+  photographerCard,
 } from "../factories/photographer.js";
+import { getElement } from "../utils/utils.js";
 
 //Function to get the photographer's medias
 async function getPhotographersMedias() {
@@ -56,3 +58,6 @@ console.log(photographerInformations);
 getphotographerMediasDetails(photographersMediasStore, id);
 
 console.log(photographerMediasStore);
+
+//Photographer profile Card
+photographerCard(photographerInformations, getElement(".photograph-header"));

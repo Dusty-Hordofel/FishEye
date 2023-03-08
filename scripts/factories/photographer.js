@@ -1,5 +1,6 @@
 import { getStorageItem, setStorageItem, formatPrice } from "../utils/utils.js";
 
+//PHOTOGRAPHERS PROFILE FACTORY
 const photographerFactories = (informations, element) => {
   element.innerHTML = informations
     .map((information) => {
@@ -19,10 +20,29 @@ const photographerFactories = (informations, element) => {
     .join("");
 };
 
+//PHOTOGRAPHER PROFILE CARD
+const photographerCard = (informations, element) => {
+  console.log(
+    "🚀 ~ file: photographer.js:26 ~ photographerCard ~ photographerCard:",
+    informations,
+    element
+  );
+  const { city, country, id, name, portrait, price, tagline } = informations;
+
+  element.innerHTML = `
+    <img src="assets/photographers/${portrait}" alt="photographer profile image"/>
+    <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+    <div class="photograph-description">
+    <h1>${name}</h1>
+    <p class="location" aria-label="location and country">${city}, ${country}</p>
+    <p class="description">${tagline}</p>
+  </div>`;
+};
+
 //Gobal photographers Medias Informations variable
 let photographerMediasStore;
 
-// get photographer medias
+// GET ALL MEDIAS DETAILS TAKEN BY PHOTOGRAPHER
 const getphotographerMediasDetails = (informations, id) => {
   //   use filter to dispaly all media the photographerId we clicked on
   const photographerMediaDetails = informations.filter(
@@ -45,7 +65,7 @@ const getphotographerMediasDetails = (informations, id) => {
 //Gobal photographers Informations variable
 let photographerInformations;
 
-//photographerInformation
+//GET ALL PHOTOGRAPHER INFORMATION
 const getphotographerInformations = (photographersInformation, id) => {
   //get photographer detail using id
   const findPhotographer = photographersInformation.find(
@@ -95,4 +115,5 @@ export {
   photographerInformations,
   mediasStore,
   photographersMediasStore,
+  photographerCard,
 };
