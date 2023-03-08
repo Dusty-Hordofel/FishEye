@@ -226,7 +226,8 @@ small {
 .photograph-work-container {
   width: 330px;
 }
-.photograph-work-content-img {
+.photograph-work-content-img,
+.photograph-work-content-video {
   width: 330px;
   height: 300px;
   list-style-type: none;
@@ -237,9 +238,10 @@ small {
   transition: 0.3s linear;
 }
 
-.photograph-work-content-img:hover {
+/* .photograph-work-content-img:hover,
+.photograph-work-content-video:hover {
   transform: scale(1.1);
-}
+} */
 
 .photograph-work-content-description {
   display: flex;
@@ -247,10 +249,15 @@ small {
   justify-content: space-between;
   text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   color: #901c1c;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .photograph-work-content-description h2 {
   font-size: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .photograph-work-content-description-likes {

@@ -10,7 +10,10 @@ import {
   photographersMediasStore,
   photographerCard,
 } from "../factories/photographer.js";
+// import { displayPhotographerMedia } from "../factories../displayMedias.js";
 import { getElement } from "../utils/utils.js";
+import { displayPhotographerMedia } from "../factories/displayMedias.js";
+// import { see } from "../factories/displayMedias.js";
 
 //Function to get the photographer's medias
 async function getPhotographersMedias() {
@@ -61,3 +64,14 @@ console.log(photographerMediasStore);
 
 //Photographer profile Card
 photographerCard(photographerInformations, getElement(".photograph-header"));
+
+//photographer medias
+
+// .photograph-work
+
+displayPhotographerMedia(
+  photographerMediasStore,
+  getElement(".photograph-work"),
+  photographerInformations
+);
+// console.log(photographerMediasStore);

@@ -38,8 +38,6 @@ const displayPhotographerdetails = async (identifier) => {
   return findPhotographer;
 };
 
-<a href="photographer.html?id=${id}"></a>;
-
 //RETRIEVE ALL MEDIAS DETAILS TAKEN BY PHOTOGRAPHER : Each media contains {id,photographerId,image,likes,date,price}
 const getphotographerMediasDetails = async () => {
   //  retrieve photographe media
