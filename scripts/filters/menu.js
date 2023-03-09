@@ -1,4 +1,15 @@
 import { getElement } from "../utils/utils.js";
+import {
+  sortMediaByPopularity,
+  sortMediaByTitles,
+  sortMediaByDates,
+} from "./filter.js";
+
+import { photographerMediasStore } from "../factories/photographer.js";
+console.log(
+  "🚀 ~ file: menu.js:4 ~ photographerMediasStore:",
+  photographerMediasStore
+);
 
 //select selectors
 const select = getElement(".select");
@@ -38,3 +49,29 @@ options.forEach((option) => {
     option.classList.add("active");
   });
 });
+
+// sortByLikes,sortByTitles & sortByDates
+
+console.log(photographerMediasStore);
+
+getElement("#date").addEventListener("click", () => {
+  sortMediaByDates(photographerMediasStore);
+});
+
+getElement("#titre").addEventListener("click", () => {
+  sortMediaByTitles(photographerMediasStore);
+});
+
+getElement("#popularite").addEventListener("click", () => {
+  sortMediaByPopularity(photographerMediasStore);
+});
+
+getElement("#mine").addEventListener("click", function myFunction() {
+  // Add your JavaScript code here
+  console.log("Button clicked!");
+});
+
+// sortByDates();
+
+// sortByTitles();
+// sortByLikes();

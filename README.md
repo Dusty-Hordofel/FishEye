@@ -991,3 +991,53 @@ options.forEach((option) => {
   });
 });
 ```
+
+### 17. Sorting using Filter menu
+
+- sort By [popularity](scripts/filters/filter.js)
+
+```js
+const sortMediaByLikes = (photographerMedias) => {
+  //sort photographerMedias By Likes
+  const sortByLikes = photographerMedias.sort((a, b) => b.likes - a.likes);
+  displayPhotographerMedia(
+    sortByLikes,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+};
+```
+
+- sort By [Date](scripts/filters/filter.js)
+
+```js
+const sortMediaByDates = (photographerMedias) => {
+  //sort photographerMedias By Likes
+  const sortTitles = photographerMedias.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
+  displayPhotographerMedia(
+    sortTitles,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+};
+```
+
+- sort By [Titre](scripts/filters/filter.js)
+
+```js
+const sortMediaByTitles = (photographerMedias) => {
+  //sort photographerMedias By Likes
+  const sortTitles = photographerMedias.sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+
+  displayPhotographerMedia(
+    sortTitles,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+};
+```
