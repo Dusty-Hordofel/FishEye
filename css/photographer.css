@@ -226,8 +226,7 @@ small {
 .photograph-work-container {
   width: 330px;
 }
-.photograph-work-content-img,
-.photograph-work-content-video {
+.photographer-medias {
   width: 330px;
   height: 300px;
   list-style-type: none;

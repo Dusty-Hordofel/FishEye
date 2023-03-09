@@ -992,12 +992,12 @@ options.forEach((option) => {
 });
 ```
 
-### 17. Sorting using Filter menu
+### 17. Sort using Filter menu
 
 - sort By [popularity](scripts/filters/filter.js)
 
 ```js
-const sortMediaByLikes = (photographerMedias) => {
+const sortMediaByPopularity = (photographerMedias) => {
   //sort photographerMedias By Likes
   const sortByLikes = photographerMedias.sort((a, b) => b.likes - a.likes);
   displayPhotographerMedia(
@@ -1040,4 +1040,151 @@ const sortMediaByTitles = (photographerMedias) => {
     photographerInformations
   );
 };
+```
+
+### 17. fullScreen Factory
+
+- update [displayMedia](./scripts/factories/displayMedias.js)
+
+```js
+//DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS
+import { fullScreenMedia } from "./fullScreen.js";
+
+const displayPhotographerMedia = (medias, element, photographer) => {
+  //retrieve photographer information
+  const { name } = photographer;
+
+  //autoplay muted controls
+  element.innerHTML = `
+          <ul class= "photograph-work-content">
+          ${medias
+            .map((media, index) => {
+              const { likes, title, video, image, date } = media;
+              return ` 
+              <li class="photograph-work-container" >
+              <${image ? "img" : "video"} src="assets/images/${name}/${
+                image ? image : video
+              }"
+
+              ${image ? `alt=${title}` : ""}
+               ${video ? "muted" : ""} class="photographer-medias" 
+               id=${
+                 image ? "photograph-content-img" : "photograph-content-video"
+               } key="${index}"  ${image ? "/" : ""}> ${image ? "" : "</video>"}
+              <div class="photograph-work-content-description">
+              <h2>${title}</h2>
+              <div class="photograph-work-content-description-likes">
+              <p class="photographer-likes" >${likes}</p>
+              <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+              </div>
+              </div>
+              </li>`;
+            })
+            .join("")}
+                </ul>
+                `;
+
+  const mediasContent = document.querySelectorAll(".photographer-medias");
+  mediasContent.forEach((media) => {
+    media.addEventListener("click", () => {
+      // get the media index from the media-id attribute
+      let mediaIndex = media.getAttribute("key");
+      console.log(
+        "🚀 ~ file: displayMedias.js:41 ~ media.addEventListener ~ mediaIndex:",
+        mediaIndex
+      );
+      //display content of  selected media
+      let selectedMedia = medias[mediaIndex];
+      fullScreenMedia(selectedMedia, name);
+      console.log(
+        "🚀 ~ file: displayMedias.js:48 ~ media.addEventListener ~ selectedMedia:",
+        selectedMedia
+      );
+    });
+  });
+};
+
+export { displayPhotographerMedia };
+```
+
+- Create Display [fullScreen](./scripts/factories/fullScreen.js)
+
+```js
+export const fullScreenMedia = (media, name) => {
+  //retrieve individual photographer media information
+  const { date, id, likes, photographerId, title, video, image } = media;
+
+  console.log("🚀 ~ file: fullScreen.js:4 ~ fullScreenMedia ~ olivier:", media);
+  //create a div element for the selected media
+  let fullScreenMedia = document.createElement("div");
+  //add "full-screen-media" for selected media
+  fullScreenMedia.classList.add("full-screen-media");
+
+  //add html script in fullScreenMedia div element
+  fullScreenMedia.innerHTML = `
+<div class="full-screen-modal">
+<i class="fa-solid fa-chevron-left slider-icon"></i>
+${
+  image
+    ? `
+    <img
+      src="assets/images/${name}/${image}"
+      class="photograph-work-content-img-modal hide"
+      alt="photograph work presentation"
+      id="photograph-work-img"
+    />`
+    : `<video
+    src="assets/images/${name}/${video}"
+    class="photograph-work-content-img-modal hide"
+    id="photograph-work-video"
+    autoplay muted controls
+  /></video>`
+}
+<i class="fa-solid fa-chevron-right slider-icon"></i>
+<button class="close-button">
+<i class="fa-solid fa-xmark media-close-icon slider-icon"></i>
+</button>
+</div>`;
+
+  // add event listener to the close button to remove the full screen element
+  fullScreenMedia
+    .querySelector(".close-button")
+    .addEventListener("click", function () {
+      fullScreenMedia.remove();
+    });
+
+  // add the full screen element to the document
+  document.body.appendChild(fullScreenMedia);
+};
+```
+
+- use [fiters function](./scripts/pages/photographer.js)
+
+```js
+//Filter Photographer Medias By Popularity
+getElement("#popularite").addEventListener("click", () => {
+  sortMediaByPopularity(
+    photographerMediasStore,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+});
+
+//Filter Photographer Medias By Titles
+getElement("#titre").addEventListener("click", () => {
+  sortMediaByTitles(
+    photographerMediasStore,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+});
+
+//Filter Photographer Medias By Date
+getElement("#date").addEventListener("click", () => {
+  sortMediaByDates(
+    photographerMediasStore,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+});
 ```

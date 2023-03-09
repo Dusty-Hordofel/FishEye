@@ -11,8 +11,15 @@ import {
   photographerCard,
 } from "../factories/photographer.js";
 // import { displayPhotographerMedia } from "../factories../displayMedias.js";
-import { getElement } from "../utils/utils.js";
+import { getElement, getAllElement } from "../utils/utils.js";
 import { displayPhotographerMedia } from "../factories/displayMedias.js";
+import {
+  sortMediaByPopularity,
+  sortMediaByDates,
+  sortMediaByTitles,
+} from "../filters/filter.js";
+
+import { fullScreenMedia } from "../factories/fullScreen.js";
 // import { see } from "../factories/displayMedias.js";
 
 //Function to get the photographer's medias
@@ -74,4 +81,30 @@ displayPhotographerMedia(
   getElement(".photograph-work"),
   photographerInformations
 );
-// console.log(photographerMediasStore);
+
+//Filter Photographer Medias By Popularity
+getElement("#popularite").addEventListener("click", () => {
+  sortMediaByPopularity(
+    photographerMediasStore,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+});
+
+//Filter Photographer Medias By Titles
+getElement("#titre").addEventListener("click", () => {
+  sortMediaByTitles(
+    photographerMediasStore,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+});
+
+//Filter Photographer Medias By Date
+getElement("#date").addEventListener("click", () => {
+  sortMediaByDates(
+    photographerMediasStore,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+});

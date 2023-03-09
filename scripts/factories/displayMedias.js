@@ -1,8 +1,8 @@
 //DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS
+import { fullScreenMedia } from "./fullScreen.js";
 
 const displayPhotographerMedia = (medias, element, photographer) => {
   //retrieve photographer information
-
   const { name } = photographer;
 
   //autoplay muted controls
@@ -18,11 +18,10 @@ const displayPhotographerMedia = (medias, element, photographer) => {
               }"
 
               ${image ? `alt=${title}` : ""}
-               ${video ? "muted" : ""} class=${
-                image
-                  ? "photograph-work-content-img"
-                  : "photograph-work-content-video"
-              } key="${index}"  ${image ? "/" : ""}> ${image ? "" : "</video>"}
+               ${video ? "muted" : ""} class="photographer-medias" 
+               id=${
+                 image ? "photograph-content-img" : "photograph-content-video"
+               } key="${index}"  ${image ? "/" : ""}> ${image ? "" : "</video>"}
               <div class="photograph-work-content-description">
               <h2>${title}</h2>
               <div class="photograph-work-content-description-likes">
@@ -35,6 +34,25 @@ const displayPhotographerMedia = (medias, element, photographer) => {
             .join("")}
                 </ul>
                 `;
+
+  const mediasContent = document.querySelectorAll(".photographer-medias");
+  mediasContent.forEach((media) => {
+    media.addEventListener("click", () => {
+      // get the media index from the media-id attribute
+      let mediaIndex = media.getAttribute("key");
+      console.log(
+        "🚀 ~ file: displayMedias.js:41 ~ media.addEventListener ~ mediaIndex:",
+        mediaIndex
+      );
+      //display content of  selected media
+      let selectedMedia = medias[mediaIndex];
+      fullScreenMedia(selectedMedia, name);
+      console.log(
+        "🚀 ~ file: displayMedias.js:48 ~ media.addEventListener ~ selectedMedia:",
+        selectedMedia
+      );
+    });
+  });
 };
 
 export { displayPhotographerMedia };

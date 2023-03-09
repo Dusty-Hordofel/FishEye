@@ -4,15 +4,12 @@ import { photographerInformations } from "../factories/photographer.js";
 
 //FILTER MENU ALGORITHM
 
-const sortMediaByPopularity = (photographerMedias) => {
+const sortMediaByPopularity = (medias, element, photographer) => {
   //sort photographerMedias By Likes
-  const sortByLikes = photographerMedias.sort((a, b) => b.likes - a.likes);
-  displayPhotographerMedia(
-    sortByLikes,
-    getElement(".photograph-work"),
-    photographerInformations
-  );
+  const sortByLikes = medias.sort((a, b) => b.likes - a.likes);
+  displayPhotographerMedia(sortByLikes, element, photographer);
 };
+
 const sortMediaByTitles = (photographerMedias) => {
   //sort photographerMedias By Likes
   const sortTitles = photographerMedias.sort((a, b) =>
@@ -25,6 +22,7 @@ const sortMediaByTitles = (photographerMedias) => {
     photographerInformations
   );
 };
+
 const sortMediaByDates = (photographerMedias) => {
   //sort photographerMedias By Likes
   const sortTitles = photographerMedias.sort(
@@ -38,4 +36,4 @@ const sortMediaByDates = (photographerMedias) => {
   );
 };
 
-export { sortMediaByPopularity, sortMediaByTitles, sortMediaByDates };
+export { sortMediaByPopularity, sortMediaByDates, sortMediaByTitles };
