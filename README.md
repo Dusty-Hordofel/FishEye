@@ -1475,5 +1475,3 @@ export const handleLikes = (
 ```
 
 ### 21. Manage Lightbox media
-
-- termine lightbox
