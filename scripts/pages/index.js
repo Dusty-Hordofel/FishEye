@@ -1,50 +1,46 @@
-//recupère les données des photographes
-async function getPhotographers() {
-  // fetch all photographers information
+import {
+  photographersInfoStore,
+  photographersStore,
+  photographerFactories,
+} from "../factories/photographer.js";
+import { getElement } from "../utils/utils.js";
+
+//Function to get the details of the photographers
+async function getPhotographersDetails() {
   try {
-    const response = await fetch("../../data/photographers.json");
+    // fetch all photographers information
+    const response = await fetch("http://localhost:3000/photographers");
     const data = await response.json();
+    console.log("🚀 ~ file: index_test.js:9 ~ getPhotographers ~ data:", data);
     return data;
   } catch (error) {
-    console.log("🚀 ~ file: index.js:21 ~ getPhotographers ~ error", error);
+    console.log(
+      "🚀 ~ file: index_test.js:13 ~ getPhotographers ~ error",
+      error
+    );
   }
 }
 
-//fonction permettant de récupérer les details des photographes
-async function getPhotographersDetails() {
-  const { photographers } = await getPhotographers();
-  return photographers;
-  // console.log(
-  //   "🚀 ~ file: index.js:26 ~ getPhotographersDetails ~ photographers:",
-  //   photographers
-  // );
-}
+getPhotographersDetails();
 
-// fontion permettant de recupérer les media des photographes
-// const getPhotographersMedia = async () => {
-//   const { media } = await getPhotographers();
-//   console.log("🚀 ~ file: index.js:38 ~ getPhotographersMedia ~ media:", media);
-// };
+//Display Photographers informations
 
-// getPhotographersMedia();
-
-//fontion permettant d'afficher les données
-async function displayData(photographers) {
-  const photographersSection = document.querySelector(".photographer_section");
-  photographers.forEach((photographer) => {
-    const photographerModel = photographerFactory(photographer);
-    // console.log(
-    //   "🚀 ~ file: index.js:47 ~ photographers.forEach ~ photographerModel",
-    //   photographerModel
-    // );
-    const userCardDOM = photographerModel.getUserCardDOM();
-    photographersSection?.appendChild(userCardDOM);
-  });
-}
-
-//afficher les données des photographes
-const init = async () => {
-  displayData(await getPhotographersDetails());
+const displayPhotographerData = async () => {
+  const informations = await getPhotographersDetails();
+  console.log(
+    "🚀 ~ file: index_test.js:30 ~ displayPhotographerData ~ informations:",
+    informations
+  );
+  photographerFactories(informations, getElement(".photographer_section"));
 };
 
-init();
+displayPhotographerData();
+
+//add information to the local storage
+const localstorageInfo = async () => {
+  const photographers = await getPhotographersDetails();
+  photographersStore(photographers);
+  console.log(photographersInfoStore);
+};
+
+localstorageInfo();

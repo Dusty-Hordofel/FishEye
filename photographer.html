@@ -27,26 +27,77 @@
   <body>
     <!-- HEADER -->
     <header>
-      <img src="assets/images/logo.png" class="logo" />
+      <a href="index.html">
+        <img src="assets/images/logo.png" class="logo" />
+      </a>
     </header>
     <!-- END OF HEADER -->
 
     <!-- MAIN  -->
     <main id="main">
       <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal()">
+        <!-- <button class="contact_button" onclick="displayModal()">
           Contactez-moi
-        </button>
+        </button> -->
       </div>
 
-      <div class="photograph-work">
+      <!-- Filtering Dropdown menu -->
+      <div class="photograph-categories">
+        <div class="category-title">
+          <div class="filter-category">Trier par</div>
+        </div>
         <div class="photograph-work-filter">
-          <label for="filtre">Trier par </label>
-          <select id="filtre">
-            <option value="option1">Popularité</option>
-            <option value="option2">Date</option>
-            <option value="option3">Titre</option>
-          </select>
+          <div class="dropdown">
+            <div class="select">
+              <div class="selected">Popularité</div>
+              <div class="caret"></div>
+            </div>
+            <div class="menu">
+              <li class="active" id="popularite">Popularité</li>
+              <li id="date">Date</li>
+              <li id="titre">Titre</li>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- photographer medias -->
+      <div class="photograph-work"></div>
+      <!-- fullScreen medias -->
+      <div class="full-screen-media hide">
+        <div class="full-screen-modal">
+          <div class="first-icon">
+            <i class="fa-solid fa-chevron-left slider-icon"></i>
+          </div>
+          <div class="medias-container">
+            <div class="medias">
+              <img
+                src=""
+                class="photograph-work-content-img-modal photograph-work-img hide"
+                alt="photograph work presentation"
+              />
+              <video
+                src=""
+                class="photograph-work-content-img-modal photograph-work-video hide"
+                autoplay
+                muted
+                controls
+              ></video>
+            </div>
+            <div class="photograph-image-title">
+              <h2 class="title"></h2>
+            </div>
+          </div>
+          <div class="second-icons">
+            <div class="icons-container">
+              <div class="right-chevron">
+                <i class="fa-solid fa-chevron-right slider-icon"></i>
+              </div>
+              <button type="button" class="close-button">
+                <i class="fa-solid fa-xmark media-close-icon slider-icon"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -117,9 +168,8 @@
     </div>
     <!-- END OF CONTACT MODAL -->
 
-    <script src="scripts/pages/index.js"></script>
-    <script src="scripts/factories/photographer.js"></script>
-    <script src="/scripts/pages/photographer.js"></script>
+    <script type="module" src="/scripts/pages/photographer.js"></script>
+    <script type="module" src="/scripts/filters/menu.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
   </body>
 </html>

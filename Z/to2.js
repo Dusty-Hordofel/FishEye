@@ -1,0 +1,729 @@
+//photograph header section selector's
+const main = document.querySelector(".photograph-header");
+const header = document.querySelector("header");
+const logo = document.querySelector(".logo");
+
+//photograph medias selector
+const allWork = document.querySelector(".photograph-work");
+
+// fontion permettant de recupérer les media des photographes
+const getPhotographersMedia = async () => {
+  const { media } = await getPhotographers();
+  return media;
+};
+
+// retrieve id from url
+let params = new URLSearchParams(document.location.search);
+let id = params.get("id");
+
+//display photographer details using id
+const displayPhotographerdetails = async (id) => {
+  const photographerDetails = await getPhotographersDetails();
+  const findPhotographer = photographerDetails.find((p) => p.id == id);
+  console.log(
+    "🚀 ~ file: photographer.js:14 ~ displayPhotographerdetails ~ photographerDetails:",
+    findPhotographer
+  );
+
+  return findPhotographer;
+};
+
+// create an individual photographer card
+async function createIndividualPhotographerCard() {
+  //retrieve photographer information
+  const photographer = await displayPhotographerdetails(id);
+
+  //use article as a child of an anchor element
+  let link = document.createElement("a");
+  // Set the href attribute of the anchor element to the link URL
+  link.href = "index.html";
+  //append  logo home
+  link.appendChild(logo);
+
+  //image path
+  const picture = `assets/photographers/${photographer.portrait}`;
+
+  //image
+  const img = document.createElement("img");
+  img.setAttribute("src", picture);
+  img.setAttribute("alt", "photographer profile");
+
+  //create div element in main section
+  const divElement = document.createElement("div");
+
+  //add photograph-description  to main section
+  divElement.classList.add("photograph-description");
+
+  //photographer name
+  const h1 = document.createElement("h1");
+  h1.textContent = photographer.name;
+
+  //location
+  const location = document.createElement("p");
+  location.classList.add("location");
+  location.textContent = `${photographer.city}, ${photographer.country}`;
+  location.setAttribute("aria-label", "location and country");
+
+  //description
+  const description = document.createElement("p");
+  description.textContent = photographer.tagline;
+  description.classList.add("description");
+
+  //Append the h2, location and description as children to divElement
+  divElement.appendChild(h1);
+  divElement.appendChild(location);
+  divElement.appendChild(description);
+
+  //add image and divElement to main section
+  main.appendChild(img);
+  main.appendChild(divElement);
+
+  //add link to a logo
+  header.appendChild(link);
+
+  //select photograph-main children
+  var buttonChild = main.children[0];
+  var h1TitleChild = main.children[2];
+  //insert h2 title before the button
+  main.insertBefore(h1TitleChild, buttonChild);
+}
+
+createIndividualPhotographerCard();
+
+//INDIVIDUAL PHOTOGRAPHER INFORMATION
+const photographerInformation = async () => {
+  //retrieve photographer information
+  const photographer = await displayPhotographerdetails(id);
+
+  //  retrieve photographe media
+  const photographerMedia = await getPhotographersMedia();
+
+  //   use filter to dispaly all media the photographerId we clicked on
+  const photographerMediaDetails = photographerMedia.filter(
+    (p) => p.photographerId == id
+  );
+
+  return { photographerMediaDetails, photographer };
+};
+
+//display all media information
+const displayPhotographerMedia = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  console.log(
+    "🚀 ~ file: photographer.js:113 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+    photographerMediaDetails
+  );
+
+  //autoplay muted controls
+  const medias = `
+    <ul class= "photograph-work-content">
+    ${photographerMediaDetails
+      .map(
+        (work, index) =>
+          `<li class="photograph-work-content-img" key="${index}">
+         <${work.image ? "img" : "video"} src="assets/images/${
+            photographer.name
+          }/${work.image ? work.image : work.video}" alt=${
+            work.image ? "photograph work presentation" : "#"
+          } ${
+            work.video ? "muted" : "#"
+          } class="photograph-work-content-img"></${
+            work.image ? "img" : "video"
+          }>  
+          <div class="photograph-work-content-description">
+          <h2>${work.title}</h2>
+          <div class="photograph-work-content-description-likes">
+          <p>${work.likes}</p>
+          <span><i class="fa-solid fa-heart"></i></span>
+          </div>
+          </div>
+          </li>`
+      )
+      .join("")}
+          </ul>
+          `;
+
+  allWork.insertAdjacentHTML("beforeend", medias);
+  return { medias, photographerMediaDetails, photographer };
+};
+
+// displayPhotographerMedia();
+
+//photographer rate and price
+const photographerRateAndPrice = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+
+  //calcul photographer totalLikes
+  const totalLikes = photographerMediaDetails.reduce(
+    (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+    0
+  );
+
+  //create rateAndPrice variable to store photographer totalLikes and price
+  const rateAndPrice = `
+    <ul class="photographer-rate-and-price-container">
+    <li class="photographer-rate-and-price-likes">${totalLikes}<span><i class="fa-solid fa-heart"></i></span></li>
+    <li class="photographer-rate-and-price-prices">${photographer.price}€ / jour</li>
+    </ul>
+    `;
+
+  allWork.insertAdjacentHTML("beforeend", rateAndPrice);
+};
+
+photographerRateAndPrice();
+
+//photographername on contact modal
+
+const photographerName = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  const name = `${photographer.name}`;
+
+  const modalContact = document.querySelector(".modal");
+  const photographerName = document.createElement("h2");
+  photographerName.textContent = name;
+  const modalHeader = document.querySelector(".modal-header");
+  const nextSiblingElement = modalHeader.nextSibling;
+  modalContact.insertBefore(photographerName, nextSiblingElement);
+};
+
+photographerName();
+
+//FULL SCREEN IMAGE ON CLICK
+const fullScreenPhoto = async () => {
+  //retrieve  medias medias and photographerMediaDetails from displayPhotographerMedia()
+  const { medias, photographer, photographerMediaDetails } =
+    await displayPhotographerMedia();
+
+  console.log(
+    "🚀 ~ file: photographer.js:201 ~ fullScreenPhoto ~ photographerMediaDetails:",
+    photographerMediaDetails
+  );
+  //select all medias using classname
+  const mediasContent = document.querySelectorAll(
+    ".photograph-work-content-img"
+  );
+  console.log(
+    "🚀 ~ file: photographer.js:224 ~ fullScreenPhoto ~ mediasContent:",
+    mediasContent
+  );
+
+  // add event listener to each media
+  mediasContent.forEach((media) => {
+    media.addEventListener("click", () => {
+      // get the media id from the media-id attribute
+      let mediaIndex = media.getAttribute("key");
+      console.log(
+        "🚀 ~ file: photographer.js:217 ~ media.addEventListener ~ mediaId:",
+        mediaIndex
+      );
+
+      //selected media information
+      // let selectedMedia = photographerMediaDetails[mediaIndex];
+
+      // console.log(
+      //   "🚀 ~ file: photographer.js:228 ~ media.addEventListener ~ selectedMedia:",
+      //   selectedMedia
+      // );
+
+      // let fullScreenMedia = document.createElement("div");
+      // fullScreenMedia.classList.add("full-screen-media");
+
+      //show media in full screen
+
+      // <${selectedMedia.image ? "img" : "video"} src="assets/images/${
+      //   photographer.name
+      // }/${
+      //   selectedMedia.image ? selectedMedia.image : selectedMedia.video
+      // }" alt=${selectedMedia.image ? "photograph work presentation" : "#"} ${
+      //   selectedMedia.video ? "autoplay muted controls" : "#"
+      // } class="photograph-work-content-img-modal"></${
+      //   selectedMedia.image ? "img" : "video"
+      // }>
+
+      let selectedMedia = photographerMediaDetails[mediaIndex];
+      const renderMediaSlider = () => {
+        console.log(
+          "🚀 ~ file: photographer.js:240 ~ renderMediaSlider ~ selectedMedia:",
+          selectedMedia
+        );
+
+        let fullScreenMedia = document.createElement("div");
+        fullScreenMedia.classList.add("full-screen-media");
+
+        fullScreenMedia.innerHTML = `
+      <div class="full-screen-modal">
+      <i class="fa-solid fa-chevron-left slider-icon"></i>
+      ${
+        selectedMedia.image
+          ? `
+          <img
+            src="assets/images/${photographer.name}/${selectedMedia.image}"
+            class="photograph-work-content-img-modal"
+            alt="photograph work presentation"
+          />`
+          : `<video
+          src="assets/images/${photographer.name}/${selectedMedia.video}"
+          class="photograph-work-content-img-modal"
+          autoplay muted controls
+        /></video>`
+      }
+      <i class="fa-solid fa-chevron-right slider-icon"></i>
+      <button class="close-button">
+      <i class="fa-solid fa-xmark media-close-icon slider-icon"></i>
+      </button>
+      </div>`;
+
+        // add event listener to the close button to remove the full screen element
+        fullScreenMedia
+          .querySelector(".close-button")
+          .addEventListener("click", function () {
+            fullScreenMedia.remove();
+          });
+
+        // add the full screen element to the document
+        document.body.appendChild(fullScreenMedia);
+
+        //scroll through all the media
+        const arrowLeft = document.querySelector(".fa-chevron-left");
+        const arrowRight = document.querySelector(".fa-chevron-right");
+        const imageModal = fullScreenMedia.querySelectorAll(
+          ".photograph-work-content-img-modal"
+        );
+        console.log(
+          "🚀 ~ file: photographer.js:298 ~ renderMediaSlider ~ imageModal:",
+          imageModal.tagName
+        );
+
+        //Arrow Left
+        arrowLeft.addEventListener("click", function () {
+          console.log("PESA MAKAMBO");
+          // console.log(mediaIndex--);
+
+          // console.log(mediaIndex--);
+          // mediaIndex -= 1;
+          mediaIndex--;
+          if (mediaIndex < 0) {
+            mediaIndex = photographerMediaDetails.length - 1;
+          }
+          console.log(mediaIndex);
+          selectedMedia = photographerMediaDetails[mediaIndex];
+          console.log(
+            "🚀 ~ file: photographer.js:317 ~ selectedMedia:",
+            selectedMedia
+          );
+          console.log(
+            "🚀 ~ file: photographer.js:321 ~ selectedMedia:",
+            fullScreenMedia
+          );
+
+          const fullScreenModal = document.querySelector(".full-screen-modal");
+          const fullScreenModalChild = document.querySelector(
+            ".photograph-work-content-img-modal"
+          );
+
+          const newMedia = `
+          <div class="full-screen-modal">
+          <i class="fa-solid fa-chevron-left slider-icon"></i>
+          ${
+            selectedMedia.image
+              ? `
+              <img
+                src="assets/images/${photographer.name}/${selectedMedia.image}"
+                class="photograph-work-content-img-modal"
+                alt="photograph work presentation"
+              />`
+              : `<video
+              src="assets/images/${photographer.name}/${selectedMedia.video}"
+              class="photograph-work-content-img-modal"
+              autoplay muted controls
+            /></video>`
+          }
+          <i class="fa-solid fa-chevron-right slider-icon"></i>
+          <button class="close-button">
+          <i class="fa-solid fa-xmark media-close-icon slider-icon"></i>
+          </button>
+          </div>`;
+
+          console.log("🚀 ~ file: photographer.js:366 ~ newMedia:", newMedia);
+
+          imageModal.forEach((mediaSlider) => {
+            mediaSlider.src = `assets/images/${photographer.name}/${
+              selectedMedia.image ? selectedMedia.image : selectedMedia.video
+            }`;
+          });
+        });
+      };
+      renderMediaSlider();
+    });
+  });
+};
+
+fullScreenPhoto();
+
+//FILTER MENU
+const dropdownMenu = document.querySelector(".dropdown");
+const select = document.querySelector(".select");
+const caret = document.querySelector(".caret");
+const menu = document.querySelector(".menu");
+const options = document.querySelectorAll(".menu li");
+const selected = document.querySelector(".selected");
+
+select.addEventListener("click", () => {
+  console.log("first");
+  //add the clicked selected style to the selected element
+  select.classList.toggle("select-clicked");
+  //add rotate style to the caret element
+  caret.classList.toggle("caret-rotate");
+  //add open style to the menu element
+  menu.classList.toggle("menu-open");
+});
+
+//loop through  all option elements
+options.forEach((option) => {
+  //add click envent to the option element
+  option.addEventListener("click", () => {
+    //change selected inner text to clicked option inner text
+    selected.innerText = option.innerText;
+    //Add the clicked select styles to the select element
+    select.classList.remove("select-clicked");
+    //remove the rotate style to the caret element
+    caret.classList.remove("caret-rotate");
+    //add the open style to the menu element
+    menu.classList.remove("menu-open");
+    //remove active class for all options elements
+    options.forEach((option) => {
+      option.classList.remove("active");
+    });
+    //add active class to clicked option element
+    option.classList.add("active");
+  });
+});
+
+//FILTER MENU ALGORITHM
+const sortPostsByCategory = () => {};
+
+
+
+
+// async function increaseLikes() {
+//   const { photographerMediaDetails } = await photographerInformation();
+
+//   likes.forEach((like) => {
+//     like.addEventListener("click", async () => {
+//       //retrieve the like index
+//       const likeIndex = like.getAttribute("key");
+
+//       //increase  likes count
+
+//       if (!like.disabled) {
+//         let increase = (photographerMediaDetails[likeIndex].likes += 1);
+//         // increase += 1;
+//         //display likes to client side
+//         photographerLikes[likeIndex].textContent = increase;
+//         console.log(
+//           "🚀 ~ file: photographer.js:366 ~ increaseLikes ~ photographerMediaDetails:",
+//           photographerMediaDetails
+//         );
+
+//         //calcul new  totalLikes
+//         const totalLikes = photographerMediaDetails.reduce(
+//           (accumulator, currentItemValue) =>
+//             accumulator + currentItemValue.likes,
+//           0
+//         );
+//         //display new  totalLikes
+
+//         newTotalLikes.innerHTML = totalLikes;
+//         like.disabled = true;
+//       }
+//     });
+//   });
+// }
+
+// increaseLikes();
+
+
+};
+// //DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS TEST
+// const displayPhotographerMediaTest = async () => {
+//   //retrieve photographer and all media information
+//   const { photographerMediaDetails, photographer } =
+//     await photographerInformation();
+//   console.log(
+//     "🚀 ~ file: photographer.js:165 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+//     photographerMediaDetails
+//   );
+
+//   //autoplay muted controls
+//   const medias = `
+//     <ul class= "photograph-work-content">
+//     ${photographerMediaDetails
+//       .map(
+//         (work, index) =>
+//           `${work.image}?
+//           <li class="photograph-work-container" >
+//           <img
+//             src="assets/images/${photographer.name}/${work.image}"
+//             class="photograph-work-content-img-modal"
+//             alt="photograph work presentation"
+//             key="${index}
+//           /> 
+//            <div class="photograph-work-content-description">
+//            <h2>${work.title}</h2>
+//            <div class="photograph-work-content-description-likes">
+//            <p class="photographer-likes" >${work.likes}</p>
+//            <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+//            </div>
+//            </div>
+//            </li>:<li class="photograph-work-container" >
+//            <video
+//           src="assets/images/${photographer.name}/${work.video}"
+//           class="photograph-work-content-img-modal"
+//           key="${index}
+//           autoplay muted controls
+//         /></video>
+//             <div class="photograph-work-content-description">
+//             <h2>${work.title}</h2>
+//             <div class="photograph-work-content-description-likes">
+//             <p class="photographer-likes" >${work.likes}</p>
+//             <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+//             </div>
+//             </div>
+//             </li>`
+//       )
+//       .join("")}
+//           </ul>
+//           `;
+
+//   console.log(
+//     "🚀 ~ file: photographer.js:212 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+//     medias
+//   );
+//   allWork.insertAdjacentHTML("beforeend", medias);
+//   // return { photographerMediaDetails, photographer };
+// };
+
+
+
+// //DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS
+// const displayPhotographerMediaTest = async () => {
+//   //retrieve photographer and all media information
+//   const { photographerMediaDetails, photographer } =
+//     await photographerInformation();
+//   console.log(
+//     "🚀 ~ file: photographer.js:113 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+//     photographerMediaDetails
+//   );
+
+//   const medias = `<ul class= "photograph-work-content">
+//   ${photographerMediaDetails
+//     .map((work, index) => {
+//       if (work.image) {
+//         return `<li class="photograph-work-container" >
+//       <img
+//         src="assets/images/${photographer.name}/${work.image}"
+//         class="photograph-work-content-img-modal"
+//         alt="photograph work presentation"
+//         key="${index}
+//       /> 
+//        <div class="photograph-work-content-description">
+//        <h2>${work.title}</h2>
+//        <div class="photograph-work-content-description-likes">
+//        <p class="photographer-likes" >${work.likes}</p>
+//        <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+//        </div>
+//        </div>
+//        </li>`;
+//       } else {
+//         return `<li class="photograph-work-container" >
+//       <video
+//      src="assets/images/${photographer.name}/${work.video}"
+//      class="photograph-work-content-img-modal"
+//      key="${index}
+//      autoplay muted controls
+//    /></video>
+//        <div class="photograph-work-content-description">
+//        <h2>${work.title}</h2>
+//        <div class="photograph-work-content-description-likes">
+//        <p class="photographer-likes" >${work.likes}</p>
+//        <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+//        </div>
+//        </div>
+//        </li>`;
+//       }
+//     })
+//     .join("")}
+//   </ul>`;
+//   //autoplay muted controls
+  
+//   allWork.insertAdjacentHTML("beforeend", medias);
+//   return { photographerMediaDetails, photographer };
+// };
+
+
+//DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS TEST
+const displayPhotographerMediaTest = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  console.log(
+    "🚀 ~ file: photographer.js:113 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+    photographerMediaDetails
+  );
+
+  const medias = `<ul class= "photograph-work-content">
+  ${photographerMediaDetails
+    .map((work, index) => {
+      if (work.image) {
+        return `<li class="photograph-work-container" >
+      <img
+        src="assets/images/${photographer.name}/${work.image}"
+        class="photograph-work-content-img"
+        alt="photograph work presentation"
+        key="${index}
+      /> 
+       <div class="photograph-work-content-description">
+       <h2>${work.title}</h2>
+       <div class="photograph-work-content-description-likes">
+       <p class="photographer-likes" >${work.likes}</p>
+       <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+       </div>
+       </div>
+       </li>`;
+      } else {
+        return `<li class="photograph-work-container" >
+      <video
+     src="assets/images/${photographer.name}/${work.video}"
+     class="photograph-work-content-img"
+     key="${index}
+      muted 
+   /></video>
+       <div class="photograph-work-content-description">
+       <h2>${work.title}</h2>
+       <div class="photograph-work-content-description-likes">
+       <p class="photographer-likes" >${work.likes}</p>
+       <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+       </div>
+       </div>
+       </li>`;
+      }
+    })
+    .join("")}
+  </ul>`;
+  //autoplay muted controls
+
+  console.log(
+    "🚀 ~ file: photographer.js:211 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+    medias
+  );
+
+  // allWork.insertAdjacentHTML("beforeend", medias);
+  // return { photographerMediaDetails, photographer };
+};
+
+displayPhotographerMediaTest();
+
+// const testify = async () => {
+//   const { medias } = await displayPhotographerMediaTest();
+//   console.log("🚀 ~ file: photographer.js:219 ~ testify ~ medias:", medias);
+// };
+
+// console.log(testify());
+
+// displayPhotographerMediaTest();
+
+
+
+//FILTER ALGORITHM
+const filtering = async () => {
+  //retrieve photographer and all media information
+  const { photographerMediaDetails, photographer } =
+    await photographerInformation();
+  console.log(
+    "🚀 ~ file: photographer.js:161 ~ displayPhotographerMedia ~ photographerMediaDetails:",
+    photographerMediaDetails
+  );
+  let sortByTitle = photographerMediaDetails.sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+  console.log(
+    "🚀 ~ file: photographer.js:167 ~ filtering ~ sortByTitle:",
+    sortByTitle
+  );
+
+  let sortByLikes = photographerMediaDetails.sort((a, b) => b.likes - a.likes);
+  console.log(
+    "🚀 ~ file: photographer.js:173 ~ filtering ~ sortByLikes:",
+    sortByLikes
+  );
+
+  let sortByDates = photographerMediaDetails.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+  console.log(
+    "🚀 ~ file: photographer.js:181 ~ filtering ~ sortByDates:",
+    sortByDates
+  );
+};
+
+filtering();
+
+
+
+? (imageModal = `
+<img
+  src="assets/images/${photographer.name}/${selectedMedia.image}"
+  class="photograph-work-content-img-modal"
+  alt="photograph work presentation"
+/>`)
+  : (imageModal = `<video
+src="assets/images/${photographer.name}/${selectedMedia.video}"
+class="photograph-work-content-img-modal"
+autoplay muted controls
+/></video>`).photograph-work-conten.photograph-work-content-img-modal
+
+
+
+
+
+const media2 = `<ul class= "photograph-work-content">
+${photographerMediaDetails
+  .map((work, index) => {
+    if (work.index) {
+      return `<li class="photograph-work-container" >
+<img src="assets/images/${photographer.name}/${work.image}" alt=${work.name}  class="photograph-work-content-img" key="${index}"/>
+<div class="photograph-work-content-description">
+<h2>${work.title}</h2>
+<div class="photograph-work-content-description-likes">
+<p class="photographer-likes" >${work.likes}</p>
+<button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+</div>
+</div>
+</li>`;
+    } else {
+      return `
+      <li class="photograph-work-container" >
+<video src="assets/images/${photographer.name}/${work.video}" alt=${
+        work.image ? "photograph work presentation" : "#"
+      } ${
+        work.video ? "muted" : "#"
+      } class="photograph-work-content-img" key="${index}"></video
+      } >  
+<div class="photograph-work-content-description">
+<h2>${work.title}</h2>
+<div class="photograph-work-content-description-likes">
+<p class="photographer-likes" >${work.likes}</p>
+<button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+</div>
+</div>
+</li>`;
+    }
+  })
+  .join("")}
+</ul>`;

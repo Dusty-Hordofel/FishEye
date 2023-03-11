@@ -568,6 +568,910 @@ const photographerName = async () => {
 photographerName();
 ```
 
+### 8. Manage Lightbox media
+
+- create lightbox [lightbox](./scripts/pages/photographer.js)
+
 ### external links
 
+### 9.View and manage likes
+
+- create [increaseLikes()](scripts/pages/photographer.js) to handle likes
+
+```js
+//HANDLE LIKES
+
+async function handleLikes() {
+  const { photographerMediaDetails } = await photographerInformation();
+  //select all like buttons
+  const likes = document.querySelectorAll(".like-btn");
+  //select all like numbers
+  const photographerLikes = document.querySelectorAll(".photographer-likes");
+  //select like and price card witch is on the bottom of the page
+  const newTotalLikes = document.querySelector(
+    ".photographer-rate-and-price-likes"
+  );
+
+  likes.forEach((like) => {
+    like.addEventListener("click", async () => {
+      //retrieve the like index
+      const likeIndex = like.getAttribute("key");
+
+      //conditionnal rendering: increase or decrease the like
+      if ([...like.classList].includes("count-plus")) {
+        like.classList.remove("count-plus");
+        like.classList.add("count-moin");
+
+        //increase the number of likes
+        let increase = (photographerMediaDetails[likeIndex].likes += 1);
+
+        //display increased likes on screen
+        photographerLikes[likeIndex].textContent = increase;
+      } else {
+        like.classList.add("count-plus");
+        like.classList.remove("count-moin");
+
+        //decrease the number of likes
+        let decrease = (photographerMediaDetails[likeIndex].likes -= 1);
+
+        //display decreased likes on screen
+        photographerLikes[likeIndex].textContent = decrease;
+      }
+
+      //calcul new  totalLikes
+      const totalLikes = photographerMediaDetails.reduce(
+        (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+        0
+      );
+
+      //display new  totalLikes
+      newTotalLikes.innerHTML = totalLikes;
+    });
+  });
+}
+
+handleLikes();
+```
+
+## Section 5. Filtering
+
+### 10. Create the sorting system
+
+- create a dropdown menu
+
 - [reduce](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)
+
+## Section 6. Update Project Folder
+
+### 11. install JSON Server
+
+- install json server
+
+```bash
+npm i -g json-server
+```
+
+- update package.json folder
+
+```js
+{
+  "name": "fisheye",
+  "version": "1.0.0",
+  "description": "Hordofel Dusty BAMANA",
+  "main": "index.js",
+  "scripts": {
+    "start": "json-server --watch ./data/photographers.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dusty-Hordofel/FishEye.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dusty-Hordofel/FishEye/issues"
+  },
+  "homepage": "https://github.com/Dusty-Hordofel/FishEye#readme"
+}
+
+```
+
+### 12. utils file and update photographer photographerFactories function
+
+- add [utils](./scripts/utils/utils.js)
+
+```js
+const allPhotographerInfo = "http://localhost:3000/photographers";
+
+const allMedias = "http://localhost:3000/media";
+
+const getElement = (selection) => {
+  const element = document.querySelector(selection);
+  if (element) return element;
+  throw new Error(
+    `Please check "${selection}" selector, no such element exist`
+  );
+};
+
+//format price
+const formatPrice = (price) => {
+  let formattedPrice = new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+  }).format((price / 100).toFixed(2));
+  return formattedPrice;
+};
+
+//get item in the local storage
+const getStorageItem = (item) => {
+  let storageItem = localStorage.getItem(item);
+
+  storageItem
+    ? (storageItem = JSON.parse(localStorage.getItem(item)))
+    : (storageItem = []); //parse is used to transform string values to an object
+
+  return storageItem;
+};
+
+// set item in the local storage
+const setStorageItem = (name, item) => {
+  //name of my key and the item
+  localStorage.setItem(name, JSON.stringify(item)); //La méthode JSON.stringify() convertit une valeur JavaScript en chaîne JSON. we can only store data as a string in localStorage
+};
+
+export {
+  allPhotographerInfo,
+  allMedias,
+  getElement,
+  formatPrice,
+  getStorageItem,
+  setStorageItem,
+};
+```
+
+- add [photographer](./scripts/factories/photographer3.js)
+
+```js
+import { getStorageItem, setStorageItem } from "../utils/utils.js";
+
+const photographerFactories = (informations, element) => {
+  console.log(
+    "🚀 ~ file: photographer3.js:3 ~ photographerFactories ~ products:",
+    informations,
+    element
+  );
+  element.innerHTML = informations
+    .map((information) => {
+      const { city, country, id, name, portrait, price, tagline } = information;
+      return `
+    <article class="photoraher-profile">
+    <a href="photographer.html?id=${id}">
+    <img src="assets/photographers/${portrait}" alt="photographer profile image"/>
+    <h2>${name}</h2>
+    </a>
+    <p class="location" aria-label="location and country">${city}, ${country}</p>
+    <p class="description">${tagline}</p>
+    <p class="price">${formatPrice(price)}/jour</p>
+    </article>
+    `;
+    })
+    .join("");
+};
+
+// let photographerInfoStore;
+let photographerInfoStore = getStorageItem("photographerInfoStore");
+
+//create photographer store
+const photographersStore = (products) => {
+  console.log(products);
+  //affecte products to photographerInfoStore
+  photographerInfoStore = products;
+  console.log(
+    "🚀 ~ file: photographer3.js:35 ~ photographersStore ~ photographerInfoStore:",
+    photographerInfoStore
+  );
+
+  //add photographerInfoStore to the local storage
+  setStorageItem("photographerInfoStore", photographerInfoStore);
+
+  return products;
+};
+
+// console.log(photographerInfoStore);
+
+export { photographerInfoStore, photographersStore, photographerFactories };
+```
+
+### 13. get getPhotographersMedias
+
+- get [getPhotographersMedias](./scripts/pages/photographer.js)
+
+```js
+//Function to get the photographer's medias
+async function getPhotographersMedias() {
+  try {
+    // fetch all photographers information
+    const response = await fetch("http://localhost:3000/media");
+    const data = await response.json();
+    console.log(
+      "🚀 ~ file: photographer.js:7 ~ getPhotographersDetails ~ data:",
+      data
+    );
+
+    return data;
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: photographer.js:11 ~ getPhotographersDetails ~ error:",
+      error
+    );
+  }
+}
+
+getPhotographersMedias();
+```
+
+### 13. getPhotographerDetails & photographersMedias
+
+- get [individual photographer medias](./scripts/pages/photographer.js)
+
+```js
+// get photographer medias
+const getphotographerMediasDetails = (informations, id) => {
+  //   use filter to dispaly all media the photographerId we clicked on
+  const photographerMediaDetails = informations.filter(
+    (p) => p.photographerId == id
+  );
+
+  console.log(
+    "🚀 ~ file: photographer.js:42 ~ getphotographerMediasDetails ~ informations:",
+    photographerMediaDetails
+  );
+  photographerMediasStore = photographerMediaDetails;
+  console.log(
+    "🚀 ~ file: photographer.js:43 ~ getphotographerMediasDetails ~ photographerMediasStore:",
+    photographerMediasStore
+  );
+
+  return photographerMediaDetails;
+};
+```
+
+- get [individual photographer information](./scripts/pages/photographer.js)
+
+```js
+//Gobal photographers Informations variable
+let photographerInformations;
+
+//photographerInformation
+const getphotographerInformations = (photographersInformation, id) => {
+  //get photographer detail using id
+  const findPhotographer = photographersInformation.find(
+    (photographerInformation) => photographerInformation.id == id
+  );
+  photographerInformations = findPhotographer;
+
+  return findPhotographer;
+};
+```
+
+- create [photographersMediasStore](./scripts/pages/photographer.js)
+
+```js
+//Global photographers Medias variable
+let photographersMediasStore = getStorageItem("photographersMediasStore");
+
+//create photographer medias store
+const mediasStore = (medias) => {
+  console.log(medias);
+  //affecte products to photographersInfoStore
+  photographersMediasStore = medias;
+
+  //add photographersInfoStore to the local storage
+  setStorageItem("photographersMediasStore", photographersMediasStore);
+
+  return medias;
+};
+```
+
+### 14. display photographer information in photographer page.
+
+- create [photographer factory](scripts/pages/photographer.js)
+
+```js
+//PHOTOGRAPHER PROFILE CARD
+const photographerCard = (informations, element) => {
+  console.log(
+    "🚀 ~ file: photographer.js:26 ~ photographerCard ~ photographerCard:",
+    informations,
+    element
+  );
+  const { city, country, id, name, portrait, price, tagline } = informations;
+
+  element.innerHTML = `
+    <img src="assets/photographers/${portrait}" alt="photographer profile image"/>
+    <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+    <div class="photograph-description">
+    <h1>${name}</h1>
+    <p class="location" aria-label="location and country">${city}, ${country}</p>
+    <p class="description">${tagline}</p>
+  </div>`;
+};
+```
+
+### 15. create Display Factory to display photographer's medias
+
+- create [displayPhotographerMedia](scripts/factories/displayMedias.js)
+
+```js
+//DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS
+
+const displayPhotographerMedia = (medias, element, photographer) => {
+  //retrieve photographer information
+  const { name } = photographer;
+
+  //autoplay muted controls
+  element.innerHTML = `
+          <ul class= "photograph-work-content">
+          ${medias
+            .map((media, index) => {
+              const { likes, title, video, image, date } = media;
+              return ` 
+              <li class="photograph-work-container" >
+              <${image ? "img" : "video"} src="assets/images/${name}/${
+                image ? image : video
+              }"
+
+              ${image ? `alt=${title}` : ""}
+               ${video ? "muted" : ""} class=${
+                image
+                  ? "photograph-work-content-img"
+                  : "photograph-work-content-video"
+              } key="${index}"  ${image ? "/" : ""}> ${image ? "" : "</video>"}
+              <div class="photograph-work-content-description">
+              <h2>${title}</h2>
+              <div class="photograph-work-content-description-likes">
+              <p class="photographer-likes" >${likes}</p>
+              <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+              </div>
+              </div>
+              </li>`;
+            })
+            .join("")}
+                </ul>
+                `;
+};
+
+export { displayPhotographerMedia };
+```
+
+### 16. create Filter menu
+
+- create a filter [menu](scripts/filters/menu.js)
+
+```js
+import { getElement } from "../utils/utils.js";
+
+//select selectors
+const select = getElement(".select");
+const caret = getElement(".caret");
+const menu = getElement(".menu");
+const options = document.querySelectorAll(".menu li");
+const selected = getElement(".selected");
+
+//FILTER MENU
+select.addEventListener("click", () => {
+  console.log("first");
+  //add the clicked selected style to the selected element
+  select.classList.toggle("select-clicked");
+  //add rotate style to the caret element
+  caret.classList.toggle("caret-rotate");
+  //add open style to the menu element
+  menu.classList.toggle("menu-open");
+});
+
+//loop through  all option elements
+options.forEach((option) => {
+  //add click envent to the option element
+  option.addEventListener("click", () => {
+    //change selected inner text to clicked option inner text
+    selected.innerText = option.innerText;
+    //Add the clicked select styles to the select element
+    select.classList.remove("select-clicked");
+    //remove the rotate style to the caret element
+    caret.classList.remove("caret-rotate");
+    //add the open style to the menu element
+    menu.classList.remove("menu-open");
+    //remove active class for all options elements
+    options.forEach((option) => {
+      option.classList.remove("active");
+    });
+    //add active class to clicked option element
+    option.classList.add("active");
+  });
+});
+```
+
+### 17. Sort using Filter menu
+
+- sort By [popularity](scripts/filters/filter.js)
+
+```js
+const sortMediaByPopularity = (photographerMedias) => {
+  //sort photographerMedias By Likes
+  const sortByLikes = photographerMedias.sort((a, b) => b.likes - a.likes);
+  displayPhotographerMedia(
+    sortByLikes,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+};
+```
+
+- sort By [Date](scripts/filters/filter.js)
+
+```js
+const sortMediaByDates = (photographerMedias) => {
+  //sort photographerMedias By Likes
+  const sortTitles = photographerMedias.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
+  displayPhotographerMedia(
+    sortTitles,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+};
+```
+
+- sort By [Titre](scripts/filters/filter.js)
+
+```js
+const sortMediaByTitles = (photographerMedias) => {
+  //sort photographerMedias By Likes
+  const sortTitles = photographerMedias.sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+
+  displayPhotographerMedia(
+    sortTitles,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+};
+```
+
+### 17. fullScreen Factory
+
+- update [displayMedia](./scripts/factories/displayMedias.js)
+
+```js
+//DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS
+import { fullScreenMedia } from "./fullScreen.js";
+
+const displayPhotographerMedia = (medias, element, photographer) => {
+  //retrieve photographer information
+  const { name } = photographer;
+
+  //autoplay muted controls
+  element.innerHTML = `
+          <ul class= "photograph-work-content">
+          ${medias
+            .map((media, index) => {
+              const { likes, title, video, image, date } = media;
+              return ` 
+              <li class="photograph-work-container" >
+              <${image ? "img" : "video"} src="assets/images/${name}/${
+                image ? image : video
+              }"
+
+              ${image ? `alt=${title}` : ""}
+               ${video ? "muted" : ""} class="photographer-medias" 
+               id=${
+                 image ? "photograph-content-img" : "photograph-content-video"
+               } key="${index}"  ${image ? "/" : ""}> ${image ? "" : "</video>"}
+              <div class="photograph-work-content-description">
+              <h2>${title}</h2>
+              <div class="photograph-work-content-description-likes">
+              <p class="photographer-likes" >${likes}</p>
+              <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+              </div>
+              </div>
+              </li>`;
+            })
+            .join("")}
+                </ul>
+                `;
+
+  const mediasContent = document.querySelectorAll(".photographer-medias");
+  mediasContent.forEach((media) => {
+    media.addEventListener("click", () => {
+      // get the media index from the media-id attribute
+      let mediaIndex = media.getAttribute("key");
+      console.log(
+        "🚀 ~ file: displayMedias.js:41 ~ media.addEventListener ~ mediaIndex:",
+        mediaIndex
+      );
+      //display content of  selected media
+      let selectedMedia = medias[mediaIndex];
+      fullScreenMedia(selectedMedia, name);
+      console.log(
+        "🚀 ~ file: displayMedias.js:48 ~ media.addEventListener ~ selectedMedia:",
+        selectedMedia
+      );
+    });
+  });
+};
+
+export { displayPhotographerMedia };
+```
+
+- Create Display [fullScreen](./scripts/factories/fullScreen.js)
+
+```js
+export const fullScreenMedia = (media, name) => {
+  //retrieve individual photographer media information
+  const { date, id, likes, photographerId, title, video, image } = media;
+
+  console.log("🚀 ~ file: fullScreen.js:4 ~ fullScreenMedia ~ olivier:", media);
+  //create a div element for the selected media
+  let fullScreenMedia = document.createElement("div");
+  //add "full-screen-media" for selected media
+  fullScreenMedia.classList.add("full-screen-media");
+
+  //add html script in fullScreenMedia div element
+  fullScreenMedia.innerHTML = `
+<div class="full-screen-modal">
+<i class="fa-solid fa-chevron-left slider-icon"></i>
+${
+  image
+    ? `
+    <img
+      src="assets/images/${name}/${image}"
+      class="photograph-work-content-img-modal hide"
+      alt="photograph work presentation"
+      id="photograph-work-img"
+    />`
+    : `<video
+    src="assets/images/${name}/${video}"
+    class="photograph-work-content-img-modal hide"
+    id="photograph-work-video"
+    autoplay muted controls
+  /></video>`
+}
+<i class="fa-solid fa-chevron-right slider-icon"></i>
+<button class="close-button">
+<i class="fa-solid fa-xmark media-close-icon slider-icon"></i>
+</button>
+</div>`;
+
+  // add event listener to the close button to remove the full screen element
+  fullScreenMedia
+    .querySelector(".close-button")
+    .addEventListener("click", function () {
+      fullScreenMedia.remove();
+    });
+
+  // add the full screen element to the document
+  document.body.appendChild(fullScreenMedia);
+};
+```
+
+- use [fiters function](./scripts/pages/photographer.js)
+
+```js
+//Filter Photographer Medias By Popularity
+getElement("#popularite").addEventListener("click", () => {
+  sortMediaByPopularity(
+    photographerMediasStore,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+});
+
+//Filter Photographer Medias By Titles
+getElement("#titre").addEventListener("click", () => {
+  sortMediaByTitles(
+    photographerMediasStore,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+});
+
+//Filter Photographer Medias By Date
+getElement("#date").addEventListener("click", () => {
+  sortMediaByDates(
+    photographerMediasStore,
+    getElement(".photograph-work"),
+    photographerInformations
+  );
+});
+```
+
+### 18. scroll through all the media
+
+- create [leftArrow](./scripts/factories/slide.js)
+
+```js
+const leftArrow = (
+  photographerMedias,
+  selectedMedia,
+  index,
+  name,
+  fullScreenMedia,
+  imageElement,
+  videoElement
+) => {
+  console.log("🚀 ~ file: slide.js:13 ~ name:", name);
+  const arrowLeft = document.querySelector(".fa-chevron-left");
+  const imageModal = fullScreenMedia.querySelector(
+    ".photograph-work-content-img-modal"
+  );
+
+  console.log("🚀 ~ file: slide.js:25 ~ videoElement:", videoElement);
+  console.log("🚀 ~ file: slide.js:26 ~ imageElement:", imageElement);
+
+  console.log("🚀 ~ file: slide.js:28 ~ imageModal:", imageModal);
+
+  console.log(
+    "🚀 ~ file: slide.js:8 ~ leftArrow ~ index:",
+    index,
+    photographerMedias
+  );
+
+  arrowLeft.addEventListener("click", () => {
+    index--;
+    console.log(
+      "🚀 ~ file: slide.js:26 ~ arrowLeft.addEventListener ~ selectedMedia:",
+      index
+    );
+
+    if (index < 0) {
+      index = photographerMedias.length - 1;
+    }
+
+    selectedMedia = photographerMedias[index];
+    console.log(
+      "🚀 ~ file: slide.js:42 ~ arrowLeft.addEventListener ~ selectedMedia:",
+      selectedMedia.image
+    );
+
+    console.log(fullScreenMedia);
+
+    console.log(
+      "🚀 ~ file: photographer.js:49 ~ arrowLeft.addEventListener ~ selectedMedia:",
+      imageModal.src.includes(".jpg")
+    );
+    // imageModal.src.includes(".jpg")
+    if (selectedMedia.image) {
+      //Element to be hidden
+      videoElement.classList.add("hide");
+      //Element to be added
+      imageElement.classList.remove("hide");
+      imageElement.src = `assets/images/${name}/${selectedMedia.image}`;
+    } else {
+      //Element to be hidden
+      imageElement.classList.add("hide");
+      //Element to be added
+      videoElement.classList.remove("hide");
+      videoElement.src = `assets/images/${name}/${selectedMedia.video}`;
+    }
+  });
+};
+
+export { leftArrow };
+```
+
+- create [rightArrow](./scripts/factories/slide.js)
+
+```js
+const rightArrow = (
+  photographerMedias,
+  selectedMedia,
+  index,
+  name,
+  fullScreenMedia,
+  imageElement,
+  videoElement
+) => {
+  const arrowRight = document.querySelector(".fa-chevron-right");
+
+  arrowRight.addEventListener("click", () => {
+    index++;
+
+    if (index >= photographerMedias.length) {
+      index = 0;
+    }
+
+    selectedMedia = photographerMedias[index];
+
+    console.log(fullScreenMedia);
+
+    if (selectedMedia.image) {
+      //Element to be hidden
+      videoElement.classList.add("hide");
+      //Element to be added
+      imageElement.classList.remove("hide");
+      imageElement.src = `assets/images/${name}/${selectedMedia.image}`;
+    } else {
+      //Element to be hidden
+      imageElement.classList.add("hide");
+      //Element to be added
+      videoElement.classList.remove("hide");
+      videoElement.src = `assets/images/${name}/${selectedMedia.video}`;
+    }
+  });
+};
+
+export { rightArrow };
+```
+
+- use [leftArrow & rightArrow](./scripts/filters/filter.js) in [fullscreen](./scripts/factories/fullScreen.js)
+
+```js
+import { leftArrow, rightArrow } from "./slide.js";
+import { individualMedia } from "../pages/photographer.js";
+import { getElement, getAllElement } from "../utils/utils.js";
+
+export const fullScreenMedia = (
+  media,
+  name,
+  mediaIndex,
+  allPhotographerMedias
+) => {
+  //retrieve individual photographer media information
+  const { date, id, likes, photographerId, title, video, image } = media;
+
+  //get elements
+  const imageElement = getElement(".photograph-work-img");
+  const videoElement = getElement(".photograph-work-video");
+  const fullScreenMedia = getElement(".full-screen-media");
+
+  if (image) {
+    //Element to be hidden
+    videoElement.classList.add("hide");
+    //Element to be added
+    imageElement.classList.remove("hide");
+    imageElement.src = `assets/images/${name}/${image}`;
+  } else {
+    //Element to be hidden
+    imageElement.classList.add("hide");
+    //Element to be added
+    videoElement.classList.remove("hide");
+    videoElement.src = `assets/images/${name}/${video}`;
+  }
+
+  //   display full screen Media
+  fullScreenMedia.classList.remove("hide");
+
+  // add event listener to the close button to remove the full screen element
+  fullScreenMedia
+    .querySelector(".close-button")
+    .addEventListener("click", function () {
+      //  hide full screen Media
+      fullScreenMedia.classList.add("hide");
+    });
+
+  console.log(fullScreenMedia);
+  // left arrow
+  leftArrow(
+    allPhotographerMedias,
+    media,
+    mediaIndex,
+    name,
+    fullScreenMedia,
+    imageElement,
+    videoElement
+  );
+  //right arrow
+  rightArrow(
+    allPhotographerMedias,
+    media,
+    mediaIndex,
+    name,
+    fullScreenMedia,
+    imageElement,
+    videoElement
+  );
+};
+```
+
+### 19. photographer rate and price
+
+- create [photographerRateAndPrice()](scripts/factories/photographerRateAndPrice.js) to have photgrapher price and likes
+
+```js
+//PHOTOGRAPHER RATE AND PRICE
+export const photographerRateAndPrice = (
+  allmedias,
+  photographerInformation,
+  allWorkSelector
+) => {
+  //retrieve photographer and all media information
+  //   const { allmedias, photographer } =
+  //     await photographerInformation();
+
+  //calcul photographer totalLikes
+  const totalLikes = allmedias.reduce(
+    (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+    0
+  );
+
+  //create rateAndPrice variable to store photographer totalLikes and price
+  const rateAndPrice = `
+      <ul class="photographer-rate-and-price-container">
+      <li class="photographer-rate-and-price-likes">${totalLikes}<span><i class="fa-solid fa-heart"></i></span></li>
+      <li class="photographer-rate-and-price-prices">${photographerInformation.price}€ / jour</li>
+      </ul>
+      `;
+
+  allWorkSelector.insertAdjacentHTML("beforeend", rateAndPrice);
+};
+```
+
+### 20. Refactor View and manage likes
+
+- create [handleLikes()](scripts/factories/handleLikes.js) to handle likes
+
+```js
+//HANDLE LIKES
+export const handleLikes = (
+  likesBtn,
+  numberOfLike,
+  totalOfLike,
+  photographerMedias
+) => {
+  console.log(
+    "🚀 ~ file: handleLikes.js:4 ~ handleLikes ~ likesBtn:",
+    likesBtn,
+    numberOfLike,
+    totalOfLike,
+    photographerMedias
+  );
+
+  likesBtn.forEach((like) => {
+    like.addEventListener("click", () => {
+      console.log("Console.log");
+      //retrieve the like index
+      const likeIndex = like.getAttribute("key");
+      console.log(
+        "🚀 ~ file: handleLikes.js:22 ~ like.addEventListener ~ likeIndex:",
+        likeIndex
+      );
+
+      //conditionnal rendering: increase or decrease the like
+      if ([...like.classList].includes("count-plus")) {
+        like.classList.remove("count-plus");
+        like.classList.add("count-moin");
+
+        //increase the number of likes
+        let increase = (photographerMedias[likeIndex].likes += 1);
+
+        //display increased likes on screen
+        numberOfLike[likeIndex].textContent = increase;
+      } else {
+        like.classList.add("count-plus");
+        like.classList.remove("count-moin");
+
+        //decrease the number of likes
+        let decrease = (photographerMedias[likeIndex].likes -= 1);
+
+        //display decreased likes on screen
+        numberOfLike[likeIndex].textContent = decrease;
+      }
+
+      //calcul new  totalLikes
+      const totalLikes = photographerMedias.reduce(
+        (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+        0
+      );
+
+      //display new  totalLikes
+      totalOfLike.innerHTML = totalLikes;
+    });
+  });
+};
+```
+
+### 21. Manage Lightbox media

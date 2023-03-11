@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Array</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <style>
+    ody {
+      overflow-x: hidden;
+    }
+
+    #slide .navigation {
+      position: absolute;
+      width: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 40vh;
+    }
+
+    #slide .navigation i {
+      font-size: 50px;
+      cursor: pointer;
+      background-color: black;
+      padding: 2%;
+      color: white;
+      border-radius: 20px;
+    }
+
+    #slide .navigation i:first-of-type {
+      position: relative;
+      top: 40%;
+    }
+
+    #slide .navigation i:last-of-type {
+      position: relative;
+      top: 40%;
+    }
+
+    #slide .navigation-visibility {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+    }
+
+    #slide .navigation-visibility .show {
+      display: block !important;
+    }
+
+    #slide .navigation-visibility .hide {
+      display: none;
+    }
+
+    #slide .navigation-visibility .sliderItem {
+      display: -webkit-box !important;
+      display: -ms-flexbox !important;
+      display: flex !important;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+    }
+
+    #slide .navigation-visibility img {
+      width: 50%;
+    }
+  </style>
+  <body>
+    <div id="slide">
+      <div class="navigation">
+        <i class="fa-solid fa-arrow-left" id="prev-btn"></i>
+        <i class="fa-solid fa-arrow-right" id="next-btn"></i>
+      </div>
+
+      <div class="navigation-visibility">
+        <!-- <div class="slide-icon active"></div>
+        <div class="slide-icon"></div>
+        <div class="slide-icon"></div>
+        <div class="slide-icon"></div> -->
+      </div>
+    </div>
+    <!-- </div>     -->
+
+    <script
+      src="https://kit.fontawesome.com/7f8c2c17fa.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let initialSlides = [
+        {
+          description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua.`,
+          Image:
+            "https://preview.redd.it/yc40cow4tr691.png?auto=webp&s=0634e4b596dec75e35a2e138eac1ee075ffdd910",
+          button: `<button class="slide">Veja</button>`,
+          active: true,
+        },
+        {
+          description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua.`,
+          Image:
+            "https://cdn.shopify.com/s/files/1/0573/7522/8070/products/OP-428-Frankyjpg.jpg?v=1622780043",
+          button: `<button class="slide">Veja</button>`,
+          active: false,
+        },
+        {
+          description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua.`,
+          Image:
+            "https://cdn.shopify.com/s/files/1/0573/7522/8070/products/OP-408usa.jpg?v=1636850709",
+          button: `<button class="slide">Veja</button>`,
+          active: false,
+        },
+        {
+          description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua.`,
+          Image:
+            "https://i.pinimg.com/originals/53/39/a6/5339a63c4ce03123bb21a2131e0099ae.jpg",
+          button: `<button class="slide">Veja</button>`,
+          active: false,
+        },
+      ];
+
+      const ShowInitialSlid = (slideData) => {
+        var resultadomap = slideData.map(function (slide, index) {
+          return `
+            <div class="${slide.active ? "show sliderItem" : "hide"}">
+                <img src="${slide.Image}" />
+                <p>${slide.description}</p>
+                ${slide.button}
+            </div>
+            `;
+        });
+        document.querySelector("#slide .navigation-visibility").innerHTML =
+          resultadomap.join("");
+      };
+
+      ShowInitialSlid(initialSlides);
+
+      document.querySelector("#next-btn").addEventListener("click", () => {
+        let currentIndex = initialSlides.findIndex((el) => el.active == true);
+
+        if (initialSlides.length - 1 != currentIndex) {
+          initialSlides[currentIndex].active = false;
+          initialSlides[currentIndex + 1].active = true;
+        } else {
+          initialSlides[initialSlides.length - 1].active = false;
+          initialSlides[0].active = true;
+        }
+
+        ShowInitialSlid(initialSlides);
+      });
+      document.querySelector("#prev-btn").addEventListener("click", () => {
+        let currentIndex = initialSlides.findIndex((el) => el.active == true);
+
+        if (currentIndex != 0) {
+          initialSlides[currentIndex].active = false;
+          initialSlides[currentIndex - 1].active = true;
+        } else {
+          initialSlides[0].active = false;
+          initialSlides[initialSlides.length - 1].active = true;
+        }
+
+        ShowInitialSlid(initialSlides);
+      });
+    </script>
+  </body>
+</html>
