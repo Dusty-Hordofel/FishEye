@@ -4,7 +4,8 @@
   "description": "Hordofel Dusty BAMANA",
   "main": "index.js",
   "scripts": {
-    "start": "json-server --watch ./data/photographers.json"
+    "start": "json-server --watch ./data/photographers.json",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Dusty-Hordofel/FishEye/issues"
   },
-  "homepage": "https://github.com/Dusty-Hordofel/FishEye#readme"
+  "homepage": "https://github.com/Dusty-Hordofel/FishEye#readme",
+  "devDependencies": {
+    "eslint": "^8.36.0"
+  }
 }

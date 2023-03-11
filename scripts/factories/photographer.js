@@ -27,7 +27,7 @@ const photographerCard = (informations, element) => {
     informations,
     element
   );
-  const { city, country, id, name, portrait, price, tagline } = informations;
+  const { city, country, name, portrait, tagline } = informations;
 
   element.innerHTML = `
     <div class="photograph-description">

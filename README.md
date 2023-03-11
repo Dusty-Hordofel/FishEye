@@ -1475,3 +1475,28 @@ export const handleLikes = (
 ```
 
 ### 21. Manage Lightbox media
+
+## Section 7: Check the code with a linter
+
+### 22. Install the linter
+
+```bash
+$ npm install eslint --save-dev
+$ npm init @eslint/config
+```
+
+- add script in package.json
+
+```json
+{
+  "scripts": {
+    "lint": "eslint ."
+  }
+}
+```
+
+- run eslint
+
+```js
+$npm run lint
+```

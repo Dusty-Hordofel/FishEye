@@ -3,12 +3,6 @@ import { fullScreenMedia } from "./fullScreen.js";
 import { getAllElement, getElement } from "../utils/utils.js";
 import { photographerRateAndPrice } from "./photographerRateAndPrice.js";
 import { handleLikes } from "./handleLikes.js";
-// import { momo } from "./fullScreen.js";
-// import { photographerMediasStore } from "../factories/photographer.js";
-// console.log(
-//   "🚀 ~ file: displayMedias.js:4 ~ photographerMediasStore:",
-//   photographerMediasStore
-// );
 
 //photograph medias selector
 const allWork = document.querySelector(".photograph-work");

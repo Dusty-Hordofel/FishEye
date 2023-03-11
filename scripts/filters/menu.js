@@ -1,12 +1,10 @@
-import { getElement, getAllElement } from "../utils/utils.js";
+import { getElement } from "../utils/utils.js";
 
-import { fullScreenMedia } from "../factories/fullScreen.js";
-
-import { photographerMediasStore } from "../factories/photographer.js";
-console.log(
-  "🚀 ~ file: menu.js:4 ~ photographerMediasStore:",
-  photographerMediasStore
-);
+// import { photographerMediasStore } from "../factories/photographer.js";
+// console.log(
+//   "🚀 ~ file: menu.js:4 ~ photographerMediasStore:",
+//   photographerMediasStore
+// );
 
 //select selectors
 const select = getElement(".select");
@@ -46,5 +44,3 @@ options.forEach((option) => {
     option.classList.add("active");
   });
 });
-
-// console.log(photographerMediasStore);

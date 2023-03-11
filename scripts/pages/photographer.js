@@ -1,7 +1,5 @@
 import {
   photographersInfoStore,
-  photographersStore,
-  photographerFactories,
   getphotographerMediasDetails,
   photographerMediasStore,
   getphotographerInformations,
@@ -11,7 +9,7 @@ import {
   photographerCard,
 } from "../factories/photographer.js";
 // import { displayPhotographerMedia } from "../factories../displayMedias.js";
-import { getElement, getAllElement } from "../utils/utils.js";
+import { getElement /*, getAllElement*/ } from "../utils/utils.js";
 import { displayPhotographerMedia } from "../factories/displayMedias.js";
 import {
   sortMediaByPopularity,
@@ -19,7 +17,7 @@ import {
   sortMediaByTitles,
 } from "../filters/filter.js";
 
-import { fullScreenMedia } from "../factories/fullScreen.js";
+// import { fullScreenMedia } from "../factories/fullScreen.js";
 // import { see } from "../factories/displayMedias.js";
 
 //Function to get the photographer's medias
