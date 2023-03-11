@@ -1379,7 +1379,7 @@ export const fullScreenMedia = (
 
 ### 19. photographer rate and price
 
-- factorise information by creating `photographerInformation()`
+- create [photographerRateAndPrice()](scripts/factories/photographerRateAndPrice.js) to have photgrapher price and likes
 
 ```js
 //PHOTOGRAPHER RATE AND PRICE
@@ -1412,26 +1412,33 @@ export const photographerRateAndPrice = (
 
 ### 20. Refactor View and manage likes
 
-- create [photographerRateAndPrice()](scripts/factories/photographerRateAndPrice.js) to have photgrapher price and likes
+- create [handleLikes()](scripts/factories/handleLikes.js) to handle likes
 
 ```js
 //HANDLE LIKES
-
-async function handleLikes() {
-  const { photographerMediaDetails } = await photographerInformation();
-  //select all like buttons
-  const likes = document.querySelectorAll(".like-btn");
-  //select all like numbers
-  const photographerLikes = document.querySelectorAll(".photographer-likes");
-  //select like and price card witch is on the bottom of the page
-  const newTotalLikes = document.querySelector(
-    ".photographer-rate-and-price-likes"
+export const handleLikes = (
+  likesBtn,
+  numberOfLike,
+  totalOfLike,
+  photographerMedias
+) => {
+  console.log(
+    "🚀 ~ file: handleLikes.js:4 ~ handleLikes ~ likesBtn:",
+    likesBtn,
+    numberOfLike,
+    totalOfLike,
+    photographerMedias
   );
 
-  likes.forEach((like) => {
-    like.addEventListener("click", async () => {
+  likesBtn.forEach((like) => {
+    like.addEventListener("click", () => {
+      console.log("Console.log");
       //retrieve the like index
       const likeIndex = like.getAttribute("key");
+      console.log(
+        "🚀 ~ file: handleLikes.js:22 ~ like.addEventListener ~ likeIndex:",
+        likeIndex
+      );
 
       //conditionnal rendering: increase or decrease the like
       if ([...like.classList].includes("count-plus")) {
@@ -1439,32 +1446,30 @@ async function handleLikes() {
         like.classList.add("count-moin");
 
         //increase the number of likes
-        let increase = (photographerMediaDetails[likeIndex].likes += 1);
+        let increase = (photographerMedias[likeIndex].likes += 1);
 
         //display increased likes on screen
-        photographerLikes[likeIndex].textContent = increase;
+        numberOfLike[likeIndex].textContent = increase;
       } else {
         like.classList.add("count-plus");
         like.classList.remove("count-moin");
 
         //decrease the number of likes
-        let decrease = (photographerMediaDetails[likeIndex].likes -= 1);
+        let decrease = (photographerMedias[likeIndex].likes -= 1);
 
         //display decreased likes on screen
-        photographerLikes[likeIndex].textContent = decrease;
+        numberOfLike[likeIndex].textContent = decrease;
       }
 
       //calcul new  totalLikes
-      const totalLikes = photographerMediaDetails.reduce(
+      const totalLikes = photographerMedias.reduce(
         (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
         0
       );
 
       //display new  totalLikes
-      newTotalLikes.innerHTML = totalLikes;
+      totalOfLike.innerHTML = totalLikes;
     });
   });
-}
-
-handleLikes();
+};
 ```

@@ -2,7 +2,7 @@
 import { fullScreenMedia } from "./fullScreen.js";
 import { getAllElement, getElement } from "../utils/utils.js";
 import { photographerRateAndPrice } from "./photographerRateAndPrice.js";
-// import { handleLikes } from "./handleLikes.js";
+import { handleLikes } from "./handleLikes.js";
 // import { momo } from "./fullScreen.js";
 // import { photographerMediasStore } from "../factories/photographer.js";
 // console.log(
@@ -81,7 +81,11 @@ const displayPhotographerMedia = (medias, element, photographer) => {
   const likesBtn = getAllElement(".like-btn");
   const likeNumber = getAllElement(".photographer-likes");
   const newTotalLikes = getElement(".photographer-rate-and-price-likes");
-  // handleLikes(likesBtn, likeNumber, newTotalLikes, medias);
+  console.log(
+    "🚀 ~ file: displayMedias.js:84 ~ displayPhotographerMedia ~ newTotalLikes:",
+    newTotalLikes
+  );
+  handleLikes(likesBtn, likeNumber, newTotalLikes, medias);
 };
 
 export { displayPhotographerMedia };
