@@ -5,8 +5,10 @@ const leftArrow = (
   name,
   fullScreenMedia,
   imageElement,
-  videoElement
+  videoElement,
+  titleImg
 ) => {
+  console.log("🚀 ~ file: slide.js:11 ~ titleImg:", titleImg);
   const arrowLeft = document.querySelector(".fa-chevron-left");
 
   arrowLeft.addEventListener("click", () => {
@@ -17,6 +19,10 @@ const leftArrow = (
     }
 
     selectedMedia = photographerMedias[index];
+    console.log(
+      "🚀 ~ file: slide.js:22 ~ arrowLeft.addEventListener ~ selectedMedia:",
+      selectedMedia
+    );
 
     console.log(fullScreenMedia);
 
@@ -33,6 +39,8 @@ const leftArrow = (
       videoElement.classList.remove("hide");
       videoElement.src = `assets/images/${name}/${selectedMedia.video}`;
     }
+
+    titleImg.textContent = selectedMedia.title;
   });
 };
 
@@ -43,7 +51,8 @@ const rightArrow = (
   name,
   fullScreenMedia,
   imageElement,
-  videoElement
+  videoElement,
+  titleImg
 ) => {
   const arrowRight = document.querySelector(".fa-chevron-right");
 
@@ -71,6 +80,7 @@ const rightArrow = (
       videoElement.classList.remove("hide");
       videoElement.src = `assets/images/${name}/${selectedMedia.video}`;
     }
+    titleImg.textContent = selectedMedia.title;
   });
 };
 

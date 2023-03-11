@@ -15,6 +15,8 @@ export const fullScreenMedia = (
   const imageElement = getElement(".photograph-work-img");
   const videoElement = getElement(".photograph-work-video");
   const fullScreenMedia = getElement(".full-screen-media");
+  const titleImg = getElement(".title");
+  console.log("🚀 ~ file: fullScreen.js:19 ~ tile:", titleImg);
 
   if (image) {
     //Element to be hidden
@@ -29,6 +31,8 @@ export const fullScreenMedia = (
     videoElement.classList.remove("hide");
     videoElement.src = `assets/images/${name}/${video}`;
   }
+
+  titleImg.textContent = title;
 
   //   display full screen Media
   fullScreenMedia.classList.remove("hide");
@@ -50,7 +54,8 @@ export const fullScreenMedia = (
     name,
     fullScreenMedia,
     imageElement,
-    videoElement
+    videoElement,
+    titleImg
   );
   //right arrow
   rightArrow(
@@ -60,6 +65,7 @@ export const fullScreenMedia = (
     name,
     fullScreenMedia,
     imageElement,
-    videoElement
+    videoElement,
+    titleImg
   );
 };
