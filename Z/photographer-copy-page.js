@@ -210,7 +210,7 @@ const fullScreenPhoto = async () => {
 
         //add html script in fullScreenMedia div element
         fullScreenMedia.innerHTML = `
-      <div class="full-screen-modal">
+      <div class="full-screen-modal hide">
       <i class="fa-solid fa-chevron-left slider-icon"></i>
       ${
         selectedMedia.image

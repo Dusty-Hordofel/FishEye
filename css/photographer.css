@@ -500,3 +500,7 @@ select option {
   display: block;
   opacity: 1;
 }
+
+.hide {
+  display: none !important;
+}

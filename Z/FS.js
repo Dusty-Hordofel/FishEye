@@ -1,6 +1,11 @@
-import { leftArrow, rightArrow } from "./slide.js";
+import { leftArrow } from "./slide.js";
 import { individualMedia } from "../pages/photographer.js";
 import { getElement, getAllElement } from "../utils/utils.js";
+
+export const momo = (medias) => {
+  console.log("🚀 ~ file: fullScreen.js:6 ~ momo ~ medias:", medias);
+};
+// momo();
 
 export const fullScreenMedia = (
   media,
@@ -8,8 +13,21 @@ export const fullScreenMedia = (
   mediaIndex,
   allPhotographerMedias
 ) => {
+  console.log("🚀 ~ file: fullScreen.js:15 ~ media:", media);
+  console.log(
+    "🚀 ~ file: fullScreen.js:16 ~ fullScreenMedia ~ allPhotographerMedias:",
+    allPhotographerMedias
+  );
+  console.log(
+    "🚀 ~ file: fullScreen.js:20 ~ fullScreenMedia ~ index:",
+    mediaIndex
+  );
   //retrieve individual photographer media information
   const { date, id, likes, photographerId, title, video, image } = media;
+  console.log("🚀 ~ file: fullScreen.js:26 ~ id:", id);
+
+  console.log("🚀 ~ file: fullScreen.js:4 ~ fullScreenMedia ~ olivier:", media);
+  console.log("YOYOYOYOYOYOYOYOYOYOYOYOYOYOYOYOY");
 
   //get elements
   const imageElement = getElement(".photograph-work-img");
@@ -44,16 +62,6 @@ export const fullScreenMedia = (
   console.log(fullScreenMedia);
   // left arrow
   leftArrow(
-    allPhotographerMedias,
-    media,
-    mediaIndex,
-    name,
-    fullScreenMedia,
-    imageElement,
-    videoElement
-  );
-  //right arrow
-  rightArrow(
     allPhotographerMedias,
     media,
     mediaIndex,

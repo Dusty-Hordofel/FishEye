@@ -1188,3 +1188,193 @@ getElement("#date").addEventListener("click", () => {
   );
 });
 ```
+
+### 18. scroll through all the media
+
+- create [leftArrow](./scripts/factories/slide.js)
+
+```js
+const leftArrow = (
+  photographerMedias,
+  selectedMedia,
+  index,
+  name,
+  fullScreenMedia,
+  imageElement,
+  videoElement
+) => {
+  console.log("🚀 ~ file: slide.js:13 ~ name:", name);
+  const arrowLeft = document.querySelector(".fa-chevron-left");
+  const imageModal = fullScreenMedia.querySelector(
+    ".photograph-work-content-img-modal"
+  );
+
+  console.log("🚀 ~ file: slide.js:25 ~ videoElement:", videoElement);
+  console.log("🚀 ~ file: slide.js:26 ~ imageElement:", imageElement);
+
+  console.log("🚀 ~ file: slide.js:28 ~ imageModal:", imageModal);
+
+  console.log(
+    "🚀 ~ file: slide.js:8 ~ leftArrow ~ index:",
+    index,
+    photographerMedias
+  );
+
+  arrowLeft.addEventListener("click", () => {
+    index--;
+    console.log(
+      "🚀 ~ file: slide.js:26 ~ arrowLeft.addEventListener ~ selectedMedia:",
+      index
+    );
+
+    if (index < 0) {
+      index = photographerMedias.length - 1;
+    }
+
+    selectedMedia = photographerMedias[index];
+    console.log(
+      "🚀 ~ file: slide.js:42 ~ arrowLeft.addEventListener ~ selectedMedia:",
+      selectedMedia.image
+    );
+
+    console.log(fullScreenMedia);
+
+    console.log(
+      "🚀 ~ file: photographer.js:49 ~ arrowLeft.addEventListener ~ selectedMedia:",
+      imageModal.src.includes(".jpg")
+    );
+    // imageModal.src.includes(".jpg")
+    if (selectedMedia.image) {
+      //Element to be hidden
+      videoElement.classList.add("hide");
+      //Element to be added
+      imageElement.classList.remove("hide");
+      imageElement.src = `assets/images/${name}/${selectedMedia.image}`;
+    } else {
+      //Element to be hidden
+      imageElement.classList.add("hide");
+      //Element to be added
+      videoElement.classList.remove("hide");
+      videoElement.src = `assets/images/${name}/${selectedMedia.video}`;
+    }
+  });
+};
+
+export { leftArrow };
+```
+
+- create [rightArrow](./scripts/factories/slide.js)
+
+```js
+const rightArrow = (
+  photographerMedias,
+  selectedMedia,
+  index,
+  name,
+  fullScreenMedia,
+  imageElement,
+  videoElement
+) => {
+  const arrowRight = document.querySelector(".fa-chevron-right");
+
+  arrowRight.addEventListener("click", () => {
+    index++;
+
+    if (index >= photographerMedias.length) {
+      index = 0;
+    }
+
+    selectedMedia = photographerMedias[index];
+
+    console.log(fullScreenMedia);
+
+    if (selectedMedia.image) {
+      //Element to be hidden
+      videoElement.classList.add("hide");
+      //Element to be added
+      imageElement.classList.remove("hide");
+      imageElement.src = `assets/images/${name}/${selectedMedia.image}`;
+    } else {
+      //Element to be hidden
+      imageElement.classList.add("hide");
+      //Element to be added
+      videoElement.classList.remove("hide");
+      videoElement.src = `assets/images/${name}/${selectedMedia.video}`;
+    }
+  });
+};
+
+export { rightArrow };
+```
+
+- use [leftArrow & rightArrow](./scripts/filters/filter.js) in [fullscreen](./scripts/factories/fullScreen.js)
+
+```js
+import { leftArrow, rightArrow } from "./slide.js";
+import { individualMedia } from "../pages/photographer.js";
+import { getElement, getAllElement } from "../utils/utils.js";
+
+export const fullScreenMedia = (
+  media,
+  name,
+  mediaIndex,
+  allPhotographerMedias
+) => {
+  //retrieve individual photographer media information
+  const { date, id, likes, photographerId, title, video, image } = media;
+
+  //get elements
+  const imageElement = getElement(".photograph-work-img");
+  const videoElement = getElement(".photograph-work-video");
+  const fullScreenMedia = getElement(".full-screen-media");
+
+  if (image) {
+    //Element to be hidden
+    videoElement.classList.add("hide");
+    //Element to be added
+    imageElement.classList.remove("hide");
+    imageElement.src = `assets/images/${name}/${image}`;
+  } else {
+    //Element to be hidden
+    imageElement.classList.add("hide");
+    //Element to be added
+    videoElement.classList.remove("hide");
+    videoElement.src = `assets/images/${name}/${video}`;
+  }
+
+  //   display full screen Media
+  fullScreenMedia.classList.remove("hide");
+
+  // add event listener to the close button to remove the full screen element
+  fullScreenMedia
+    .querySelector(".close-button")
+    .addEventListener("click", function () {
+      //  hide full screen Media
+      fullScreenMedia.classList.add("hide");
+    });
+
+  console.log(fullScreenMedia);
+  // left arrow
+  leftArrow(
+    allPhotographerMedias,
+    media,
+    mediaIndex,
+    name,
+    fullScreenMedia,
+    imageElement,
+    videoElement
+  );
+  //right arrow
+  rightArrow(
+    allPhotographerMedias,
+    media,
+    mediaIndex,
+    name,
+    fullScreenMedia,
+    imageElement,
+    videoElement
+  );
+};
+```
+
+### 19.

@@ -108,3 +108,9 @@ getElement("#date").addEventListener("click", () => {
     photographerInformations
   );
 });
+
+export const individualMedia = photographerMediasStore;
+console.log(
+  "🚀 ~ file: photographer.js:114 ~ individualMedia:",
+  individualMedia
+);

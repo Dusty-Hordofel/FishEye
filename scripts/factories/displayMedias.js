@@ -1,7 +1,19 @@
 //DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS
 import { fullScreenMedia } from "./fullScreen.js";
+// import { momo } from "./fullScreen.js";
+// import { photographerMediasStore } from "../factories/photographer.js";
+// console.log(
+//   "🚀 ~ file: displayMedias.js:4 ~ photographerMediasStore:",
+//   photographerMediasStore
+// );
 
 const displayPhotographerMedia = (medias, element, photographer) => {
+  console.log(
+    "🚀 ~ file: displayMedias.js:10 ~ displayPhotographerMedia ~ medias:",
+    medias
+  );
+  let allPhotographerMedias = medias;
+  // momo(medias);
   //retrieve photographer information
   const { name } = photographer;
 
@@ -46,7 +58,8 @@ const displayPhotographerMedia = (medias, element, photographer) => {
       );
       //display content of  selected media
       let selectedMedia = medias[mediaIndex];
-      fullScreenMedia(selectedMedia, name);
+      console.log(medias);
+      fullScreenMedia(selectedMedia, name, mediaIndex, allPhotographerMedias);
       console.log(
         "🚀 ~ file: displayMedias.js:48 ~ media.addEventListener ~ selectedMedia:",
         selectedMedia
