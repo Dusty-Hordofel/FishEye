@@ -1377,4 +1377,94 @@ export const fullScreenMedia = (
 };
 ```
 
-### 19.
+### 19. photographer rate and price
+
+- factorise information by creating `photographerInformation()`
+
+```js
+//PHOTOGRAPHER RATE AND PRICE
+export const photographerRateAndPrice = (
+  allmedias,
+  photographerInformation,
+  allWorkSelector
+) => {
+  //retrieve photographer and all media information
+  //   const { allmedias, photographer } =
+  //     await photographerInformation();
+
+  //calcul photographer totalLikes
+  const totalLikes = allmedias.reduce(
+    (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+    0
+  );
+
+  //create rateAndPrice variable to store photographer totalLikes and price
+  const rateAndPrice = `
+      <ul class="photographer-rate-and-price-container">
+      <li class="photographer-rate-and-price-likes">${totalLikes}<span><i class="fa-solid fa-heart"></i></span></li>
+      <li class="photographer-rate-and-price-prices">${photographerInformation.price}€ / jour</li>
+      </ul>
+      `;
+
+  allWorkSelector.insertAdjacentHTML("beforeend", rateAndPrice);
+};
+```
+
+### 20. Refactor View and manage likes
+
+- create [photographerRateAndPrice()](scripts/factories/photographerRateAndPrice.js) to have photgrapher price and likes
+
+```js
+//HANDLE LIKES
+
+async function handleLikes() {
+  const { photographerMediaDetails } = await photographerInformation();
+  //select all like buttons
+  const likes = document.querySelectorAll(".like-btn");
+  //select all like numbers
+  const photographerLikes = document.querySelectorAll(".photographer-likes");
+  //select like and price card witch is on the bottom of the page
+  const newTotalLikes = document.querySelector(
+    ".photographer-rate-and-price-likes"
+  );
+
+  likes.forEach((like) => {
+    like.addEventListener("click", async () => {
+      //retrieve the like index
+      const likeIndex = like.getAttribute("key");
+
+      //conditionnal rendering: increase or decrease the like
+      if ([...like.classList].includes("count-plus")) {
+        like.classList.remove("count-plus");
+        like.classList.add("count-moin");
+
+        //increase the number of likes
+        let increase = (photographerMediaDetails[likeIndex].likes += 1);
+
+        //display increased likes on screen
+        photographerLikes[likeIndex].textContent = increase;
+      } else {
+        like.classList.add("count-plus");
+        like.classList.remove("count-moin");
+
+        //decrease the number of likes
+        let decrease = (photographerMediaDetails[likeIndex].likes -= 1);
+
+        //display decreased likes on screen
+        photographerLikes[likeIndex].textContent = decrease;
+      }
+
+      //calcul new  totalLikes
+      const totalLikes = photographerMediaDetails.reduce(
+        (accumulator, currentItemValue) => accumulator + currentItemValue.likes,
+        0
+      );
+
+      //display new  totalLikes
+      newTotalLikes.innerHTML = totalLikes;
+    });
+  });
+}
+
+handleLikes();
+```

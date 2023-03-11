@@ -1,11 +1,18 @@
 //DISPLAY ALL INDIVIDUAL PHOTOGRAPHER MEDIAS
 import { fullScreenMedia } from "./fullScreen.js";
+import { getAllElement, getElement } from "../utils/utils.js";
+import { photographerRateAndPrice } from "./photographerRateAndPrice.js";
+// import { handleLikes } from "./handleLikes.js";
 // import { momo } from "./fullScreen.js";
 // import { photographerMediasStore } from "../factories/photographer.js";
 // console.log(
 //   "🚀 ~ file: displayMedias.js:4 ~ photographerMediasStore:",
 //   photographerMediasStore
 // );
+
+//photograph medias selector
+const allWork = document.querySelector(".photograph-work");
+console.log("🚀 ~ file: displayMedias.js:15 ~ allWork:", allWork);
 
 const displayPhotographerMedia = (medias, element, photographer) => {
   console.log(
@@ -47,7 +54,7 @@ const displayPhotographerMedia = (medias, element, photographer) => {
                 </ul>
                 `;
 
-  const mediasContent = document.querySelectorAll(".photographer-medias");
+  const mediasContent = getAllElement(".photographer-medias");
   mediasContent.forEach((media) => {
     media.addEventListener("click", () => {
       // get the media index from the media-id attribute
@@ -66,6 +73,15 @@ const displayPhotographerMedia = (medias, element, photographer) => {
       );
     });
   });
+
+  //photographer rate and price
+  photographerRateAndPrice(allPhotographerMedias, photographer, allWork);
+
+  //handle likes
+  const likesBtn = getAllElement(".like-btn");
+  const likeNumber = getAllElement(".photographer-likes");
+  const newTotalLikes = getElement(".photographer-rate-and-price-likes");
+  // handleLikes(likesBtn, likeNumber, newTotalLikes, medias);
 };
 
 export { displayPhotographerMedia };
