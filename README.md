@@ -1595,3 +1595,141 @@ window.addEventListener("load", () => {
 ```
 
 - [Attribute Roles](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles)
+
+### 25. Responsive
+
+- add mediaqueries to the [Home Page](./index.html)
+
+```css
+@media screen and (max-width: 1053px) {
+  .photographer_section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .photographer_section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  header {
+    flex-direction: column;
+  }
+
+  header a {
+    display: flex;
+    justify-content: center;
+  }
+
+  header img {
+    justify-content: center;
+  }
+
+  header h1 {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.5;
+  }
+
+  75% {
+    opacity: 0.75;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+```
+
+- add mediaqueries to the [Photographer Page](./photographer.html)
+
+```css
+@media screen and (max-width: 1250px) {
+  /* Photographer all medias displayed */
+  .photographer-header-element {
+    /* 
+    text-align: center; */
+    display: flex;
+    justify-content: center;
+  }
+  .photographer-header-element img {
+    margin-left: 0;
+  }
+
+  .photograph-work-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Photographer profil card */
+  .photograph-header {
+    /* background: rebeccapurple; */
+    flex-direction: column;
+  }
+
+  .photograph-description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photograph-description h1 {
+    text-align: center;
+  }
+
+  .contact_button,
+  .photograph-header img {
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .photograph-work-content {
+    grid-template-columns: 1fr;
+  }
+  .photograph-description .description {
+    font-size: 25px;
+    text-align: center;
+  }
+}
+
+/* Photographer profil card */
+@media screen and (max-width: 450px) {
+  .photograph-header {
+    padding: 10px;
+  }
+
+  .photograph-description h1 {
+    font-size: 40px;
+  }
+
+  .photograph-description .location {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .photograph-description .description {
+    font-size: 20px;
+    /* text-align: center; */
+  }
+
+  .photograph-header img {
+    height: 180px;
+    width: 180px;
+  }
+}
+```

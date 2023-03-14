@@ -45,6 +45,7 @@ const localstorageInfo = async () => {
 
 localstorageInfo();
 
+//Loader animation
 gsap.to(".dot", {
   y: -60,
   stagger: {
@@ -72,3 +73,5 @@ window.addEventListener("load", () => {
 // window.addEventListener("load", () => {
 //   getElement(".loader").style.display = "none";
 // });
+
+//Page Reveal animation

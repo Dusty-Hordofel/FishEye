@@ -24,11 +24,6 @@ const photographerFactories = (informations, element) => {
 
 //PHOTOGRAPHER PROFILE CARD
 const photographerCard = (informations, element) => {
-  console.log(
-    "🚀 ~ file: photographer.js:26 ~ photographerCard ~ photographerCard:",
-    informations,
-    element
-  );
   const { city, country, name, portrait, tagline } = informations;
 
   element.innerHTML = `
