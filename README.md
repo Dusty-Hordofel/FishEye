@@ -1475,3 +1475,261 @@ export const handleLikes = (
 ```
 
 ### 21. Manage Lightbox media
+
+## Section 7: Check the code with a linter
+
+### 22. Install the linter
+
+```bash
+$ npm install eslint --save-dev
+$ npm init @eslint/config
+```
+
+- add script in package.json
+
+```json
+{
+  "scripts": {
+    "lint": "eslint ."
+  }
+}
+```
+
+- run eslint
+
+```js
+$npm run lint
+```
+
+### 23. Accessibility
+
+- add HTML Section for [loader](index.html)
+
+```html
+<!-- Page loader -->
+<div class="loader">
+  <div class="container">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  <div class="container">
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+  </div>
+</div>
+```
+
+- gérer l'accessibilité du site web avec des extensions google et un lecteur audio.
+
+### 24. Page loader
+
+- create [js loader](./index.html) using [gsap]()
+
+```js
+gsap.to(".dot", {
+  y: -60,
+  stagger: {
+    each: 0.2,
+    repeat: -1,
+    yoyo: true,
+  },
+});
+gsap.to(".shadow", {
+  y: 60,
+  stagger: {
+    each: 0.2,
+    repeat: -1,
+    yoyo: true,
+  },
+  opacity: 0.1,
+});
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    getElement(".loader").style.display = "none";
+  }, 2000);
+});
+
+// window.addEventListener("load", () => {
+//   getElement(".loader").style.display = "none";
+// });
+```
+
+- style [loader](./css/style.css)
+
+```css
+/************************************/
+/* Photographe loader */
+/************************************/
+
+.loader {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 10;
+}
+
+.container {
+  display: flex;
+}
+
+.dot,
+.shadow {
+  width: 50px;
+  height: 50px;
+  background-color: #901c1c;
+  border-radius: 25px;
+  margin: 0 4px;
+}
+
+.shadow {
+  opacity: 0.3;
+}
+```
+
+- [Attribute Roles](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles)
+
+### 25. Responsive
+
+- add mediaqueries to the [Home Page](./index.html)
+
+```css
+@media screen and (max-width: 1053px) {
+  .photographer_section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .photographer_section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  header {
+    flex-direction: column;
+  }
+
+  header a {
+    display: flex;
+    justify-content: center;
+  }
+
+  header img {
+    justify-content: center;
+  }
+
+  header h1 {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.5;
+  }
+
+  75% {
+    opacity: 0.75;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+```
+
+- add mediaqueries to the [Photographer Page](./photographer.html)
+
+```css
+@media screen and (max-width: 1250px) {
+  /* Photographer all medias displayed */
+  .photographer-header-element {
+    /* 
+    text-align: center; */
+    display: flex;
+    justify-content: center;
+  }
+  .photographer-header-element img {
+    margin-left: 0;
+  }
+
+  .photograph-work-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Photographer profil card */
+  .photograph-header {
+    /* background: rebeccapurple; */
+    flex-direction: column;
+  }
+
+  .photograph-description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photograph-description h1 {
+    text-align: center;
+  }
+
+  .contact_button,
+  .photograph-header img {
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .photograph-work-content {
+    grid-template-columns: 1fr;
+  }
+  .photograph-description .description {
+    font-size: 25px;
+    text-align: center;
+  }
+}
+
+/* Photographer profil card */
+@media screen and (max-width: 450px) {
+  .photograph-header {
+    padding: 10px;
+  }
+
+  .photograph-description h1 {
+    font-size: 40px;
+  }
+
+  .photograph-description .location {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .photograph-description .description {
+    font-size: 20px;
+    /* text-align: center; */
+  }
+
+  .photograph-header img {
+    height: 180px;
+    width: 180px;
+  }
+}
+```

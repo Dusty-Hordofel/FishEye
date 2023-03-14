@@ -1,7 +1,7 @@
 //modal selector
 const modal = document.getElementById("contact_modal");
 //form children selector's
-const formData = document.querySelectorAll(".formData");
+// const formData = document.querySelectorAll(".formData");
 //input selector's
 const form = document.getElementById("form");
 
@@ -20,7 +20,6 @@ function closeModal() {
 //submit the form
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log("first olive");
   //check input validity
   checkInputs();
 
@@ -74,7 +73,7 @@ function validationForm() {
   }
 
   if (!hasSuccess) {
-    // console.log("Not All formdata divs have an success class.");
+    console.log("Not All formdata divs have an success class.");
     return;
   } else {
     // console.log("All formdata divs have an success class.")
@@ -94,6 +93,8 @@ function validationForm() {
       //remove sucess class
       formdataDivs[i].parentElement.className = "formData";
     }
+
+    console.log("All Input have been validated");
   }
 }
 
@@ -124,14 +125,11 @@ function setSuccessFor(input) {
   formData.className = "formData success";
 
   //target small element witch in  ".form-control"
-  const small = formData.querySelector("small");
+  // const small = formData.querySelector("small");
 
   //hidde error message
   const showError = formData.querySelector(".input-handler");
   showError.style.display = "none";
-
-  //remove error text in small tag
-  //   small.innerText = "";
 
   //console.log input value
   console.log(input.value);

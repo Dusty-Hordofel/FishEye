@@ -1,6 +1,5 @@
 import { leftArrow, rightArrow } from "./slide.js";
-import { individualMedia } from "../pages/photographer.js";
-import { getElement, getAllElement } from "../utils/utils.js";
+import { getElement } from "../utils/utils.js";
 
 export const fullScreenMedia = (
   media,
@@ -9,7 +8,7 @@ export const fullScreenMedia = (
   allPhotographerMedias
 ) => {
   //retrieve individual photographer media information
-  const { date, id, likes, photographerId, title, video, image } = media;
+  const { title, video, image } = media;
 
   //get elements
   const imageElement = getElement(".photograph-work-img");
