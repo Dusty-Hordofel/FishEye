@@ -1,32 +1,67 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+    <!-- CSS -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Google font -->
     <link
       href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
       rel="stylesheet"
     />
-    <title>Fisheye</title>
+
+    <!-- Title of page -->
+    <title>Fisheye - Page d'accueil</title>
   </head>
   <body>
-    <header>
-      <a href="index.html" target="blank">
+    <!-- Page loader -->
+    <div class="loader">
+      <div class="container">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="container">
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+      </div>
+    </div>
+
+    <!-- Header  -->
+    <header role="banner" tabindex="0" aria-label="En-tête de la page">
+      <a href="index.html" target="blank" title="Lien vers la page d'acceuil">
         <img
           src="assets/images/logo.png"
           class="logo"
-          aria-describedby="long-image-aplication"
-          alt="logo"
+          alt="logo du site web"
+          tabindex="0"
         />
       </a>
-      <h1 aria-label="liste de nos photographes">Nos photographes</h1>
+      <h1 tabindex="0" class="photographer-header-title">Nos photographes</h1>
     </header>
-    <main id="main" aria-label="section principale">
-      <div class="photographer_section" aria-label="section-photo"></div>
+
+    <!--  Contenu principal de la page d'accueil   -->
+    <main
+      id="main"
+      role="main"
+      aria-label="Contenu principal de la page d'accueil"
+      tabindex="0"
+    >
+      <section
+        class="photographer_section"
+        aria-label="section regroupant tous les photographes"
+        role="region"
+        tabindex="0"
+      ></section>
     </main>
-    <!-- <script type="module" src="scripts/pages/index.js"></script> -->
+    <!--  Page  -->
     <script type="module" src="scripts/pages/index.js"></script>
-    <!-- <script src="scripts/factories/photographer.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
   </body>
 </html>

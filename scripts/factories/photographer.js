@@ -6,14 +6,16 @@ const photographerFactories = (informations, element) => {
     .map((information) => {
       const { city, country, id, name, portrait, price, tagline } = information;
       return `
-    <article class="photoraher-profile">
-    <a href="photographer.html?id=${id}">
-    <img src="assets/photographers/${portrait}" alt="photographer profile image"/>
+    <article class="photoraher-profile" aria-label="Informations sur le photographe ${name} tabindex="0">
+    <a href="photographer.html?id=${id}" title="Visiter la page de profil de ${name}" role="link">
+    <img src="assets/photographers/${portrait}" alt="Photo de profil du photographe ${name}"/>
     <h2>${name}</h2>
     </a>
-    <p class="location" aria-label="location and country">${city}, ${country}</p>
-    <p class="description">${tagline}</p>
-    <p class="price">${formatPrice(price)}/jour</p>
+    <p class="location" aria-label="ville et pays où se trouve le photographe">${city}, ${country}</p>
+    <p class="description" aria-label="citation du photographe:${name}">${tagline}</p>
+    <p class="price" aria-label="coût de la prestation du photographe ${name}">${formatPrice(
+        price
+      )}/jour</p>
     </article>
     `;
     })
@@ -31,12 +33,13 @@ const photographerCard = (informations, element) => {
 
   element.innerHTML = `
     <div class="photograph-description">
-    <h1>${name}</h1>
-    <p class="location" aria-label="location and country">${city}, ${country}</p>
-    <p class="description">${tagline}</p>
+    <h1 tabindex="0">${name}</h1>
+    <p class="location" aria-label="ville et pays de ${name}" tabindex="0">${city}, ${country}</p>
+    <p class="description" tabindex="0" aria-label="citation du photographe ${name}">${tagline}</p>
   </div>
-  <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-  <img src="assets/photographers/${portrait}" alt="photographer profile image"/>
+  <button class="contact_button" onclick="displayModal()" tabindex="0"
+  aria-label="Bouton pour ouvrir la boîte de dialogue pour contacter le photographe ${name}">Contactez-moi</button>
+  <img src="assets/photographers/${portrait}" alt="photo de profil du photographe ${name}" tabindex="0"/>
 
   `;
 };

@@ -1500,3 +1500,98 @@ $ npm init @eslint/config
 ```js
 $npm run lint
 ```
+
+### 23. Accessibility
+
+- add HTML Section for [loader](index.html)
+
+```html
+<!-- Page loader -->
+<div class="loader">
+  <div class="container">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  <div class="container">
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+  </div>
+</div>
+```
+
+- gérer l'accessibilité du site web avec des extensions google et un lecteur audio.
+
+### 24. Page loader
+
+- create [js loader](./index.html) using [gsap]()
+
+```js
+gsap.to(".dot", {
+  y: -60,
+  stagger: {
+    each: 0.2,
+    repeat: -1,
+    yoyo: true,
+  },
+});
+gsap.to(".shadow", {
+  y: 60,
+  stagger: {
+    each: 0.2,
+    repeat: -1,
+    yoyo: true,
+  },
+  opacity: 0.1,
+});
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    getElement(".loader").style.display = "none";
+  }, 2000);
+});
+
+// window.addEventListener("load", () => {
+//   getElement(".loader").style.display = "none";
+// });
+```
+
+- style [loader](./css/style.css)
+
+```css
+/************************************/
+/* Photographe loader */
+/************************************/
+
+.loader {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 10;
+}
+
+.container {
+  display: flex;
+}
+
+.dot,
+.shadow {
+  width: 50px;
+  height: 50px;
+  background-color: #901c1c;
+  border-radius: 25px;
+  margin: 0 4px;
+}
+
+.shadow {
+  opacity: 0.3;
+}
+```
+
+- [Attribute Roles](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles)

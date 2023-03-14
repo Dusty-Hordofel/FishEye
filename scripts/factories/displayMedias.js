@@ -13,6 +13,7 @@ const displayPhotographerMedia = (medias, element, photographer) => {
     "🚀 ~ file: displayMedias.js:10 ~ displayPhotographerMedia ~ medias:",
     medias
   );
+
   let allPhotographerMedias = medias;
   // momo(medias);
   //retrieve photographer information
@@ -23,23 +24,33 @@ const displayPhotographerMedia = (medias, element, photographer) => {
           <ul class= "photograph-work-content">
           ${medias
             .map((media, index) => {
-              const { likes, title, video, image, date } = media;
+              const { likes, title, video, image, date, photographerId, id } =
+                media;
               return ` 
-              <li class="photograph-work-container" >
+              <li class="photograph-work-container" tabindex="0" data-photographer-id="${photographerId}" data-post-id="${id}" data-date-of-publication="${date}" data-likes="${likes}" data-user-liked="false" data-title="${title}" >
+              <a href="#" title="${title}" aria-label="${
+                image ? "Image" : "Vidéo"
+              } nommée ${title}" role="link" tabindex="0">
               <${image ? "img" : "video"} src="assets/images/${name}/${
                 image ? image : video
               }"
 
-              ${image ? `alt=${title}` : ""}
+              ${
+                image
+                  ? `alt=${title} fait en ${new Date(date).getFullYear()}`
+                  : ""
+              }
                ${video ? "muted" : ""} class="photographer-medias" 
                id=${
                  image ? "photograph-content-img" : "photograph-content-video"
                } key="${index}"  ${image ? "/" : ""}> ${image ? "" : "</video>"}
+               </a>
               <div class="photograph-work-content-description">
-              <h2>${title}</h2>
-              <div class="photograph-work-content-description-likes">
+              <h2 tabindex="0">${title}</h2>
+              <div class="photograph-work-content-description-likes" tabindex="0">
               <p class="photographer-likes" >${likes}</p>
-              <button class="like-btn count-plus" key="${index}"><i class="fa-solid fa-heart count-plus" ></i></button>
+              <button class="like-btn count-plus" key="${index}" title="Mettre un like au post '${title}'?" aria-pressed="false"
+              aria-label="Bouton pour liker la publication nommée '${title}'" ><i class="fa-solid fa-heart count-plus" ></i></button>
               </div>
               </div>
               </li>`;

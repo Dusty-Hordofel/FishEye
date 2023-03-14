@@ -32,9 +32,14 @@ const formatPrice = (price) => {
 const getStorageItem = (item) => {
   let storageItem = localStorage.getItem(item);
 
-  storageItem
-    ? (storageItem = JSON.parse(localStorage.getItem(item)))
-    : (storageItem = []); //parse is used to transform string values to an object
+  if (storageItem && storageItem !== undefined) {
+    storageItem = JSON.parse(localStorage.getItem(item));
+  } else {
+    storageItem = [];
+  }
+  // storageItem
+  //   ? (storageItem = JSON.parse(localStorage.getItem(item)))
+  //   : (storageItem = []); //parse is used to transform string values to an object
 
   return storageItem;
 };
