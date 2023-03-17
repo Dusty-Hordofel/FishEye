@@ -40,13 +40,14 @@ const displayPhotographerMedia = (medias, element, photographer) => {
                   ? `alt=${title} fait en ${new Date(date).getFullYear()}`
                   : ""
               }
-               ${video ? "muted" : ""} class="photographer-medias" 
+               ${video ? "muted" : ""}
+                class="photographer-medias" 
                id=${
                  image ? "photograph-content-img" : "photograph-content-video"
                } key="${index}"  ${image ? "/" : ""}> ${image ? "" : "</video>"}
                </a>
               <div class="photograph-work-content-description">
-              <h2 tabindex="0">${title}</h2>
+              <p tabindex="0">${title}</p>
               <div class="photograph-work-content-description-likes" tabindex="0">
               <p class="photographer-likes" >${likes}</p>
               <button class="like-btn count-plus" key="${index}" title="Mettre un like au post '${title}'?" aria-pressed="false"
@@ -94,3 +95,5 @@ const displayPhotographerMedia = (medias, element, photographer) => {
 };
 
 export { displayPhotographerMedia };
+
+// ${video ? `title=${title}` : ""}

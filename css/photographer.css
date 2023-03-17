@@ -231,81 +231,6 @@ small {
   transition: 0.3s ease-in;
 }
 
-@media screen and (max-width: 1250px) {
-  /* Photographer all medias displayed */
-  .photographer-header-element {
-    /* 
-    text-align: center; */
-    display: flex;
-    justify-content: center;
-  }
-  .photographer-header-element img {
-    margin-left: 0;
-  }
-
-  .photograph-work-content {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  /* Photographer profil card */
-  .photograph-header {
-    /* background: rebeccapurple; */
-    flex-direction: column;
-  }
-
-  .photograph-description {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .photograph-description h1 {
-    text-align: center;
-  }
-
-  .contact_button,
-  .photograph-header img {
-    margin-bottom: 20px;
-  }
-}
-
-@media screen and (max-width: 750px) {
-  .photograph-work-content {
-    grid-template-columns: 1fr;
-  }
-  .photograph-description .description {
-    font-size: 25px;
-    text-align: center;
-  }
-}
-
-/* Photographer profil card */
-@media screen and (max-width: 450px) {
-  .photograph-header {
-    padding: 10px;
-  }
-
-  .photograph-description h1 {
-    font-size: 40px;
-  }
-
-  .photograph-description .location {
-    font-size: 20px;
-    font-weight: 400;
-    text-align: center;
-  }
-
-  .photograph-description .description {
-    font-size: 20px;
-    /* text-align: center; */
-  }
-
-  .photograph-header img {
-    height: 180px;
-    width: 180px;
-  }
-}
-
 .photograph-work-container {
   width: 330px;
 }
@@ -347,12 +272,10 @@ small {
   align-items: center;
 }
 .photograph-work-content-description-likes button {
-  /* display: block; */
   margin-left: 0.6rem;
   background: transparent;
   border: none;
   color: #901c1c;
-  /* color: #9a7878; */
   font-size: 20px;
 }
 
@@ -405,7 +328,9 @@ small {
   align-items: center;
   background: whitesmoke;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+  /* width: 90vw; */
   width: 900px;
+  /* background: yellow; */
   align-items: center;
 }
 
@@ -419,6 +344,7 @@ small {
   margin: 40px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
+
 .photograph-image-title {
   color: #901c1c;
   font-weight: 100;
@@ -431,17 +357,34 @@ small {
   color: #901c1c;
 }
 
+.fa-chevron-right {
+  background: palegreen;
+}
+.fa-chevron-left {
+  background: palegreen;
+  height: 100%;
+}
+.media-close-icon {
+  background: yellow;
+  height: 100%;
+}
+
 .close-button {
   background: transparent;
   border: none;
   position: relative;
   top: -300px;
-  right: 22px;
+  right: 26px;
 }
 
 .icons-container {
   display: flex;
   position: relative;
+  margin-right: 10px;
+}
+
+.first-icon {
+  margin-left: 37px;
 }
 
 /************************************/
@@ -566,4 +509,107 @@ select option {
 
 .hide {
   display: none !important;
+}
+
+/************************************/
+/* MEDIA QUERIES */
+/************************************/
+
+@media screen and (max-width: 1250px) {
+  /* Photographer all medias displayed */
+  .photographer-header-element {
+    /* 
+    text-align: center; */
+    display: flex;
+    justify-content: center;
+  }
+  .photographer-header-element img {
+    margin-left: 0;
+  }
+
+  .photograph-work-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Photographer profil card */
+  .photograph-header {
+    /* background: rebeccapurple; */
+    flex-direction: column;
+  }
+
+  .photograph-description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photograph-description h1 {
+    text-align: center;
+  }
+
+  .contact_button,
+  .photograph-header img {
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .photograph-work-content {
+    grid-template-columns: 1fr;
+  }
+  .photograph-description .description {
+    font-size: 25px;
+    text-align: center;
+  }
+}
+
+/* PHOTOGRAPHER PROFIL CARD */
+@media screen and (max-width: 450px) {
+  .photograph-header {
+    padding: 10px;
+  }
+
+  .photograph-description h1 {
+    font-size: 40px;
+  }
+
+  .photograph-description .location {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .photograph-description .description {
+    font-size: 20px;
+    /* text-align: center; */
+  }
+
+  .photograph-header img {
+    height: 180px;
+    width: 180px;
+  }
+}
+
+/* SLIDER */
+@media (min-width: 800px) and (max-width: 900px) {
+  .photograph-work-content-img-modal {
+    width: 550px;
+  }
+}
+@media (min-width: 700px) and (max-width: 799px) {
+  .photograph-work-content-img-modal {
+    width: 500px;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 699px) {
+  .photograph-work-content-img-modal {
+    width: 450px;
+  }
+}
+
+@media (max-width: 699px) {
+  .photograph-work-content-img-modal {
+    width: 350px;
+  }
 }

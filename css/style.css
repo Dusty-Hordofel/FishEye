@@ -27,6 +27,7 @@ header {
   animation: fadeOut 4s ease-in-out forwards;
   animation-delay: 1s;
   transition: 0.1s ease-in;
+  padding-top: 40px;
 }
 
 h1 {
